@@ -4,9 +4,12 @@
  */
 package com.tiempometa.pandora.ipicoreader;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.timing.model.RawChipRead;
 
 /**
  * Raw Chip read data structure to represent each individual time data.
@@ -220,6 +223,16 @@ public class IpicoRead {
 
 	public void setCrc(String crc) {
 		this.crc = crc;
+	}
+
+	public RawChipRead toRawChipRead() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static IpicoRead parseString(String dataLine, ZoneId zoneId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
