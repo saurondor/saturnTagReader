@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.Utils;
 import com.tiempometa.timing.model.RawChipRead;
 
 /**
@@ -226,13 +227,15 @@ public class IpicoRead {
 	}
 
 	public RawChipRead toRawChipRead() {
-		// TODO Auto-generated method stub
-		return null;
+		RawChipRead read = new RawChipRead();
+		read.setRfidString(rfid);
+		read.setTime(Utils.dateToLocalDateTime(clockTime));
+		read.setTimeMillis(runTime);
+		return read;
 	}
 
 	public static IpicoRead parseString(String dataLine, ZoneId zoneId) {
-		// TODO Auto-generated method stub
-		return null;
+		return parse(dataLine);
 	}
 
 }

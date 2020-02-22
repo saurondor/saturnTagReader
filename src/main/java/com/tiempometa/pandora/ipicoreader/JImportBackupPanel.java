@@ -13,6 +13,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.log4j.Logger;
+
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.timing.model.RawChipRead;
@@ -27,12 +29,13 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -7408634299336269973L;
+	private static final Logger logger = Logger.getLogger(JImportBackupPanel.class);
 	private RawChipReadTableModel tableModel = new RawChipReadTableModel();
 	private File dataFile;
 
-
 	public JImportBackupPanel() {
 		initComponents();
+		tagReadsTable.setModel(tableModel);
 	}
 
 	/**
@@ -81,6 +84,7 @@ public class JImportBackupPanel extends JPanel {
 			IpicoRead tagRead = IpicoRead.parseString(dataLine, Context.getZoneId());
 			chipReads.add(tagRead.toRawChipRead());
 		}
+		logger.info("Read log count " + chipReads.size());
 		tableModel.setChipReads(chipReads);
 		tableModel.fireTableDataChanged();
 		loadCheckPoints();
