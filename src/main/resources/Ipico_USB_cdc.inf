@@ -1,0 +1,68 @@
+; 
+; IPICO Comunication Device Class driver instalation file
+; (C)2006 Copyright STMicroelectronics
+; 
+
+[Version] 
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%STM%
+LayoutFile=layout.inf
+
+[Manufacturer] 
+%MFGNAME%=VirComDevice,NT,NTamd64
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[VirComDevice.NT]
+%DESCRIPTION_1%=DriverInstall,USB\VID_0483&PID_3508
+%DESCRIPTION_2%=DriverInstall,USB\VID_0483&PID_3490
+%DESCRIPTION_3%=DriverInstall,USB\VID_0483&PID_3507
+%DESCRIPTION_4%=DriverInstall,USB\VID_0483&PID_3552
+%DESCRIPTION_5%=DriverInstall,USB\VID_0483&PID_3506
+
+
+[VirComDevice.NTamd64]
+%DESCRIPTION_1%=DriverInstall,USB\VID_0483&PID_3508
+%DESCRIPTION_2%=DriverInstall,USB\VID_0483&PID_3490
+%DESCRIPTION_3%=DriverInstall,USB\VID_0483&PID_3507
+%DESCRIPTION_4%=DriverInstall,USB\VID_0483&PID_3552
+%DESCRIPTION_5%=DriverInstall,USB\VID_0483&PID_3506
+
+
+[DriverInstall.NT]
+Include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=DriverInstall.NT.AddReg
+
+[DriverInstall.NT.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NT.Services]
+AddService=usbser, 0x00000002, DriverServiceInst
+
+[DriverServiceInst]
+DisplayName=%SERVICE%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys 
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+
+[Strings] 
+STM         = "STMicroelectronics"
+MFGNAME     = "Ipico"
+DESCRIPTION_1 = "IPICO DF ACR COM Port"
+DESCRIPTION_2 = "IPICO DF RR COM Port"
+DESCRIPTION_3 = "IPICO HF ACR COM Port"
+DESCRIPTION_4 = "IPICO HH USB Com Port" 
+DESCRIPTION_5 = "IPICO HF RR COM Port"
+SERVICE     = "Virtual COM port"

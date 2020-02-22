@@ -1,0 +1,29 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.checatuchip.preview"
+	"i18n.bundleName": "jpreview"
+	"i18n.keyPrefix": "JTopPreviewPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "default:grow, left:default:grow, default:grow"
+			"$rowSpecs": "fill:default"
+		} ) {
+			name: "this"
+			"preferredSize": new java.awt.Dimension( 200, 250 )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "imageLabel"
+				"icon": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 1
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

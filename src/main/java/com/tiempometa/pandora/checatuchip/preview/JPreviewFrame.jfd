@@ -1,0 +1,50 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.checatuchip.preview"
+	"i18n.bundleName": "jpreview"
+	"i18n.keyPrefix": "JPreviewFrame"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": new FormMessage( null, "JPreviewFrame.this.title" )
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/tiempometa_icon_large_alpha.png" )
+			"background": new java.awt.Color( 255, 255, 255, 255 )
+			add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JContentPreviewPanel" ) {
+				name: "contentPanel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JTopPreviewPanel" ) {
+				name: "topPanel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JBottomPreviewPanel" ) {
+				name: "bottomPanel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+			add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JLeftPreviewPanel" ) {
+				name: "leftPanel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "West"
+			} )
+			add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JRightPreviewPanel" ) {
+				name: "rightPanel"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "East"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 1135, 640 )
+		} )
+	}
+}

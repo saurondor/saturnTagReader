@@ -1,0 +1,49 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.checatuchip.preview"
+	"i18n.bundleName": "jpreview"
+	"i18n.keyPrefix": "JContentPreviewPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 159dlu, labelcompgap, default:grow"
+			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, 89dlu:grow"
+		} ) {
+			name: "this"
+			"background": new java.awt.Color( 255, 255, 255, 255 )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "bibLabel"
+				"text": new FormMessage( null, "JContentPreviewPanel.bibLabel.text" )
+				"font": new java.awt.Font( "Tahoma", 1, 72 )
+				"foreground": sfield java.awt.Color red
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 3
+				"gridWidth": 5
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+				"axis": 1
+			} ) {
+				name: "fieldsPanel"
+				add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JFieldPanel" ) {
+					name: "panel2"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+				} )
+				add( new FormComponent( "com.tiempometa.pandora.checatuchip.preview.JFieldPanel" ) {
+					name: "panel3"
+					"background": new java.awt.Color( 255, 255, 255, 255 )
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 5
+				"gridWidth": 5
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 1125, 370 )
+		} )
+	}
+}
