@@ -33,6 +33,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	private JReaderListPanel listPanel;
 	private IpicoClient reader = new IpicoClient();
 	private String checkPoint1;
+	private TagReadListener tagReadListener;
 
 	public void setTerminal(String terminal) {
 		terminalTextField.setText(terminal);
@@ -309,7 +310,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
-		// TODO Auto-generated method stub
+		this.tagReadListener = tagReadListener;
 
 	}
 
@@ -320,6 +321,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		for (RawChipRead rawChipRead : chipReadList) {
 			logger.debug("TAG READ " + rawChipRead.getRfidString());
 		}
+		tagReadListener.notifyTagReads(chipReadList);
 	}
 
 	@Override
@@ -340,5 +342,9 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 
 	public void setListPanel(JReaderListPanel listPanel) {
 		this.listPanel = listPanel;
+	}
+
+	public TagReadListener getTagReadListener() {
+		return tagReadListener;
 	}
 }

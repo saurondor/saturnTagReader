@@ -20,7 +20,7 @@ new FormModel {
 				"value": "Center"
 			} )
 			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JTagReadPanel" ) {
-				name: "panel2"
+				name: "tagReadPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "East"
 			} )

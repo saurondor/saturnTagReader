@@ -8,16 +8,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.timing.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
+public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, TagReadListener {
 	/**
 	 * 
 	 */
@@ -137,6 +140,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				closeApplication(we.getWindow());
 			}
 		});
+		readerListPanel.setTagReadListener(this);
 
 	}
 
@@ -211,23 +215,25 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 		checaTuChipConfigurationMenuItem = new JMenuItem();
 		showPreviewMenuItem = new JMenuItem();
 		readerListPanel = new JReaderListPanel();
-		panel2 = new JTagReadPanel();
+		tagReadPanel = new JTagReadPanel();
 
-		//======== this ========
-		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png")).getImage());
+		// ======== this ========
+		setIconImage(new ImageIcon(
+				getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png"))
+						.getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		//======== menuBar1 ========
+		// ======== menuBar1 ========
 		{
 
-			//======== menu1 ========
+			// ======== menu1 ========
 			{
 				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				//---- openEventMenuItem ----
+				// ---- openEventMenuItem ----
 				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
 				openEventMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -237,7 +243,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu1.add(openEventMenuItem);
 
-				//---- closeMenuItem ----
+				// ---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -249,11 +255,11 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 			}
 			menuBar1.add(menu1);
 
-			//======== menu2 ========
+			// ======== menu2 ========
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				//---- addReaderMenuItem ----
+				// ---- addReaderMenuItem ----
 				addReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addReaderMenuItem.text"));
 				addReaderMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -263,7 +269,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu2.add(addReaderMenuItem);
 
-				//---- importBackupMenuItem ----
+				// ---- importBackupMenuItem ----
 				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
 				importBackupMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -275,12 +281,13 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 			}
 			menuBar1.add(menu2);
 
-			//======== menu3 ========
+			// ======== menu3 ========
 			{
 				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				//---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+				// ---- checaTuChipConfigurationMenuItem ----
+				checaTuChipConfigurationMenuItem
+						.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
 				checaTuChipConfigurationMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -289,7 +296,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu3.add(checaTuChipConfigurationMenuItem);
 
-				//---- showPreviewMenuItem ----
+				// ---- showPreviewMenuItem ----
 				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
 				showPreviewMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -303,7 +310,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 		}
 		setJMenuBar(menuBar1);
 		contentPane.add(readerListPanel, BorderLayout.CENTER);
-		contentPane.add(panel2, BorderLayout.EAST);
+		contentPane.add(tagReadPanel, BorderLayout.EAST);
 		setSize(805, 505);
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
@@ -321,7 +328,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 	private JMenuItem checaTuChipConfigurationMenuItem;
 	private JMenuItem showPreviewMenuItem;
 	private JReaderListPanel readerListPanel;
-	private JTagReadPanel panel2;
+	private JTagReadPanel tagReadPanel;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	@Override
@@ -340,6 +347,16 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 	public void refreshTitle() {
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
+
+	}
+
+	@Override
+	public void notifyTagReads(List<RawChipRead> readings) {
+		logger.debug("GOT TAG READS...");
+		for (RawChipRead tagRead : readings) {
+			logger.debug(tagRead);
+			tagReadPanel.add(tagRead);
+		}
 
 	}
 }
