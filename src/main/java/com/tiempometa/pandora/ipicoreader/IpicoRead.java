@@ -79,6 +79,10 @@ public class IpicoRead {
 	 * Payload CRC
 	 */
 	private String crc;
+	/**
+	 * Checkpoint at which this reading was made
+	 */
+	private String checkPoint;
 
 	/**
 	 * 
@@ -204,6 +208,8 @@ public class IpicoRead {
 		StringBuilder builder = new StringBuilder();
 		builder.append("IpicoRead [rfid=");
 		builder.append(rfid);
+		builder.append(", checkpoint=");
+		builder.append(checkPoint);
 		builder.append(", reader=");
 		builder.append(reader);
 		builder.append(", antenna=");
@@ -231,11 +237,20 @@ public class IpicoRead {
 		read.setRfidString(rfid);
 		read.setTime(Utils.dateToLocalDateTime(clockTime));
 		read.setTimeMillis(runTime);
+		read.setCheckPoint(checkPoint);
 		return read;
 	}
 
 	public static IpicoRead parseString(String dataLine, ZoneId zoneId) {
 		return parse(dataLine);
+	}
+
+	public String getCheckPoint() {
+		return checkPoint;
+	}
+
+	public void setCheckPoint(String checkPoint) {
+		this.checkPoint = checkPoint;
 	}
 
 }

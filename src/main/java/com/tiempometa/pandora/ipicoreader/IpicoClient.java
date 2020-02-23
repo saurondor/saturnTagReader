@@ -33,6 +33,8 @@ public class IpicoClient implements Runnable {
 	private List<IpicoRead> readLog = new ArrayList<IpicoRead>();
 	StringBuffer streamBuffer = new StringBuffer();
 	TagReadListener tagReadListener;
+	private String checkPointOne;
+	private String checkPointTwo;
 
 	public void registerTagReadListener(TagReadListener listener) {
 		tagReadListener = listener;
@@ -126,6 +128,7 @@ public class IpicoClient implements Runnable {
 		for (String line : lines) {
 			logger.debug("Parsing string " + line);
 			IpicoRead read = IpicoRead.parse(line.replace("\r", ""));
+			read.setCheckPoint(checkPointOne);
 			if (read == null) {
 				logger.error("Invalid data string :" + line + ", length:" + line.length());
 			} else {
@@ -171,5 +174,21 @@ public class IpicoClient implements Runnable {
 
 	public void setConnected(boolean connected) {
 		this.connected = connected;
+	}
+
+	public String getCheckPointOne() {
+		return checkPointOne;
+	}
+
+	public String getCheckPointTwo() {
+		return checkPointTwo;
+	}
+
+	public void setCheckPointOne(String checkPointOne) {
+		this.checkPointOne = checkPointOne;
+	}
+
+	public void setCheckPointTwo(String checkPointTwo) {
+		this.checkPointTwo = checkPointTwo;
 	}
 }

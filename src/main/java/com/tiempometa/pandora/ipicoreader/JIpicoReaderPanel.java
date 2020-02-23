@@ -105,6 +105,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
+		reader.setCheckPointOne(checkPoint1);
 //		reader.setCheckPoint(checkPoint1);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
@@ -153,23 +154,23 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
 
-		//======== this ========
+		// ======== this ========
 		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
 		setInheritsPopupMenu(true);
 		setMaximumSize(new Dimension(533, 139));
 		setLayout(new FormLayout(
-			"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, default, $lcgap, 31dlu, $lcgap, 22dlu",
-			"5dlu, 3*($lgap, default)"));
+				"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, default, $lcgap, 31dlu, $lcgap, 22dlu",
+				"5dlu, 3*($lgap, default)"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 
-		//---- readerAddressTextField ----
+		// ---- readerAddressTextField ----
 		readerAddressTextField.setText(bundle.getString("JIpicoReaderPanel.readerAddressTextField.text"));
 		add(readerAddressTextField, CC.xywh(5, 3, 5, 1));
 
-		//---- connectButton ----
+		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -180,7 +181,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(connectButton, CC.xy(11, 3));
 
-		//---- setTimeButton ----
+		// ---- setTimeButton ----
 		setTimeButton.setText(bundle.getString("JIpicoReaderPanel.setTimeButton.text"));
 		setTimeButton.setEnabled(false);
 		setTimeButton.addActionListener(new ActionListener() {
@@ -191,8 +192,9 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(setTimeButton, CC.xy(13, 3));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/x-remove.png")));
+		// ---- removeReaderButton ----
+		removeReaderButton
+				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -201,15 +203,12 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(removeReaderButton, CC.xy(17, 3));
 
-		//---- label2 ----
+		// ---- label2 ----
 		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
 		add(label2, CC.xy(3, 5));
 
-		//---- multipointComboBox ----
-		multipointComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Todos",
-			"RX 1 (Izq.)"
-		}));
+		// ---- multipointComboBox ----
+		multipointComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Todos", "RX 1 (Izq.)" }));
 		multipointComboBox.setEnabled(false);
 		multipointComboBox.addItemListener(new ItemListener() {
 			@Override
@@ -219,19 +218,19 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(multipointComboBox, CC.xy(5, 5));
 
-		//---- textField1 ----
+		// ---- textField1 ----
 		textField1.setBackground(Color.green);
 		textField1.setEnabled(false);
 		textField1.setEditable(false);
 		add(textField1, CC.xy(7, 5));
 
-		//---- textField2 ----
+		// ---- textField2 ----
 		textField2.setBackground(Color.red);
 		textField2.setEnabled(false);
 		textField2.setEditable(false);
 		add(textField2, CC.xy(9, 5));
 
-		//---- checkPointComboBox1 ----
+		// ---- checkPointComboBox1 ----
 		checkPointComboBox1.setBackground(Color.red);
 		checkPointComboBox1.addItemListener(new ItemListener() {
 			@Override
@@ -241,29 +240,29 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(checkPointComboBox1, CC.xy(11, 5));
 
-		//---- label4 ----
+		// ---- label4 ----
 		label4.setText(bundle.getString("JIpicoReaderPanel.label4.text"));
 		add(label4, CC.xy(13, 5));
 		add(terminalTextField, CC.xywh(15, 5, 3, 1));
 
-		//---- label3 ----
+		// ---- label3 ----
 		label3.setText(bundle.getString("JIpicoReaderPanel.label3.text"));
 		label3.setEnabled(false);
 		add(label3, CC.xy(5, 7));
 
-		//---- textField3 ----
+		// ---- textField3 ----
 		textField3.setBackground(Color.blue);
 		textField3.setEnabled(false);
 		textField3.setEditable(false);
 		add(textField3, CC.xy(7, 7));
 
-		//---- textField4 ----
+		// ---- textField4 ----
 		textField4.setBackground(Color.yellow);
 		textField4.setEnabled(false);
 		textField4.setEditable(false);
 		add(textField4, CC.xy(9, 7));
 
-		//---- checkPointComboBox2 ----
+		// ---- checkPointComboBox2 ----
 		checkPointComboBox2.setBackground(Color.red);
 		checkPointComboBox2.setEnabled(false);
 		checkPointComboBox2.addItemListener(new ItemListener() {
@@ -274,7 +273,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(checkPointComboBox2, CC.xy(11, 7));
 
-		//---- applyCheckpointButton ----
+		// ---- applyCheckpointButton ----
 		applyCheckpointButton.setText(bundle.getString("JIpicoReaderPanel.applyCheckpointButton.text"));
 		applyCheckpointButton.setBackground(Color.red);
 		applyCheckpointButton.addActionListener(new ActionListener() {
@@ -285,11 +284,11 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		});
 		add(applyCheckpointButton, CC.xy(13, 7));
 
-		//---- label5 ----
+		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
 		add(label5, CC.xy(15, 7));
 
-		//---- tagsReadLabel ----
+		// ---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
 		add(tagsReadLabel, CC.xy(17, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
