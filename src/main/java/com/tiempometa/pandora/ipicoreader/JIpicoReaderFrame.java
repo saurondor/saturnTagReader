@@ -75,6 +75,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
+		readerListPanel.addReader();
 	}
 
 	private void handleInvalidDatabaseSchema() {
