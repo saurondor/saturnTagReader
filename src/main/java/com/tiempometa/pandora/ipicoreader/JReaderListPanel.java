@@ -44,11 +44,19 @@ public class JReaderListPanel extends JPanel {
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
+	public void removeReader(JIpicoReaderPanel reader) {
+		listPanel.remove(reader);
+		listPanel.validate();
+		listPanel.repaint();
+	}
+
 	public void addReader() {
 		JIpicoReaderPanel reader = new JIpicoReaderPanel(this);
 		reader.setTagReadListener(tagReadListener);
+		reader.setListPanel(this);
 		logger.debug("Adding reader...");
 		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
 		listPanel.add(reader);
 		listPanel.validate();
 		listPanel.repaint();

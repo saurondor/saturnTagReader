@@ -27,7 +27,7 @@ public class IpicoClient implements Runnable {
 	SimpleDateFormat dFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private int port = 10200; // use default port
 	private String hostname = "";
-	private boolean connected = true;
+	private boolean connected = false;
 	private Socket readerSocket = null;
 	private InputStream inputStream = null;
 	private List<IpicoRead> readLog = new ArrayList<IpicoRead>();
@@ -163,5 +163,13 @@ public class IpicoClient implements Runnable {
 	public void setCommandResponseHandler(JIpicoReaderPanel jIpicoReaderPanel) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 }

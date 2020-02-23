@@ -32,6 +32,11 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	private static final Logger logger = Logger.getLogger(JIpicoReaderPanel.class);
 	private JReaderListPanel listPanel;
 	private IpicoClient reader = new IpicoClient();
+	private String checkPoint1;
+
+	public void setTerminal(String terminal) {
+		terminalTextField.setText(terminal);
+	}
 
 	public JIpicoReaderPanel(JReaderListPanel listPanel) {
 		initComponents();
@@ -61,19 +66,40 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 //	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
-		reader.setHostname(readerAddressTextField.getText());
-		try {
-			reader.connect();
-			Thread thread = new Thread(reader);
-			thread.start();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		if (reader.isConnected()) {
+
+		} else {
+			reader.setHostname(readerAddressTextField.getText());
+			try {
+				reader.connect();
+				Thread thread = new Thread(reader);
+				thread.start();
+				setConnected();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
+	private void setConnected() {
+		connectButton.setText("Desconectar");
+		connectButton.setBackground(Color.GREEN);
+		setTimeButton.setEnabled(true);
+		removeReaderButton.setEnabled(false);
+	}
+
+	private void setDisconnected() {
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		setTimeButton.setEnabled(false);
+		removeReaderButton.setEnabled(true);
+	}
+
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
+//		reader.setCheckPoint(checkPoint1);
+		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
 	private void setTimeButtonActionPerformed(ActionEvent e) {
@@ -81,15 +107,15 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		listPanel.removeReader(this);
 	}
 
 	private void checkPointComboBox1ItemStateChanged(ItemEvent e) {
-		// TODO add your code here
+		applyCheckpointButton.setBackground(Color.RED);
 	}
 
 	private void checkPointComboBox2ItemStateChanged(ItemEvent e) {
-		// TODO add your code here
+		applyCheckpointButton.setBackground(Color.RED);
 	}
 
 	private void multipointComboBoxItemStateChanged(ItemEvent e) {
@@ -106,7 +132,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		setTimeButton = new JButton();
 		removeReaderButton = new JButton();
 		label4 = new JLabel();
-		textField5 = new JTextField();
+		terminalTextField = new JTextField();
 		label2 = new JLabel();
 		multipointComboBox = new JComboBox<>();
 		textField1 = new JTextField();
@@ -172,7 +198,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 		// ---- label4 ----
 		label4.setText(bundle.getString("JIpicoReaderPanel.label4.text"));
 		add(label4, CC.xy(3, 5));
-		add(textField5, CC.xywh(5, 5, 5, 1));
+		add(terminalTextField, CC.xywh(5, 5, 5, 1));
 
 		// ---- label2 ----
 		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
@@ -267,7 +293,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	private JButton setTimeButton;
 	private JButton removeReaderButton;
 	private JLabel label4;
-	private JTextField textField5;
+	private JTextField terminalTextField;
 	private JLabel label2;
 	private JComboBox<String> multipointComboBox;
 	private JTextField textField1;
@@ -306,5 +332,13 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	public void notifyCommException(IOException e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public JReaderListPanel getListPanel() {
+		return listPanel;
+	}
+
+	public void setListPanel(JReaderListPanel listPanel) {
+		this.listPanel = listPanel;
 	}
 }
