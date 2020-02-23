@@ -14,6 +14,7 @@ new FormModel {
 			"$locationPolicy": 0
 			"defaultCloseOperation": 0
 			"$sizePolicy": 1
+			"resizable": false
 			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JReaderListPanel" ) {
 				name: "readerListPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
