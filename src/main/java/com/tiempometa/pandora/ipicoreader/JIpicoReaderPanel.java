@@ -13,11 +13,14 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import org.apache.commons.net.telnet.InvalidTelnetOptionException;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
+import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RouteDao;
 
@@ -111,7 +114,21 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	}
 
 	private void setTimeButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		IpicoTcpClient client = new IpicoTcpClient();
+		logger.info("Connecting to host");
+//		client.setHostname("127.0.0.1");
+		try {
+			client.connect("10.19.1.101");
+			Thread thread = new Thread(client);
+			thread.start();
+//			client.sendCommand(new GetTimeCommand());
+			client.sendCommand(new SetTimeCommand());
+//			client.sendCommand(new GetTimeCommand());
+			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
+		} catch (InvalidTelnetOptionException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
