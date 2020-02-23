@@ -68,12 +68,12 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 
 	private void connectButtonActionPerformed(ActionEvent e) {
 		if (reader.isConnected()) {
-
+			reader.disconnect();
+			setDisconnected();
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
 						"Error de configuración", JOptionPane.ERROR_MESSAGE);
-
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
