@@ -3,6 +3,7 @@
  */
 package com.tiempometa.pandora.ipicoreader;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class TagReadTableModel extends AbstractTableModel {
 		case 0:
 			return tagRead.getRfidString();
 		case 1:
-			return tagRead.getTime();
+			return DateTimeFormatter.ISO_LOCAL_TIME.format(tagRead.getTime());
 		case 2:
 			return tagRead.getCheckPoint();
 		default:
