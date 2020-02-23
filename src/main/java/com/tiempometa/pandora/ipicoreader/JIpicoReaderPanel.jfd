@@ -8,8 +8,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 15dlu, labelcompgap, 84dlu, labelcompgap, default, labelcompgap, 19dlu, labelcompgap, default"
-			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default, linegap, default"
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 15dlu, labelcompgap, 84dlu, labelcompgap, default, labelcompgap, 31dlu, labelcompgap, 22dlu"
+			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
 			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoReaderPanel.this.border" )
@@ -57,24 +57,10 @@ new FormModel {
 				"gridY": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label4"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label4.text" )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 3
-				"gridY": 5
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "terminalTextField"
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 5
-				"gridY": 5
-				"gridWidth": 5
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
 				"text": new FormMessage( null, "JIpicoReaderPanel.label2.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 7
+				"gridY": 5
 				"gridX": 3
 			} )
 			add( new FormComponent( "javax.swing.JComboBox" ) {
@@ -88,7 +74,7 @@ new FormModel {
 				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "multipointComboBoxItemStateChanged", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
-				"gridY": 7
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField1"
@@ -97,7 +83,7 @@ new FormModel {
 				"editable": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 7
-				"gridY": 7
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField2"
@@ -106,7 +92,7 @@ new FormModel {
 				"editable": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 9
-				"gridY": 7
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "checkPointComboBox1"
@@ -114,7 +100,56 @@ new FormModel {
 				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox1ItemStateChanged", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 11
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label4.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 13
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "terminalTextField"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 15
+				"gridY": 5
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label3.text" )
+				"enabled": false
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
 				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField3"
+				"background": sfield java.awt.Color blue
+				"enabled": false
+				"editable": false
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 7
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField4"
+				"background": sfield java.awt.Color yellow
+				"enabled": false
+				"editable": false
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "checkPointComboBox2"
+				"background": sfield java.awt.Color red
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox2ItemStateChanged", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 7
+				"gridX": 11
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "applyCheckpointButton"
@@ -126,58 +161,22 @@ new FormModel {
 				"gridY": 7
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label3"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label3.text" )
-				"enabled": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 5
-				"gridY": 9
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField3"
-				"background": sfield java.awt.Color blue
-				"enabled": false
-				"editable": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 7
-				"gridY": 9
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField4"
-				"background": sfield java.awt.Color yellow
-				"enabled": false
-				"editable": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 9
-				"gridY": 9
-			} )
-			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "checkPointComboBox2"
-				"background": sfield java.awt.Color red
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox2ItemStateChanged", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 9
-				"gridX": 11
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label5"
 				"text": new FormMessage( null, "JIpicoReaderPanel.label5.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
-				"gridY": 9
+				"gridX": 15
+				"gridY": 7
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "tagsReadLabel"
 				"text": new FormMessage( null, "JIpicoReaderPanel.tagsReadLabel.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
-				"gridY": 9
-				"gridWidth": 3
+				"gridX": 17
+				"gridY": 7
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 545, 145 )
+			"size": new java.awt.Dimension( 535, 120 )
 		} )
 	}
 }
