@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.timing.model.dao.RawChipReadDao;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -218,22 +219,24 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		readerListPanel = new JReaderListPanel();
 		tagReadPanel = new JTagReadPanel();
 
-		//======== this ========
-		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png")).getImage());
+		// ======== this ========
+		setIconImage(new ImageIcon(
+				getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png"))
+						.getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		//======== menuBar1 ========
+		// ======== menuBar1 ========
 		{
 
-			//======== menu1 ========
+			// ======== menu1 ========
 			{
 				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				//---- openEventMenuItem ----
+				// ---- openEventMenuItem ----
 				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
 				openEventMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -243,7 +246,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				});
 				menu1.add(openEventMenuItem);
 
-				//---- closeMenuItem ----
+				// ---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -255,11 +258,11 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 			}
 			menuBar1.add(menu1);
 
-			//======== menu2 ========
+			// ======== menu2 ========
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				//---- addReaderMenuItem ----
+				// ---- addReaderMenuItem ----
 				addReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addReaderMenuItem.text"));
 				addReaderMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -269,7 +272,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				});
 				menu2.add(addReaderMenuItem);
 
-				//---- importBackupMenuItem ----
+				// ---- importBackupMenuItem ----
 				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
 				importBackupMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -281,12 +284,13 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 			}
 			menuBar1.add(menu2);
 
-			//======== menu3 ========
+			// ======== menu3 ========
 			{
 				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				//---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+				// ---- checaTuChipConfigurationMenuItem ----
+				checaTuChipConfigurationMenuItem
+						.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
 				checaTuChipConfigurationMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -295,7 +299,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				});
 				menu3.add(checaTuChipConfigurationMenuItem);
 
-				//---- showPreviewMenuItem ----
+				// ---- showPreviewMenuItem ----
 				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
 				showPreviewMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -356,6 +360,8 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 			logger.debug(tagRead);
 			tagReadPanel.add(tagRead);
 		}
+		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
+		chipDao.batchSave(readings);
 
 	}
 }
