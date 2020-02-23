@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tiempometa.pandora</groupId>
 	<artifactId>ipicoreader</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>4.0.1-SNAPSHOT</version>
 	<name>IPICO Reader</name>
 	<description>Elite, Lite and USB reader interface</description>
 
