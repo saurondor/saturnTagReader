@@ -13,6 +13,7 @@ new FormModel {
 			"title": new FormMessage( null, "JIpicoReaderFrame.this.title" )
 			"$locationPolicy": 0
 			"defaultCloseOperation": 0
+			"$sizePolicy": 1
 			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JReaderListPanel" ) {
 				name: "readerListPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
@@ -70,7 +71,7 @@ new FormModel {
 			}
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 805, 300 )
+			"size": new java.awt.Dimension( 805, 505 )
 		} )
 	}
 }

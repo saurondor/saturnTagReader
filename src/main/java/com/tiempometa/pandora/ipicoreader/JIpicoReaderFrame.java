@@ -213,23 +213,21 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 		readerListPanel = new JReaderListPanel();
 		panel2 = new JTagReadPanel();
 
-		// ======== this ========
-		setIconImage(new ImageIcon(
-				getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png"))
-						.getImage());
+		//======== this ========
+		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png")).getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		// ======== menuBar1 ========
+		//======== menuBar1 ========
 		{
 
-			// ======== menu1 ========
+			//======== menu1 ========
 			{
 				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				// ---- openEventMenuItem ----
+				//---- openEventMenuItem ----
 				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
 				openEventMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -239,7 +237,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu1.add(openEventMenuItem);
 
-				// ---- closeMenuItem ----
+				//---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -251,14 +249,13 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 			}
 			menuBar1.add(menu1);
 
-			// ======== menu2 ========
+			//======== menu2 ========
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				// ---- addReaderMenuItem ----
+				//---- addReaderMenuItem ----
 				addReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addReaderMenuItem.text"));
 				addReaderMenuItem.addActionListener(new ActionListener() {
-
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						addReaderMenuItemActionPerformed(e);
@@ -266,7 +263,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu2.add(addReaderMenuItem);
 
-				// ---- importBackupMenuItem ----
+				//---- importBackupMenuItem ----
 				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
 				importBackupMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -278,13 +275,12 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 			}
 			menuBar1.add(menu2);
 
-			// ======== menu3 ========
+			//======== menu3 ========
 			{
 				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				// ---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem
-						.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+				//---- checaTuChipConfigurationMenuItem ----
+				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
 				checaTuChipConfigurationMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -293,7 +289,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 				});
 				menu3.add(checaTuChipConfigurationMenuItem);
 
-				// ---- showPreviewMenuItem ----
+				//---- showPreviewMenuItem ----
 				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
 				showPreviewMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -308,7 +304,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication {
 		setJMenuBar(menuBar1);
 		contentPane.add(readerListPanel, BorderLayout.CENTER);
 		contentPane.add(panel2, BorderLayout.EAST);
-		pack();
+		setSize(805, 505);
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}

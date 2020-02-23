@@ -79,9 +79,11 @@ public class EliteSimulator implements Runnable {
 	public void run() {
 		try {
 			clientSocket = serverSocket.accept();
+			logger.info("Accepted connection");
 			try {
 				outputStream = clientSocket.getOutputStream();
 				for (String line : historyLog) {
+					logger.info("Writing log line " + line);
 					outputStream.write(line.substring(0, 10).getBytes());
 					outputStream.flush();
 					try {

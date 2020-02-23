@@ -45,7 +45,7 @@ public class JReaderListPanel extends JPanel {
 	}
 
 	public void addReader() {
-		JIpicoReaderPanel reader = new JIpicoReaderPanel();
+		JIpicoReaderPanel reader = new JIpicoReaderPanel(this);
 		reader.setTagReadListener(tagReadListener);
 		logger.debug("Adding reader...");
 		logger.debug("Component count " + listPanel.getComponentCount() + " before add");

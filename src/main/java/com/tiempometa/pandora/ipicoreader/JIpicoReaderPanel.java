@@ -6,26 +6,70 @@ package com.tiempometa.pandora.ipicoreader;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
+import org.apache.log4j.Logger;
+
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
+import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.timing.model.dao.RouteDao;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoReaderPanel extends JPanel {
-	public JIpicoReaderPanel() {
+public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler, TagReadListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1234969021040337654L;
+	private static final Logger logger = Logger.getLogger(JIpicoReaderPanel.class);
+	private JReaderListPanel listPanel;
+	private IpicoClient reader = new IpicoClient();
+
+	public JIpicoReaderPanel(JReaderListPanel listPanel) {
 		initComponents();
+		this.listPanel = listPanel;
+		reader.setCommandResponseHandler(this);
+		reader.registerTagReadListener(this);
+		loadCheckPoints();
 	}
 
-	private void checkPointComboBoxItemStateChanged(ItemEvent e) {
-		// TODO add your code here
+	/**
+	 * 
+	 */
+	private void loadCheckPoints() {
+		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
+		List<String> checkPoints = rDao.getCheckPointNames();
+		logger.debug("Available checkpoints ");
+		for (String string : checkPoints) {
+			logger.debug(string);
+		}
+		String[] checkPointArray = new String[checkPoints.size()];
+		checkPointComboBox1.setModel(new DefaultComboBoxModel<String>(checkPoints.toArray(checkPointArray)));
+		checkPointComboBox2.setModel(new DefaultComboBoxModel<String>(checkPoints.toArray(checkPointArray)));
 	}
+
+//	private void checkPointComboBoxItemStateChanged(ItemEvent e) {
+//		// TODO add your code here
+//	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		reader.setHostname(readerAddressTextField.getText());
+		try {
+			reader.connect();
+			Thread thread = new Thread(reader);
+			thread.start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
@@ -37,6 +81,18 @@ public class JIpicoReaderPanel extends JPanel {
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void checkPointComboBox1ItemStateChanged(ItemEvent e) {
+		// TODO add your code here
+	}
+
+	private void checkPointComboBox2ItemStateChanged(ItemEvent e) {
+		// TODO add your code here
+	}
+
+	private void multipointComboBoxItemStateChanged(ItemEvent e) {
 		// TODO add your code here
 	}
 
@@ -52,7 +108,7 @@ public class JIpicoReaderPanel extends JPanel {
 		label4 = new JLabel();
 		textField5 = new JTextField();
 		label2 = new JLabel();
-		comboBox1 = new JComboBox<>();
+		multipointComboBox = new JComboBox<>();
 		textField1 = new JTextField();
 		textField2 = new JTextField();
 		checkPointComboBox1 = new JComboBox();
@@ -66,6 +122,8 @@ public class JIpicoReaderPanel extends JPanel {
 
 		// ======== this ========
 		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
+		setInheritsPopupMenu(true);
+		setMaximumSize(new Dimension(533, 139));
 		setLayout(new FormLayout(
 				"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, default, $lcgap, 19dlu, $lcgap, default",
 				"5dlu, 4*($lgap, default)"));
@@ -73,6 +131,9 @@ public class JIpicoReaderPanel extends JPanel {
 		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
+
+		// ---- readerAddressTextField ----
+		readerAddressTextField.setText(bundle.getString("JIpicoReaderPanel.readerAddressTextField.text"));
 		add(readerAddressTextField, CC.xywh(5, 3, 5, 1));
 
 		// ---- connectButton ----
@@ -117,16 +178,27 @@ public class JIpicoReaderPanel extends JPanel {
 		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
 		add(label2, CC.xy(3, 7));
 
-		// ---- comboBox1 ----
-		comboBox1.setModel(new DefaultComboBoxModel<>(new String[] { "Todos", "RX 1 (Izq.)" }));
-		add(comboBox1, CC.xy(5, 7));
+		// ---- multipointComboBox ----
+		multipointComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "Todos", "RX 1 (Izq.)" }));
+		multipointComboBox.setEnabled(false);
+		multipointComboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				multipointComboBoxItemStateChanged(e);
+			}
+		});
+		add(multipointComboBox, CC.xy(5, 7));
 
 		// ---- textField1 ----
 		textField1.setBackground(Color.green);
+		textField1.setEnabled(false);
+		textField1.setEditable(false);
 		add(textField1, CC.xy(7, 7));
 
 		// ---- textField2 ----
 		textField2.setBackground(Color.red);
+		textField2.setEnabled(false);
+		textField2.setEditable(false);
 		add(textField2, CC.xy(9, 7));
 
 		// ---- checkPointComboBox1 ----
@@ -134,7 +206,7 @@ public class JIpicoReaderPanel extends JPanel {
 		checkPointComboBox1.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				checkPointComboBoxItemStateChanged(e);
+				checkPointComboBox1ItemStateChanged(e);
 			}
 		});
 		add(checkPointComboBox1, CC.xy(11, 7));
@@ -152,22 +224,28 @@ public class JIpicoReaderPanel extends JPanel {
 
 		// ---- label3 ----
 		label3.setText(bundle.getString("JIpicoReaderPanel.label3.text"));
+		label3.setEnabled(false);
 		add(label3, CC.xy(5, 9));
 
 		// ---- textField3 ----
 		textField3.setBackground(Color.blue);
+		textField3.setEnabled(false);
+		textField3.setEditable(false);
 		add(textField3, CC.xy(7, 9));
 
 		// ---- textField4 ----
 		textField4.setBackground(Color.yellow);
+		textField4.setEnabled(false);
+		textField4.setEditable(false);
 		add(textField4, CC.xy(9, 9));
 
 		// ---- checkPointComboBox2 ----
 		checkPointComboBox2.setBackground(Color.red);
+		checkPointComboBox2.setEnabled(false);
 		checkPointComboBox2.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				checkPointComboBoxItemStateChanged(e);
+				checkPointComboBox2ItemStateChanged(e);
 			}
 		});
 		add(checkPointComboBox2, CC.xy(11, 9));
@@ -191,7 +269,7 @@ public class JIpicoReaderPanel extends JPanel {
 	private JLabel label4;
 	private JTextField textField5;
 	private JLabel label2;
-	private JComboBox<String> comboBox1;
+	private JComboBox<String> multipointComboBox;
 	private JTextField textField1;
 	private JTextField textField2;
 	private JComboBox checkPointComboBox1;
@@ -202,10 +280,30 @@ public class JIpicoReaderPanel extends JPanel {
 	private JComboBox checkPointComboBox2;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
-
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void notifyTagReads(List<RawChipRead> chipReadList) {
+		// TODO Auto-generated method stub
+		logger.debug("Notified tag reads " + chipReadList.size());
+		for (RawChipRead rawChipRead : chipReadList) {
+			logger.debug("TAG READ " + rawChipRead.getRfidString());
+		}
+	}
+
+	@Override
+	public void handleCommandResponse(IpicoCommand command) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void notifyCommException(IOException e) {
 		// TODO Auto-generated method stub
 
 	}

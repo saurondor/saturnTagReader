@@ -7,10 +7,14 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import org.apache.commons.net.telnet.InvalidTelnetOptionException;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
+import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 
 /**
  * @author gtasi
@@ -40,7 +44,6 @@ public class TestTcpIp {
 
 	@Test
 	public void testReadStream() {
-		logger.info("Starting IPICO emulator");
 		try {
 			logger.info("Emulator started");
 			IpicoClient client = new IpicoClient();
@@ -74,6 +77,28 @@ public class TestTcpIp {
 
 	@Test
 	public void testGetTime() {
+		try {
+			logger.info("Emulator started");
+			IpicoTcpClient client = new IpicoTcpClient();
+			logger.info("Connecting to host");
+//			client.setHostname("127.0.0.1");
+			client.connect("10.19.1.101");
+			Thread thread = new Thread(client);
+			thread.start();
+			client.sendCommand(new GetTimeCommand());
+			client.sendCommand(new SetTimeCommand());
+			client.sendCommand(new GetTimeCommand());
+			Thread.sleep(10000);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (InvalidTelnetOptionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		fail("Not yet implemented");
 	}
 

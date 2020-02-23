@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.timing.model.RawChipRead;
+
 /**
  * @author gtasi
  *
@@ -30,6 +32,11 @@ public class IpicoClient implements Runnable {
 	private InputStream inputStream = null;
 	private List<IpicoRead> readLog = new ArrayList<IpicoRead>();
 	StringBuffer streamBuffer = new StringBuffer();
+	TagReadListener tagReadListener;
+
+	public void registerTagReadListener(TagReadListener listener) {
+		tagReadListener = listener;
+	}
 
 	/**
 	 * Connects to the reader
@@ -44,6 +51,9 @@ public class IpicoClient implements Runnable {
 		readerSocket = new Socket(hostname, port);
 		inputStream = readerSocket.getInputStream();
 		connected = true;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Connected!");
+		}
 	}
 
 	/**
@@ -112,6 +122,7 @@ public class IpicoClient implements Runnable {
 			logger.debug("Dropping last line");
 			streamBuffer = new StringBuffer();
 		}
+		List<RawChipRead> readings = new ArrayList<RawChipRead>();
 		for (String line : lines) {
 			logger.debug("Parsing string " + line);
 			IpicoRead read = IpicoRead.parse(line.replace("\r", ""));
@@ -119,8 +130,10 @@ public class IpicoClient implements Runnable {
 				logger.error("Invalid data string :" + line + ", length:" + line.length());
 			} else {
 				this.saveChip(read);
+				readings.add(read.toRawChipRead());
 			}
 		}
+		tagReadListener.notifyTagReads(readings);
 	}
 
 	private void saveChip(IpicoRead read) {
@@ -145,5 +158,10 @@ public class IpicoClient implements Runnable {
 		synchronized (this) {
 			readLog = new ArrayList<IpicoRead>();
 		}
+	}
+
+	public void setCommandResponseHandler(JIpicoReaderPanel jIpicoReaderPanel) {
+		// TODO Auto-generated method stub
+
 	}
 }

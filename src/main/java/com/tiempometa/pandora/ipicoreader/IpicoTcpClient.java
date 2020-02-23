@@ -120,7 +120,10 @@ public class IpicoTcpClient implements Runnable, TelnetNotificationHandler {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-
+		System.out.println("Init listen backgroun process");
+//		do {
+//			
+//		} while (ru)
 		try {
 			byte[] buff = new byte[1024];
 			int ret_read = 0;
@@ -136,6 +139,7 @@ public class IpicoTcpClient implements Runnable, TelnetNotificationHandler {
 		}
 
 		try {
+			System.out.println("Disconnect");
 			telnetClient.disconnect();
 		} catch (IOException e) {
 			System.err.println("Exception while closing telnet:" + e.getMessage());
