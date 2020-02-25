@@ -68,36 +68,41 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 			FileOutputStream foStream;
 			try {
 				foStream = new FileOutputStream(dllFile);
-				InputStream fiStream = this.getClass().getResourceAsStream("/rxtx/64bit/rxtxSerial.dll");
-				if (fiStream == null) {
+				InputStream dllFileStream = null;
+				if (System.getProperty("os.arch").equals("x86")) {
+					dllFileStream = this.getClass().getResourceAsStream("/rxtx/32bit/rxtxSerial.dll");
+				} else {
+					this.getClass().getResourceAsStream("/rxtx/64bit/rxtxSerial.dll");
+				}
+				if (dllFileStream == null) {
 					logger.error("Unable to find resource file ");
 				} else {
 					byte[] b = new byte[1024];
 					int rAmount = 0;
-					while (fiStream.available() > 0) {
-						rAmount = fiStream.read(b);
+					while (dllFileStream.available() > 0) {
+						rAmount = dllFileStream.read(b);
 						foStream.write(b, 0, rAmount);
 						logger.debug("Writing new file: " + rAmount + " bytes");
 					}
-					fiStream.close();
+					dllFileStream.close();
 					foStream.flush();
 					foStream.close();
 					JOptionPane.showMessageDialog(null, "El archivo se ha instalado con éxito.", "Instalación dll",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 				foStream = new FileOutputStream(driverFile);
-				fiStream = this.getClass().getResourceAsStream("/Ipico_USB_cdc.inf");
-				if (fiStream == null) {
+				dllFileStream = this.getClass().getResourceAsStream("/Ipico_USB_cdc.inf");
+				if (dllFileStream == null) {
 					logger.error("Unable to find resource file ");
 				} else {
 					byte[] b = new byte[1024];
 					int rAmount = 0;
-					while (fiStream.available() > 0) {
-						rAmount = fiStream.read(b);
+					while (dllFileStream.available() > 0) {
+						rAmount = dllFileStream.read(b);
 						foStream.write(b, 0, rAmount);
 						logger.debug("Writing new file: " + rAmount + " bytes");
 					}
-					fiStream.close();
+					dllFileStream.close();
 					foStream.flush();
 					foStream.close();
 					JOptionPane.showMessageDialog(null,
