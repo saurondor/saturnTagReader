@@ -76,7 +76,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
-		readerListPanel.addReader();
+		readerListPanel.addEliteReader();
 	}
 
 	private void handleInvalidDatabaseSchema() {
@@ -185,10 +185,6 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		closeApplication(this);
 	}
 
-	private void addReaderMenuItemActionPerformed(ActionEvent e) {
-		readerListPanel.addReader();
-	}
-
 	private void importBackupMenuItemActionPerformed(ActionEvent e) {
 		JImportBackupsFrame importFrame = new JImportBackupsFrame();
 		importFrame.setVisible(true);
@@ -202,6 +198,14 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		// TODO add your code here
 	}
 
+	private void addUsbReaderMenuItemActionPerformed(ActionEvent e) {
+		readerListPanel.addUsbReader();
+	}
+
+	private void addEliteReaderMenuItemActionPerformed(ActionEvent e) {
+		readerListPanel.addEliteReader();
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -211,7 +215,8 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		openEventMenuItem = new JMenuItem();
 		closeMenuItem = new JMenuItem();
 		menu2 = new JMenu();
-		addReaderMenuItem = new JMenuItem();
+		addEliteReaderMenuItem = new JMenuItem();
+		addUsbReaderMenuItem = new JMenuItem();
 		importBackupMenuItem = new JMenuItem();
 		menu3 = new JMenu();
 		checaTuChipConfigurationMenuItem = new JMenuItem();
@@ -262,15 +267,25 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				// ---- addReaderMenuItem ----
-				addReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addReaderMenuItem.text"));
-				addReaderMenuItem.addActionListener(new ActionListener() {
+				// ---- addEliteReaderMenuItem ----
+				addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
+				addEliteReaderMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						addReaderMenuItemActionPerformed(e);
+						addEliteReaderMenuItemActionPerformed(e);
 					}
 				});
-				menu2.add(addReaderMenuItem);
+				menu2.add(addEliteReaderMenuItem);
+
+				// ---- addUsbReaderMenuItem ----
+				addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
+				addUsbReaderMenuItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						addUsbReaderMenuItemActionPerformed(e);
+					}
+				});
+				menu2.add(addUsbReaderMenuItem);
 
 				// ---- importBackupMenuItem ----
 				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
@@ -325,7 +340,8 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 	private JMenuItem openEventMenuItem;
 	private JMenuItem closeMenuItem;
 	private JMenu menu2;
-	private JMenuItem addReaderMenuItem;
+	private JMenuItem addEliteReaderMenuItem;
+	private JMenuItem addUsbReaderMenuItem;
 	private JMenuItem importBackupMenuItem;
 	private JMenu menu3;
 	private JMenuItem checaTuChipConfigurationMenuItem;

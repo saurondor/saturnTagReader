@@ -1,0 +1,107 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.ipicoreader"
+	"i18n.bundleName": "ipicoreader"
+	"i18n.keyPrefix": "JIpicoUsbReaderPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 94dlu, labelcompgap, 64dlu, labelcompgap, 41dlu, labelcompgap, 10dlu, labelcompgap, 40dlu, labelcompgap, default"
+			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default"
+		} ) {
+			name: "this"
+			"maximumSize": new java.awt.Dimension( 550, 120 )
+			"minimumSize": new java.awt.Dimension( 550, 120 )
+			"preferredSize": new java.awt.Dimension( 550, 120 )
+			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoUsbReaderPanel.this.border" )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label1.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 3
+				"gridX": 3
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBox1"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "connectButton"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.connectButton.text" )
+				"background": new java.awt.Color( 255, 0, 0, 255 )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "connectButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 3
+				"gridX": 7
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "removeReaderButton"
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/ipicoreader/x-remove.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 15
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label2.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 5
+				"gridX": 3
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "checkPointComboBox1"
+				"background": sfield java.awt.Color red
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox1ItemStateChanged", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 5
+				"gridX": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label4.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 7
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "terminalTextField"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 5
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "applyCheckpointButton"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.applyCheckpointButton.text" )
+				"background": new java.awt.Color( 255, 0, 0, 255 )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "applyCheckpointButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 13
+				"gridY": 5
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label5.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 13
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "tagsReadLabel"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.tagsReadLabel.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 15
+				"gridY": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 550, 120 )
+		} )
+	}
+}

@@ -165,7 +165,7 @@ public class IpicoClient implements Runnable {
 		}
 	}
 
-	public void setCommandResponseHandler(JIpicoReaderPanel jIpicoReaderPanel) {
+	public void setCommandResponseHandler(JIpicoEliteReaderPanel jIpicoReaderPanel) {
 		// TODO Auto-generated method stub
 
 	}

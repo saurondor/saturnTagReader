@@ -50,8 +50,16 @@ public class JReaderListPanel extends JPanel {
 		listPanel.repaint();
 	}
 
-	public void addReader() {
-		JIpicoReaderPanel reader = new JIpicoReaderPanel(this);
+	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
+	private JPanel listPanel;
+	// JFormDesigner - End of variables declaration //GEN-END:variables
+
+	public void setTagReadListener(TagReadListener tagReadListener) {
+		this.tagReadListener = tagReadListener;
+	}
+
+	public void addUsbReader() {
+		JIpicoUsbReaderPanel reader = new JIpicoUsbReaderPanel(this);
 		reader.setTagReadListener(tagReadListener);
 		reader.setListPanel(this);
 		logger.debug("Adding reader...");
@@ -66,11 +74,20 @@ public class JReaderListPanel extends JPanel {
 //		repaint();
 	}
 
-	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JPanel listPanel;
-	// JFormDesigner - End of variables declaration //GEN-END:variables
-
-	public void setTagReadListener(TagReadListener tagReadListener) {
-		this.tagReadListener = tagReadListener;
+	public void addEliteReader() {
+		JIpicoEliteReaderPanel reader = new JIpicoEliteReaderPanel(this);
+		reader.setTagReadListener(tagReadListener);
+		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
+//		validate();
+//		repaint();
+		
 	}
 }
