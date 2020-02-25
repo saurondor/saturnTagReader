@@ -118,6 +118,10 @@ public class RegistrationReadParser implements ReadParser {
 		// TODO Auto-generated constructor stub
 	}
 
+	public RegistrationReadParser(ReadListener listener) {
+		readListeners.add(listener);
+	}
+
 //	@Override
 //	public void addCharacters(int numBytes, byte[] buffer) {
 //		// TODO Auto-generated method stub

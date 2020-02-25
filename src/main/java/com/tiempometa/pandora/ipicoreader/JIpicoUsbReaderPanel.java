@@ -312,8 +312,11 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
-
+		logger.info("Handle raw chip reads");
+		for (RawChipRead rawChipRead : chipReadList) {
+			logger.debug(rawChipRead);
+		}
+		tagReadListener.notifyTagReads(chipReadList);
 	}
 
 	@Override

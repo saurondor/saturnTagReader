@@ -3,18 +3,23 @@
  */
 package com.tiempometa.pandora.ipicoreader;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.Utils;
+import com.tiempometa.timing.model.RawChipRead;
 
 /**
  * @author gtasi
  *
  */
-public class IpicoUsbReader implements Runnable {
+public class IpicoUsbReader implements Runnable, ReadListener {
 	private static final Logger logger = Logger.getLogger(IpicoUsbReader.class);
 	TagReadListener tagReadListener;
-	private SerialReader serialReader = new SerialReader();
+	private SerialReader serialReader = new SerialReader(this);
 	private String checkPointOne;
 	private String checkPointTwo;
 	private String terminal;
@@ -81,6 +86,20 @@ public class IpicoUsbReader implements Runnable {
 
 	public void disconnect() {
 		serialReader.closePort();
+	}
+
+	@Override
+	public void notifyChipReads(String rfid) {
+		RawChipRead chipRead = new RawChipRead();
+		chipRead.setRfidString(rfid);
+		chipRead.setCheckPoint(checkPointOne);
+		chipRead.setLoadName(terminal);
+		LocalDateTime time = LocalDateTime.now();
+		chipRead.setReadTime(time);
+		chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
+		List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
+		chipReadList.add(chipRead);
+		tagReadListener.notifyTagReads(chipReadList);
 	}
 
 }

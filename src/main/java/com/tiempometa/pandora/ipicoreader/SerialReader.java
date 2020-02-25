@@ -180,6 +180,10 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 		// TODO Auto-generated constructor stub
 	}
 
+	public SerialReader(ReadListener listener) {
+		parser = new RegistrationReadParser(listener);
+	}
+
 	@Override
 	public void run() {
 		log.info("Starting thread...");
