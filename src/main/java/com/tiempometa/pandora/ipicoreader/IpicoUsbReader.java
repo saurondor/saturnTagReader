@@ -18,7 +18,7 @@ public class IpicoUsbReader implements Runnable {
 	private String checkPointOne;
 	private String checkPointTwo;
 	private String terminal;
-	
+
 	public List<String> getSerialPorts() {
 		return serialReader.getPorts();
 	}
@@ -72,7 +72,15 @@ public class IpicoUsbReader implements Runnable {
 
 	public void connect(String commPort) throws Exception {
 		serialReader.openPort(commPort);
-		
+
+	}
+
+	public boolean isConnected() {
+		return serialReader.isConnected();
+	}
+
+	public void disconnect() {
+		serialReader.closePort();
 	}
 
 }

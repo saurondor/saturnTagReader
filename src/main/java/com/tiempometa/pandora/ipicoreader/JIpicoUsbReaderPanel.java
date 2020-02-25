@@ -141,17 +141,35 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
-		if (serialPortComboBox.getSelectedIndex() < 0) {
-			JOptionPane.showMessageDialog(this, "Se debe seleccionar un puerto serial", "Puerto serial",
-					JOptionPane.ERROR_MESSAGE);
+		if (reader.isConnected()) {
+			reader.disconnect();
+			setDisconnected();
 		} else {
-			try {
-				reader.connect((String) serialPortComboBox.getSelectedItem());
-			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar " + e1.getMessage(), "Error de conexión",
+			if (serialPortComboBox.getSelectedIndex() < 0) {
+				JOptionPane.showMessageDialog(this, "Se debe seleccionar un puerto serial", "Puerto serial",
 						JOptionPane.ERROR_MESSAGE);
+			} else {
+				try {
+					reader.connect((String) serialPortComboBox.getSelectedItem());
+					setConnected();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(this, "No se pudo conectar " + e1.getMessage(), "Error de conexión",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
+	}
+
+	private void setConnected() {
+		connectButton.setText("Desconectar");
+		connectButton.setBackground(Color.GREEN);
+		removeReaderButton.setEnabled(false);
+	}
+
+	private void setDisconnected() {
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		removeReaderButton.setEnabled(true);
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
@@ -178,10 +196,12 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		serialPortComboBox = new JComboBox();
 		connectButton = new JButton();
 		removeReaderButton = new JButton();
-		label2 = new JLabel();
-		checkPointComboBox1 = new JComboBox();
+		label3 = new JLabel();
+		modeComboBox = new JComboBox<>();
 		label4 = new JLabel();
 		terminalTextField = new JTextField();
+		label2 = new JLabel();
+		checkPointComboBox1 = new JComboBox();
 		applyCheckpointButton = new JButton();
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
@@ -192,7 +212,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		setPreferredSize(new Dimension(550, 120));
 		setBorder(new TitledBorder(bundle.getString("JIpicoUsbReaderPanel.this.border")));
 		setLayout(new FormLayout(
-				"5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 64dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 40dlu, $lcgap, default",
+				"5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 79dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 41dlu, $lcgap, 22dlu",
 				"5dlu, 3*($lgap, default)"));
 
 		// ---- label1 ----
@@ -222,35 +242,47 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(removeReaderButton, CC.xy(15, 3));
 
+		// ---- label3 ----
+		label3.setText(bundle.getString("JIpicoUsbReaderPanel.label3.text"));
+		add(label3, CC.xy(3, 5));
+
+		// ---- modeComboBox ----
+		modeComboBox.setModel(
+				new DefaultComboBoxModel<>(new String[] { "Checa Tu Chip", "Checa tu Resultado", "Punto en ruta" }));
+		add(modeComboBox, CC.xy(5, 5));
+
+		// ---- label4 ----
+		label4.setText(bundle.getString("JIpicoUsbReaderPanel.label4.text"));
+		add(label4, CC.xywh(9, 5, 3, 1));
+		add(terminalTextField, CC.xywh(13, 5, 3, 1));
+
 		// ---- label2 ----
 		label2.setText(bundle.getString("JIpicoUsbReaderPanel.label2.text"));
-		add(label2, CC.xy(3, 5));
+		label2.setEnabled(false);
+		add(label2, CC.xy(3, 7));
 
 		// ---- checkPointComboBox1 ----
 		checkPointComboBox1.setBackground(Color.red);
+		checkPointComboBox1.setEnabled(false);
 		checkPointComboBox1.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				checkPointComboBox1ItemStateChanged(e);
 			}
 		});
-		add(checkPointComboBox1, CC.xy(5, 5));
-
-		// ---- label4 ----
-		label4.setText(bundle.getString("JIpicoUsbReaderPanel.label4.text"));
-		add(label4, CC.xy(7, 5));
-		add(terminalTextField, CC.xywh(9, 5, 3, 1));
+		add(checkPointComboBox1, CC.xy(5, 7));
 
 		// ---- applyCheckpointButton ----
 		applyCheckpointButton.setText(bundle.getString("JIpicoUsbReaderPanel.applyCheckpointButton.text"));
 		applyCheckpointButton.setBackground(Color.red);
+		applyCheckpointButton.setEnabled(false);
 		applyCheckpointButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				applyCheckpointButtonActionPerformed(e);
 			}
 		});
-		add(applyCheckpointButton, CC.xywh(13, 5, 3, 1));
+		add(applyCheckpointButton, CC.xy(7, 7));
 
 		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoUsbReaderPanel.label5.text"));
@@ -267,10 +299,12 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	private JComboBox serialPortComboBox;
 	private JButton connectButton;
 	private JButton removeReaderButton;
-	private JLabel label2;
-	private JComboBox checkPointComboBox1;
+	private JLabel label3;
+	private JComboBox<String> modeComboBox;
 	private JLabel label4;
 	private JTextField terminalTextField;
+	private JLabel label2;
+	private JComboBox checkPointComboBox1;
 	private JButton applyCheckpointButton;
 	private JLabel label5;
 	private JLabel tagsReadLabel;

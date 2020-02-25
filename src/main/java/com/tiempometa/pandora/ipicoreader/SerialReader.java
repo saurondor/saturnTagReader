@@ -251,4 +251,8 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 		}
 	}
 
+	public boolean isConnected() {
+		return runme;
+	}
+
 }
