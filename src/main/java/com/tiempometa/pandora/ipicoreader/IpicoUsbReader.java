@@ -23,6 +23,7 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 	private String checkPointOne;
 	private String checkPointTwo;
 	private String terminal;
+	private String lastRfid;
 
 	public List<String> getSerialPorts() {
 		return serialReader.getPorts();
@@ -89,16 +90,39 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 
 	@Override
 	public void notifyChipReads(String rfid) {
-		RawChipRead chipRead = new RawChipRead();
-		chipRead.setRfidString(rfid);
-		chipRead.setCheckPoint(checkPointOne);
-		chipRead.setLoadName(terminal);
-		LocalDateTime time = LocalDateTime.now();
-		chipRead.setReadTime(time);
-		chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
-		List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
-		chipReadList.add(chipRead);
-		tagReadListener.notifyTagReads(chipReadList);
+		String lastTag = null;
+		synchronized (this) {
+			lastTag = lastRfid;
+		}
+		if ((lastTag == null) || (!rfid.equals(lastTag))) {
+			lastRfid = rfid;
+			RawChipRead chipRead = new RawChipRead();
+			chipRead.setRfidString(rfid);
+			chipRead.setCheckPoint(checkPointOne);
+			chipRead.setLoadName(terminal);
+			LocalDateTime time = LocalDateTime.now();
+			chipRead.setReadTime(time);
+			chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
+			List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
+			chipReadList.add(chipRead);
+			tagReadListener.notifyTagReads(chipReadList);
+			Thread clearThread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					synchronized (this) {
+						lastRfid = null;
+					}
+				}
+			});
+			clearThread.start();
+		}
 	}
 
 }
