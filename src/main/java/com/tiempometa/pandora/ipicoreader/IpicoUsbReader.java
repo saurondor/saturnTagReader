@@ -77,7 +77,6 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 
 	public void connect(String commPort) throws Exception {
 		serialReader.openPort(commPort);
-
 	}
 
 	public boolean isConnected() {

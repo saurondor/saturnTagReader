@@ -157,6 +157,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 
 		} else {
 			log.error("port " + commPort + " not found.");
+			throw new Exception("Com port " + commPort + " not found");
 		}
 		if (portOpened) {
 			log.info("Creating thread...");
