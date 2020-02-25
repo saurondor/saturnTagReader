@@ -70,4 +70,9 @@ public class IpicoUsbReader implements Runnable {
 
 	}
 
+	public void connect(String commPort) throws Exception {
+		serialReader.openPort(commPort);
+		
+	}
+
 }

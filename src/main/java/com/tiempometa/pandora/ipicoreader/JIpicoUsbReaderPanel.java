@@ -141,7 +141,17 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		if (serialPortComboBox.getSelectedIndex() < 0) {
+			JOptionPane.showMessageDialog(this, "Se debe seleccionar un puerto serial", "Puerto serial",
+					JOptionPane.ERROR_MESSAGE);
+		} else {
+			try {
+				reader.connect((String) serialPortComboBox.getSelectedItem());
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(this, "No se pudo conectar " + e1.getMessage(), "Error de conexión",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
