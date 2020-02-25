@@ -83,6 +83,10 @@ public class IpicoRead {
 	 * Checkpoint at which this reading was made
 	 */
 	private String checkPoint;
+	/**
+	 * Equipment this read was made on
+	 */
+	private String terminal;
 
 	/**
 	 * 
@@ -238,6 +242,7 @@ public class IpicoRead {
 		read.setTime(Utils.dateToLocalDateTime(clockTime));
 		read.setTimeMillis(runTime);
 		read.setCheckPoint(checkPoint);
+		read.setLoadName(terminal);
 		return read;
 	}
 
@@ -251,6 +256,14 @@ public class IpicoRead {
 
 	public void setCheckPoint(String checkPoint) {
 		this.checkPoint = checkPoint;
+	}
+
+	public String getTerminal() {
+		return terminal;
+	}
+
+	public void setTerminal(String terminal) {
+		this.terminal = terminal;
 	}
 
 }

@@ -109,6 +109,7 @@ public class JIpicoReaderPanel extends JPanel implements CommandResponseHandler,
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
 		reader.setCheckPointOne(checkPoint1);
+		reader.setTerminal(terminalTextField.getText());
 //		reader.setCheckPoint(checkPoint1);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
