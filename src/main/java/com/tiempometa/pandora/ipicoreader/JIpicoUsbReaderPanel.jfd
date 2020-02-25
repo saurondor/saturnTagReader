@@ -24,7 +24,7 @@ new FormModel {
 				"gridX": 3
 			} )
 			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "comboBox1"
+				name: "serialPortComboBox"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 3

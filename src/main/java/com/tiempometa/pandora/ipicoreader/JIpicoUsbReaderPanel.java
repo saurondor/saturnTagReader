@@ -6,7 +6,11 @@ package com.tiempometa.pandora.ipicoreader;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
@@ -41,12 +45,85 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		reader.setCommandResponseHandler(this);
 		reader.registerTagReadListener(this);
 		loadCheckPoints();
+		try {
+			loadSerialPorts();
+		} catch (UnsatisfiedLinkError e) {
+			int response = JOptionPane.showConfirmDialog(this,
+					"El driver de puertos seriales no está instalado.\n¿Deseas instalar el driver ahora?",
+					"Error de configuración", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (response == JOptionPane.YES_OPTION) {
+				installDllFiles();
+			}
+		}
+	}
+
+	private void installDllFiles() {
+		String user_home = System.getProperty("user.dir");
+		String dllFileName = user_home + "\\rxtxSerial.dll";
+		String driverFileName = user_home + "\\Ipico_USB_cdc.inf";
+		logger.info("Installing driver and dll @ " + driverFileName + " - " + dllFileName);
+		File dllFile = new File(dllFileName);
+		if (!dllFile.exists()) {
+			File driverFile = new File(driverFileName);
+			FileOutputStream foStream;
+			try {
+				foStream = new FileOutputStream(dllFile);
+				InputStream fiStream = this.getClass().getResourceAsStream("/rxtx/64bit/rxtxSerial.dll");
+				if (fiStream == null) {
+					logger.error("Unable to find resource file ");
+				} else {
+					byte[] b = new byte[1024];
+					int rAmount = 0;
+					while (fiStream.available() > 0) {
+						rAmount = fiStream.read(b);
+						foStream.write(b, 0, rAmount);
+						logger.debug("Writing new file: " + rAmount + " bytes");
+					}
+					fiStream.close();
+					foStream.flush();
+					foStream.close();
+					JOptionPane.showMessageDialog(null, "El archivo se ha instalado con éxito.", "Instalación dll",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				foStream = new FileOutputStream(driverFile);
+				fiStream = this.getClass().getResourceAsStream("/Ipico_USB_cdc.inf");
+				if (fiStream == null) {
+					logger.error("Unable to find resource file ");
+				} else {
+					byte[] b = new byte[1024];
+					int rAmount = 0;
+					while (fiStream.available() > 0) {
+						rAmount = fiStream.read(b);
+						foStream.write(b, 0, rAmount);
+						logger.debug("Writing new file: " + rAmount + " bytes");
+					}
+					fiStream.close();
+					foStream.flush();
+					foStream.close();
+					JOptionPane.showMessageDialog(null,
+							"El archivo se ha instalado con éxito.\n Si requiere instalar el driver del lector USB puede usar el archivo Ipico_USB_cdc.inf\n que se ha ubicado en el directorio donde está este programa.",
+							"Instalación driver", JOptionPane.INFORMATION_MESSAGE);
+				}
+				JOptionPane.showMessageDialog(this,
+						"Se ha completado la instalación. Se debe reiniciar la aplicación ahora.", "Instalación",
+						JOptionPane.INFORMATION_MESSAGE);
+				System.exit(0);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	public void loadSerialPorts() {
-		
+		List<String> serialPorts = reader.getSerialPorts();
+		String[] checkPointArray = new String[serialPorts.size()];
+		serialPortComboBox.setModel(new DefaultComboBoxModel<String>(serialPorts.toArray(checkPointArray)));
 	}
-	
+
 	private void loadCheckPoints() {
 		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
 		List<String> checkPoints = rDao.getCheckPointNames();
@@ -83,7 +160,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		// //GEN-BEGIN:initComponents
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
 		label1 = new JLabel();
-		comboBox1 = new JComboBox();
+		serialPortComboBox = new JComboBox();
 		connectButton = new JButton();
 		removeReaderButton = new JButton();
 		label2 = new JLabel();
@@ -106,7 +183,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoUsbReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
-		add(comboBox1, CC.xy(5, 3));
+		add(serialPortComboBox, CC.xy(5, 3));
 
 		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoUsbReaderPanel.connectButton.text"));
@@ -172,7 +249,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
 	private JLabel label1;
-	private JComboBox comboBox1;
+	private JComboBox serialPortComboBox;
 	private JButton connectButton;
 	private JButton removeReaderButton;
 	private JLabel label2;

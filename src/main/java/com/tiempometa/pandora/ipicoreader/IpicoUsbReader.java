@@ -3,6 +3,8 @@
  */
 package com.tiempometa.pandora.ipicoreader;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -12,9 +14,14 @@ import org.apache.log4j.Logger;
 public class IpicoUsbReader implements Runnable {
 	private static final Logger logger = Logger.getLogger(IpicoUsbReader.class);
 	TagReadListener tagReadListener;
+	private SerialReader serialReader = new SerialReader();
 	private String checkPointOne;
 	private String checkPointTwo;
 	private String terminal;
+	
+	public List<String> getSerialPorts() {
+		return serialReader.getPorts();
+	}
 
 	public void setCommandResponseHandler(JIpicoUsbReaderPanel jIpicoReaderPanel) {
 		// TODO Auto-generated method stub

@@ -59,7 +59,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 		return commPort;
 	}
 
-	public List<String> getPorts() {
+	public List<String> getPorts() throws UnsatisfiedLinkError {
 		List<String> ports = new ArrayList<String>();
 		portList = CommPortIdentifier.getPortIdentifiers();
 		while (portList.hasMoreElements()) {
