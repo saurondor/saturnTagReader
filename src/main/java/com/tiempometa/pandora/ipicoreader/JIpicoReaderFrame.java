@@ -15,6 +15,8 @@ import javax.swing.*;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.checatuchip.preview.JPreviewConfig;
+import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 
@@ -29,6 +31,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 	private static final Logger logger = Logger.getLogger(JIpicoReaderFrame.class);
 	static JSplashScreen splash = new JSplashScreen();
 	private String eventTitle;
+	JPreviewFrame previewFrame = new JPreviewFrame();
 
 	public JIpicoReaderFrame() {
 		splash.setVisible(true);
@@ -191,11 +194,16 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 	}
 
 	private void checaTuChipConfigurationMenuItemActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		JPreviewConfig configPanel = new JPreviewConfig(this);
+		configPanel.setVisible(true);
 	}
 
 	private void showPreviewMenuItemActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		if (previewFrame.isVisible()) {
+			previewFrame.setVisible(false);
+		} else {
+			previewFrame.setVisible(true);
+		}
 	}
 
 	private void addUsbReaderMenuItemActionPerformed(ActionEvent e) {

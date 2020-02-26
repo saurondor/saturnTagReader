@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.tiempometa.Utils;
+import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.timing.model.RawChipRead;
 
 /**
@@ -24,6 +25,7 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 	private String checkPointTwo;
 	private String terminal;
 	private String lastRfid;
+	private Integer mode;
 
 	public List<String> getSerialPorts() {
 		return serialReader.getPorts();
@@ -103,6 +105,20 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 			LocalDateTime time = LocalDateTime.now();
 			chipRead.setReadTime(time);
 			chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
+			switch (mode) {
+			case JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP:
+				chipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
+				break;
+			case JIpicoUsbReaderPanel.MODE_CHECA_TU_RESULTADO:
+				chipRead.setReadType(CookedChipRead.TYPE_CHECATURESULTADO);
+				break;
+			case JIpicoUsbReaderPanel.MODE_ROUTE_POINT:
+				chipRead.setReadType(CookedChipRead.TYPE_TAG);
+				break;
+			default:
+				chipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
+				break;
+			}
 			List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 			chipReadList.add(chipRead);
 			tagReadListener.notifyTagReads(chipReadList);
@@ -123,6 +139,14 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 			});
 			clearThread.start();
 		}
+	}
+
+	public Integer getMode() {
+		return mode;
+	}
+
+	public void setMode(Integer mode) {
+		this.mode = mode;
 	}
 
 }

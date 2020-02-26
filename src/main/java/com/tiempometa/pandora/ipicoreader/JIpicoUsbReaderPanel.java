@@ -197,8 +197,37 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 
 	private void modeComboBoxItemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
+			switch (modeComboBox.getSelectedIndex()) {
+			case 0:
+				mode = MODE_CHECA_TU_CHIP;
+				disableRoutePoint();
+				break;
+			case 1:
+				mode = MODE_CHECA_TU_RESULTADO;
+				disableRoutePoint();
+				break;
+			case 2:
+				mode = MODE_ROUTE_POINT;
+				enableRoutePoint();
+
+				break;
+			default:
+				break;
+			}
 
 		}
+	}
+
+	private void enableRoutePoint() {
+		pointLabel.setEnabled(true);
+		checkPointComboBox1.setEnabled(true);
+		applyCheckpointButton.setEnabled(true);
+	}
+
+	private void disableRoutePoint() {
+		pointLabel.setEnabled(false);
+		checkPointComboBox1.setEnabled(false);
+		applyCheckpointButton.setEnabled(false);
 	}
 
 	private void initComponents() {
@@ -213,7 +242,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		modeComboBox = new JComboBox<>();
 		label4 = new JLabel();
 		terminalTextField = new JTextField();
-		label2 = new JLabel();
+		pointLabel = new JLabel();
 		checkPointComboBox1 = new JComboBox();
 		applyCheckpointButton = new JButton();
 		label5 = new JLabel();
@@ -277,10 +306,10 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		add(label4, CC.xywh(9, 5, 3, 1));
 		add(terminalTextField, CC.xywh(13, 5, 3, 1));
 
-		//---- label2 ----
-		label2.setText(bundle.getString("JIpicoUsbReaderPanel.label2.text"));
-		label2.setEnabled(false);
-		add(label2, CC.xy(3, 7));
+		//---- pointLabel ----
+		pointLabel.setText(bundle.getString("JIpicoUsbReaderPanel.pointLabel.text"));
+		pointLabel.setEnabled(false);
+		add(pointLabel, CC.xy(3, 7));
 
 		//---- checkPointComboBox1 ----
 		checkPointComboBox1.setBackground(Color.red);
@@ -324,7 +353,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	private JComboBox<String> modeComboBox;
 	private JLabel label4;
 	private JTextField terminalTextField;
-	private JLabel label2;
+	private JLabel pointLabel;
 	private JComboBox checkPointComboBox1;
 	private JButton applyCheckpointButton;
 	private JLabel label5;

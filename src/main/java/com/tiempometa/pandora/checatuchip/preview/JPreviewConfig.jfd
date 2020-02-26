@@ -1,0 +1,360 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.checatuchip.preview"
+	"i18n.bundleName": "confguration"
+	"i18n.keyPrefix": "JPreviewConfig"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": new FormMessage( null, "JPreviewConfig.this.title" )
+			"defaultCloseOperation": 0
+			"modal": true
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": sfield com.jgoodies.forms.factories.Borders DIALOG_BORDER
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "default, labelcompgap, default, labelcompgap, default"
+					"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default"
+				} ) {
+					name: "contentPanel"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label1"
+						"text": new FormMessage( null, "JPreviewConfig.label1.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 3
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "firstNamePositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 3
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label2"
+						"text": new FormMessage( null, "JPreviewConfig.label2.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 5
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "birthdatePositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 5
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": new FormMessage( null, "JPreviewConfig.label3.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 7
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "agePositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 7
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label6"
+						"text": new FormMessage( null, "JPreviewConfig.label6.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 9
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "genderPositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 9
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": new FormMessage( null, "JPreviewConfig.label4.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 11
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "categoryPositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 11
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": new FormMessage( null, "JPreviewConfig.label5.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 13
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "subeventPositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 13
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label7"
+						"text": new FormMessage( null, "JPreviewConfig.label7.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 15
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "labelColorPositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 15
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label8"
+						"text": new FormMessage( null, "JPreviewConfig.label8.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 17
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "teamPositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 17
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label9"
+						"text": new FormMessage( null, "JPreviewConfig.label9.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 19
+					} )
+					add( new FormComponent( "com.tiempometa.pandora.gui.JPreviewFieldSettingComboBox" ) {
+						name: "procedencePositionComboBox"
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "No mostrar"
+							addElement( "No mostrar" )
+							addElement( "En posición 1" )
+							addElement( "En posición 2" )
+							addElement( "En posición 3" )
+							addElement( "En posición 4" )
+							addElement( "En posición 5" )
+							addElement( "En posición 6" )
+						}
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 19
+						"gridWidth": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label12"
+						"text": new FormMessage( null, "JPreviewConfig.label12.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 21
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "topBannerTextField"
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 21
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "topBannerSelectButton"
+						"text": new FormMessage( null, "JPreviewConfig.topBannerSelectButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "topBannerSelectButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 5
+						"gridY": 21
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label13"
+						"text": new FormMessage( null, "JPreviewConfig.label13.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 23
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "leftBannerTextField"
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 23
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "leftBannerSelectButton"
+						"text": new FormMessage( null, "JPreviewConfig.leftBannerSelectButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "leftBannerSelectButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 5
+						"gridY": 23
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label14"
+						"text": new FormMessage( null, "JPreviewConfig.label14.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 25
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "rightBannerTextField"
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 25
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "rightBannerSelectButton"
+						"text": new FormMessage( null, "JPreviewConfig.rightBannerSelectButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "rightBannerSelectButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 5
+						"gridY": 25
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label15"
+						"text": new FormMessage( null, "JPreviewConfig.label15.text" )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridY": 27
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "bottomBannerTextField"
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+						"gridY": 27
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "bottomBannerSelectButton"
+						"text": new FormMessage( null, "JPreviewConfig.bottomBannerSelectButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "bottomBannerSelectButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 5
+						"gridY": 27
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label10"
+						"text": new FormMessage( null, "JPreviewConfig.label10.text" )
+						"font": &Font0 new java.awt.Font( "Tahoma", 1, 12 )
+						"horizontalAlignment": 0
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label11"
+						"text": new FormMessage( null, "JPreviewConfig.label11.text" )
+						"font": #Font0
+						"horizontalAlignment": 0
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 3
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "glue, button, relgap, button"
+					"$rowSpecs": "pref"
+				} ) {
+					name: "buttonBar"
+					"border": sfield com.jgoodies.forms.factories.Borders BUTTON_BAR_GAP_BORDER
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "okButton"
+						"text": "OK"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "okButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 2
+						"gridY": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "cancelButton"
+						"text": "Cancelar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 4
+						"gridY": 1
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 410, 445 )
+		} )
+	}
+}

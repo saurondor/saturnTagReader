@@ -82,8 +82,8 @@ new FormModel {
 				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label2"
-				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label2.text" )
+				name: "pointLabel"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.pointLabel.text" )
 				"enabled": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridY": 7
