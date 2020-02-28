@@ -4,176 +4,122 @@ new FormModel {
 	"i18n.autoExternalize": true
 	"i18n.bundlePackage": "com.tiempometa.pandora.ipicoreader"
 	"i18n.bundleName": "ipicoreader"
-	"i18n.keyPrefix": "JIpicoReaderPanel"
+	"i18n.keyPrefix": "JIpicoUsbReaderPanel"
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 15dlu, labelcompgap, 84dlu, labelcompgap, default, labelcompgap, 41dlu, labelcompgap, 22dlu"
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 94dlu, labelcompgap, 79dlu, labelcompgap, 41dlu, labelcompgap, 10dlu, labelcompgap, 41dlu, labelcompgap, 22dlu"
 			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
-			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoReaderPanel.this.border" )
-			"inheritsPopupMenu": true
 			"maximumSize": new java.awt.Dimension( 550, 120 )
 			"minimumSize": new java.awt.Dimension( 550, 120 )
 			"preferredSize": new java.awt.Dimension( 550, 120 )
+			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoUsbReaderPanel.this.border" )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label1.text" )
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label1.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 3
 				"gridY": 3
+				"gridX": 3
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "readerAddressTextField"
-				"text": new FormMessage( null, "JIpicoReaderPanel.readerAddressTextField.text" )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "serialPortComboBox"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 3
-				"gridWidth": 5
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "connectButton"
-				"text": new FormMessage( null, "JIpicoReaderPanel.connectButton.text" )
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.connectButton.text" )
 				"background": new java.awt.Color( 255, 0, 0, 255 )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "connectButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 11
 				"gridY": 3
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "setTimeButton"
-				"text": new FormMessage( null, "JIpicoReaderPanel.setTimeButton.text" )
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setTimeButtonActionPerformed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
-				"gridY": 3
+				"gridX": 7
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "removeReaderButton"
 				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 17
+				"gridX": 15
 				"gridY": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label2"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label2.text" )
+				name: "label3"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label3.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 5
 				"gridX": 3
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "multipointComboBox"
+				name: "modeComboBox"
 				"model": new javax.swing.DefaultComboBoxModel {
-					selectedItem: "Todos"
-					addElement( "Todos" )
-					addElement( "RX 1 (Izq.)" )
+					selectedItem: "Checa Tu Chip"
+					addElement( "Checa Tu Chip" )
+					addElement( "Checa tu Resultado" )
+					addElement( "Punto en ruta" )
 				}
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "multipointComboBoxItemStateChanged", true ) )
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "modeComboBoxItemStateChanged", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
-				"gridY": 5
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField1"
-				"background": sfield java.awt.Color green
-				"enabled": false
-				"editable": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 7
-				"gridY": 5
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField2"
-				"background": sfield java.awt.Color red
-				"enabled": false
-				"editable": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 9
-				"gridY": 5
-			} )
-			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "checkPointComboBox1"
-				"background": sfield java.awt.Color red
-				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox1ItemStateChanged", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 11
 				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label4"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label4.text" )
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label4.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
+				"gridX": 9
 				"gridY": 5
+				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "terminalTextField"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
+				"gridX": 13
 				"gridY": 5
 				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label3"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label3.text" )
+				name: "pointLabel"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.pointLabel.text" )
 				"enabled": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 5
 				"gridY": 7
+				"gridX": 3
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField3"
-				"background": sfield java.awt.Color blue
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "checkPointComboBox1"
+				"background": sfield java.awt.Color red
 				"enabled": false
-				"editable": false
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox1ItemStateChanged", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 7
+				"gridX": 5
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "applyCheckpointButton"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.applyCheckpointButton.text" )
+				"background": new java.awt.Color( 255, 0, 0, 255 )
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "applyCheckpointButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 7
 				"gridY": 7
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField4"
-				"background": sfield java.awt.Color yellow
-				"enabled": false
-				"editable": false
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 9
-				"gridY": 7
-			} )
-			add( new FormComponent( "javax.swing.JComboBox" ) {
-				name: "checkPointComboBox2"
-				"background": sfield java.awt.Color red
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkPointComboBox2ItemStateChanged", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 7
-				"gridX": 11
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "applyCheckpointButton"
-				"text": new FormMessage( null, "JIpicoReaderPanel.applyCheckpointButton.text" )
-				"background": new java.awt.Color( 255, 0, 0, 255 )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "applyCheckpointButtonActionPerformed", true ) )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.label5.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 13
 				"gridY": 7
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label5"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label5.text" )
+				name: "tagsReadLabel"
+				"text": new FormMessage( null, "JIpicoUsbReaderPanel.tagsReadLabel.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 15
-				"gridY": 7
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "tagsReadLabel"
-				"text": new FormMessage( null, "JIpicoReaderPanel.tagsReadLabel.text" )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 17
 				"gridY": 7
 			} )
 		}, new FormLayoutConstraints( null ) {

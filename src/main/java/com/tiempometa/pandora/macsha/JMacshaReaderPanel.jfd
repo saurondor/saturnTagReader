@@ -8,12 +8,14 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "11dlu, labelcompgap, default, labelcompgap, 65dlu, labelcompgap, 70dlu, labelcompgap, 75dlu, labelcompgap, 68dlu, labelcompgap, 70dlu, labelcompgap, 31dlu, labelcompgap, 35dlu, labelcompgap, 12dlu, labelcompgap, 18dlu"
-			"$rowSpecs": "default, linegap, default"
+			"$columnSpecs": "11dlu, labelcompgap, default, labelcompgap, 65dlu, labelcompgap, 70dlu, labelcompgap, 75dlu, labelcompgap, 35dlu, labelcompgap, 18dlu"
+			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
-			"border": new javax.swing.border.TitledBorder( "One4All" )
-			"maximumSize": new java.awt.Dimension( 804, 76 )
+			"border": new javax.swing.border.TitledBorder( "Macsha One4All" )
+			"maximumSize": new java.awt.Dimension( 550, 120 )
+			"minimumSize": new java.awt.Dimension( 550, 120 )
+			"preferredSize": new java.awt.Dimension( 550, 120 )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": new FormMessage( null, "JMacshaReaderPanel.label1.text" )
@@ -42,36 +44,11 @@ new FormModel {
 				"gridX": 9
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "setTimeButton"
-				"text": new FormMessage( null, "JMacshaReaderPanel.setTimeButton.text" )
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setTimeButtonActionPerformed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 11
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "setBuzzerButton"
-				"text": new FormMessage( null, "JMacshaReaderPanel.setBuzzerButton.text" )
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setBuzzerButtonActionPerformed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "openBackupsButton"
-				"text": new FormMessage( null, "JMacshaReaderPanel.openBackupsButton.text" )
-				"enabled": false
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "openBackupsButtonActionPerformed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
-				"gridWidth": 3
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "removeReaderButton"
-				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/macshareader/x-remove.png" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 21
+				"gridX": 13
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
@@ -112,36 +89,63 @@ new FormModel {
 				"foreground": sfield java.awt.Color red
 				"enabled": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 11
-				"gridY": 3
+				"gridX": 3
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "batteryLabel"
 				"text": new FormMessage( null, "JMacshaReaderPanel.batteryLabel.text" )
 				"enabled": false
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
-				"gridY": 3
+				"gridX": 5
+				"gridY": 5
 				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label5"
 				"text": new FormMessage( null, "JMacshaReaderPanel.label5.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 17
-				"gridY": 3
+				"gridX": 9
+				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "tagsReadLabel"
 				"text": new FormMessage( null, "JMacshaReaderPanel.tagsReadLabel.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 19
-				"gridY": 3
+				"gridX": 11
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "openBackupsButton"
+				"text": new FormMessage( null, "JMacshaReaderPanel.openBackupsButton.text" )
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "openBackupsButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
 				"gridWidth": 3
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "setTimeButton"
+				"text": new FormMessage( null, "JMacshaReaderPanel.setTimeButton.text" )
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setTimeButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 7
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "setBuzzerButton"
+				"text": new FormMessage( null, "JMacshaReaderPanel.setBuzzerButton.text" )
+				"enabled": false
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setBuzzerButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 7
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 805, 85 )
+			"size": new java.awt.Dimension( 550, 120 )
 		} )
 	}
 }

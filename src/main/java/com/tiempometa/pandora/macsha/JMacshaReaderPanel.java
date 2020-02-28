@@ -188,9 +188,6 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 		readerAddressTextField = new JTextField();
 		connectButton = new JButton();
 		startReadingButton = new JButton();
-		setTimeButton = new JButton();
-		setBuzzerButton = new JButton();
-		openBackupsButton = new JButton();
 		removeReaderButton = new JButton();
 		label2 = new JLabel();
 		checkPointComboBox = new JComboBox();
@@ -200,13 +197,18 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 		batteryLabel = new JLabel();
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
+		openBackupsButton = new JButton();
+		setTimeButton = new JButton();
+		setBuzzerButton = new JButton();
 
 		//======== this ========
-		setBorder(new TitledBorder("One4All"));
-		setMaximumSize(new Dimension(804, 76));
+		setBorder(new TitledBorder("Macsha One4All"));
+		setMaximumSize(new Dimension(550, 120));
+		setMinimumSize(new Dimension(550, 120));
+		setPreferredSize(new Dimension(550, 120));
 		setLayout(new FormLayout(
-			"11dlu, $lcgap, default, $lcgap, 65dlu, $lcgap, 70dlu, $lcgap, 75dlu, $lcgap, 68dlu, $lcgap, 70dlu, $lcgap, 31dlu, $lcgap, 35dlu, $lcgap, 12dlu, $lcgap, 18dlu",
-			"default, $lgap, default"));
+			"11dlu, $lcgap, default, $lcgap, 65dlu, $lcgap, 70dlu, $lcgap, 75dlu, $lcgap, 35dlu, $lcgap, 18dlu",
+			"3*(default, $lgap), default"));
 
 		//---- label1 ----
 		label1.setText(bundle.getString("JMacshaReaderPanel.label1.text"));
@@ -235,48 +237,15 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 		});
 		add(startReadingButton, CC.xy(9, 1));
 
-		//---- setTimeButton ----
-		setTimeButton.setText(bundle.getString("JMacshaReaderPanel.setTimeButton.text"));
-		setTimeButton.setEnabled(false);
-		setTimeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setTimeButtonActionPerformed(e);
-			}
-		});
-		add(setTimeButton, CC.xy(11, 1));
-
-		//---- setBuzzerButton ----
-		setBuzzerButton.setText(bundle.getString("JMacshaReaderPanel.setBuzzerButton.text"));
-		setBuzzerButton.setEnabled(false);
-		setBuzzerButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setBuzzerButtonActionPerformed(e);
-			}
-		});
-		add(setBuzzerButton, CC.xy(13, 1));
-
-		//---- openBackupsButton ----
-		openBackupsButton.setText(bundle.getString("JMacshaReaderPanel.openBackupsButton.text"));
-		openBackupsButton.setEnabled(false);
-		openBackupsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openBackupsButtonActionPerformed(e);
-			}
-		});
-		add(openBackupsButton, CC.xywh(15, 1, 3, 1));
-
 		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/macshareader/x-remove.png")));
+		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removeReaderButtonActionPerformed(e);
 			}
 		});
-		add(removeReaderButton, CC.xy(21, 1));
+		add(removeReaderButton, CC.xy(13, 1));
 
 		//---- label2 ----
 		label2.setText(bundle.getString("JMacshaReaderPanel.label2.text"));
@@ -313,20 +282,53 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 		acPowerRadioButton.setFocusable(false);
 		acPowerRadioButton.setForeground(Color.red);
 		acPowerRadioButton.setEnabled(false);
-		add(acPowerRadioButton, CC.xy(11, 3));
+		add(acPowerRadioButton, CC.xy(3, 5));
 
 		//---- batteryLabel ----
 		batteryLabel.setText(bundle.getString("JMacshaReaderPanel.batteryLabel.text"));
 		batteryLabel.setEnabled(false);
-		add(batteryLabel, CC.xywh(13, 3, 3, 1));
+		add(batteryLabel, CC.xywh(5, 5, 3, 1));
 
 		//---- label5 ----
 		label5.setText(bundle.getString("JMacshaReaderPanel.label5.text"));
-		add(label5, CC.xy(17, 3));
+		add(label5, CC.xy(9, 5));
 
 		//---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JMacshaReaderPanel.tagsReadLabel.text"));
-		add(tagsReadLabel, CC.xywh(19, 3, 3, 1));
+		add(tagsReadLabel, CC.xy(11, 5));
+
+		//---- openBackupsButton ----
+		openBackupsButton.setText(bundle.getString("JMacshaReaderPanel.openBackupsButton.text"));
+		openBackupsButton.setEnabled(false);
+		openBackupsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openBackupsButtonActionPerformed(e);
+			}
+		});
+		add(openBackupsButton, CC.xywh(3, 7, 3, 1));
+
+		//---- setTimeButton ----
+		setTimeButton.setText(bundle.getString("JMacshaReaderPanel.setTimeButton.text"));
+		setTimeButton.setEnabled(false);
+		setTimeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setTimeButtonActionPerformed(e);
+			}
+		});
+		add(setTimeButton, CC.xy(7, 7));
+
+		//---- setBuzzerButton ----
+		setBuzzerButton.setText(bundle.getString("JMacshaReaderPanel.setBuzzerButton.text"));
+		setBuzzerButton.setEnabled(false);
+		setBuzzerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setBuzzerButtonActionPerformed(e);
+			}
+		});
+		add(setBuzzerButton, CC.xy(9, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
@@ -335,9 +337,6 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 	private JTextField readerAddressTextField;
 	private JButton connectButton;
 	private JButton startReadingButton;
-	private JButton setTimeButton;
-	private JButton setBuzzerButton;
-	private JButton openBackupsButton;
 	private JButton removeReaderButton;
 	private JLabel label2;
 	private JComboBox checkPointComboBox;
@@ -347,6 +346,9 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 	private JLabel batteryLabel;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
+	private JButton openBackupsButton;
+	private JButton setTimeButton;
+	private JButton setBuzzerButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public TagReadListener getTagReadListener() {

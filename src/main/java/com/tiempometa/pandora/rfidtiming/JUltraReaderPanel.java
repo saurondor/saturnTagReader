@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 14:40:34 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader.tcpip;
+package com.tiempometa.pandora.rfidtiming;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -32,12 +32,12 @@ import com.tiempometa.timing.model.dao.RouteDao;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoEliteReaderPanel extends JIpicoReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JUltraReaderPanel extends JIpicoReaderPanel implements CommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1234969021040337654L;
-	private static final Logger logger = Logger.getLogger(JIpicoEliteReaderPanel.class);
+	private static final Logger logger = Logger.getLogger(JUltraReaderPanel.class);
 	private JReaderListPanel listPanel;
 	private IpicoClient reader = new IpicoClient();
 	private String checkPoint1 = null;
@@ -48,7 +48,7 @@ public class JIpicoEliteReaderPanel extends JIpicoReaderPanel implements Command
 		terminalTextField.setText(terminal);
 	}
 
-	public JIpicoEliteReaderPanel(JReaderListPanel listPanel) {
+	public JUltraReaderPanel(JReaderListPanel listPanel) {
 		initComponents();
 		this.listPanel = listPanel;
 		reader.setCommandResponseHandler(this);
@@ -157,7 +157,7 @@ public class JIpicoEliteReaderPanel extends JIpicoReaderPanel implements Command
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.rfidtiming.ultra");
 		label1 = new JLabel();
 		readerAddressTextField = new JTextField();
 		connectButton = new JButton();

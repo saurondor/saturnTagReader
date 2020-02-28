@@ -11,6 +11,7 @@ import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
 import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.tcpip.JIpicoEliteReaderPanel;
 import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
+import com.tiempometa.pandora.macsha.JMacshaReaderPanel;
 
 import org.apache.log4j.Logger;
 
@@ -92,6 +93,41 @@ public class JReaderListPanel extends JPanel {
 		logger.debug("Added reader!");
 //		validate();
 //		repaint();
+		
+	}
+
+	public void addOne4AllReader() {
+		JMacshaReaderPanel reader = new JMacshaReaderPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
+		
+	}
+
+	public void addUltraReader() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addFoxberryReader() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addFoxberryUSBReader() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addTSCollector() {
+		// TODO Auto-generated method stub
 		
 	}
 }

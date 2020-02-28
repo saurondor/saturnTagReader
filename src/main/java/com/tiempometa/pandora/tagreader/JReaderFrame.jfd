@@ -58,61 +58,70 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addUsbReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "importBackupMenuItem"
-							"text": new FormMessage( null, "JIpicoReaderFrame.importBackupMenuItem.text" )
-							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importBackupMenuItemActionPerformed", true ) )
+							name: "importIpicoBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importIpicoBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importIpicoBackupMenuItemActionPerformed", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu5"
 						"text": new FormMessage( null, "JIpicoReaderFrame.menu5.text" )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem1"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem1.text" )
+							name: "addOne4AllReaderMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addOne4AllReaderMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addOne4AllReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem5"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem5.text" )
+							name: "importMacshaBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaBackupMenuItemActionPerformed", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
-						name: "menu6"
-						"text": new FormMessage( null, "JIpicoReaderFrame.menu6.text" )
+						name: "menuTimingSense"
+						"text": new FormMessage( null, "JIpicoReaderFrame.menuTimingSense.text" )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem2"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem2.text" )
+							name: "addTSCollectorMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addTSCollectorMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addTSCollectorMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem6"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem6.text" )
+							name: "importTimingSenseBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importTimingSenseBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importTimingSenseBackupMenuItemActionPerformed", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu7"
 						"text": new FormMessage( null, "JIpicoReaderFrame.menu7.text" )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem3"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem3.text" )
+							name: "addFoxberryReaderMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addFoxberryReaderMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addFoxberryReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem4"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem4.text" )
+							name: "addFoxberryUSBReaderMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addFoxberryUSBReaderMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addFoxberryUSBReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem7"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem7.text" )
+							name: "importFoxberryBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importFoxberryBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importFoxberryBackupMenuItemActionPerformed", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu8"
 						"text": new FormMessage( null, "JIpicoReaderFrame.menu8.text" )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem8"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem8.text" )
+							name: "addUltraReaderMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addUltraReaderMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addUltraReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
-							name: "menuItem9"
-							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem9.text" )
+							name: "importUltraBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importUltraBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importUltraBackupMenuItemActionPerformed", true ) )
 						} )
 					} )
 				} )
