@@ -39,7 +39,7 @@ public class JUltraReaderPanel extends JIpicoReaderPanel implements CommandRespo
 	private static final long serialVersionUID = -1234969021040337654L;
 	private static final Logger logger = Logger.getLogger(JUltraReaderPanel.class);
 	private JReaderListPanel listPanel;
-	private IpicoClient reader = new IpicoClient();
+	private UltraClient reader = new UltraClient();
 	private String checkPoint1 = null;
 	private TagReadListener tagReadListener;
 	private Integer tagCount;
@@ -113,29 +113,9 @@ public class JUltraReaderPanel extends JIpicoReaderPanel implements CommandRespo
 	}
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
-		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
-		reader.setCheckPointOne(checkPoint1);
-		reader.setTerminal(terminalTextField.getText());
-//		reader.setCheckPoint(checkPoint1);
-		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
 	private void setTimeButtonActionPerformed(ActionEvent e) {
-		IpicoTcpClient client = new IpicoTcpClient();
-		logger.info("Connecting to host");
-//		client.setHostname("127.0.0.1");
-		try {
-			client.connect("10.19.1.101");
-			Thread thread = new Thread(client);
-			thread.start();
-//			client.sendCommand(new GetTimeCommand());
-			client.sendCommand(new SetTimeCommand());
-//			client.sendCommand(new GetTimeCommand());
-			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
-		} catch (InvalidTelnetOptionException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {

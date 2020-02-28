@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tiempometa.pandora.ipicoreader.usb.SerialReader;
+import com.tiempometa.pandora.tagreader.SerialReader;
 
 /**
  * @author gtasi

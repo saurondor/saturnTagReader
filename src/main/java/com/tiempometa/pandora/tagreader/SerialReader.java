@@ -2,7 +2,7 @@
  * Copyright (c) 2008, TARAMSA SA de CV
  * All rights reserved. Todos los derechos reservados.
  */
-package com.tiempometa.pandora.ipicoreader.usb;
+package com.tiempometa.pandora.tagreader;
 
 import java.io.IOException;
 import java.io.InputStream;

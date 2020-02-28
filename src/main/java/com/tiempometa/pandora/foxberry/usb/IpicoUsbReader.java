@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader.usb;
+package com.tiempometa.pandora.foxberry.usb;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 		return serialReader.getPorts();
 	}
 
-	public void setCommandResponseHandler(JIpicoUsbReaderPanel jIpicoReaderPanel) {
+	public void setCommandResponseHandler(JFoxberryUsbReaderPanel jIpicoReaderPanel) {
 		// TODO Auto-generated method stub
 
 	}

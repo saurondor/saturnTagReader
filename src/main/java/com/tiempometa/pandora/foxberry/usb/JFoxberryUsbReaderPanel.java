@@ -46,7 +46,7 @@ public class JFoxberryUsbReaderPanel extends JIpicoReaderPanel implements Comman
 	public static final int MODE_ROUTE_POINT = 2;
 
 	private JReaderListPanel listPanel;
-	private IpicoUsbReader reader = new IpicoUsbReader();
+	private FoxberryUSBClient reader = new FoxberryUSBClient();
 	private String checkPoint1 = null;
 	private String terminal = null;
 	private TagReadListener tagReadListener;
