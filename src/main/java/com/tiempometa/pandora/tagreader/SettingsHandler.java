@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 public class SettingsHandler {
 
-	public static final String PANDORA_SERVER_PROPERTIES = "/ipicoreader.properties";
+	public static final String PANDORA_SERVER_PROPERTIES = "/tagreader.properties";
 	private Logger logger = Logger.getLogger(SettingsHandler.class);
 	private Properties properties = new Properties();
 	private String propertiesPath = System.getProperty("user.home") + "/.tiempometa";
