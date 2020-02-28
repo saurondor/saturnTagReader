@@ -26,6 +26,7 @@ import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.RegistrationWebservice;
 import com.tiempometa.webservice.ResultsWebservice;
+import com.tiempometa.webservice.model.Bib;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 
 /**
@@ -57,6 +58,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			factory.setAddress(wsAddress);
 			registrationWebservice = (RegistrationWebservice) factory.create();
 			logger.info("Registration client created");
+			registrationWebservice.findByTag("TAG");
 			String zoneIdString = registrationWebservice.getZoneId();
 			try {
 				zoneId = ZoneId.of(zoneIdString);
@@ -538,9 +540,17 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 //		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
 //		chipDao.batchSave(readings);
 		for (RawChipRead tagRead : readings) {
-			logger.debug(tagRead);
+			logger.debug("Query participants by tag " + tagRead);
 			List<ParticipantRegistration> registrationList = registrationWebservice.findByTag(tagRead.getRfidString());
-			showParticipantInfo(registrationList);
+			if (registrationList==null) {
+				
+			} else {
+				logger.debug("Registration list size " + registrationList);
+				showParticipantInfo(registrationList);				
+			}
+//			logger.debug("Query bibs by tag " + tagRead);
+//			List<Bib> bibs = registrationWebservice.getBibByRfidString(tagRead.getRfidString());
+//			logger.debug("Bib list size " + bibs);
 		}
 	}
 
