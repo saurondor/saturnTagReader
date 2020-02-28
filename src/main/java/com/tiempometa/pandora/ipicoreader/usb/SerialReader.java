@@ -2,7 +2,7 @@
  * Copyright (c) 2008, TARAMSA SA de CV
  * All rights reserved. Todos los derechos reservados.
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.ipicoreader.usb;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.TooManyListenersException;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.pandora.ipicoreader.ReadListener;
+import com.tiempometa.pandora.ipicoreader.ReadParser;
+import com.tiempometa.pandora.ipicoreader.RegistrationReadParser;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;

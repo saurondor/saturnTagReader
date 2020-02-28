@@ -16,7 +16,6 @@ import javax.swing.*;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.ipicoreader.PandoraSettings;
 import com.tiempometa.timing.model.Event;
 
 import org.hibernate.HibernateException;

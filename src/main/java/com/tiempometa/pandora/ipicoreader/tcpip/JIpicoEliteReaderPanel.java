@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 14:40:34 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.ipicoreader.tcpip;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,10 +18,14 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
+import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
+import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 import com.tiempometa.pandora.tagreader.Context;
+import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RouteDao;
 

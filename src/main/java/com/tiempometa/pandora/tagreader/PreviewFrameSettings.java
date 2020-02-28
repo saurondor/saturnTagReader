@@ -1,13 +1,11 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-
-import com.tiempometa.pandora.tagreader.Context;
 
 /**
  * @author gtasi

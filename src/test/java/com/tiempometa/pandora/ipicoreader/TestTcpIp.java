@@ -15,6 +15,8 @@ import org.junit.Test;
 
 import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
 import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
+import com.tiempometa.pandora.ipicoreader.tcpip.IpicoClient;
+import com.tiempometa.pandora.ipicoreader.tcpip.IpicoTcpClient;
 
 /**
  * @author gtasi

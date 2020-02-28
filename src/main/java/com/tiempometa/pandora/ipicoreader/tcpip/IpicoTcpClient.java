@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.ipicoreader.tcpip;
 
 import java.io.IOException;
 import java.io.InputStream;

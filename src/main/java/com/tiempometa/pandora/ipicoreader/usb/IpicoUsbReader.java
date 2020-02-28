@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.ipicoreader.usb;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.tiempometa.Utils;
+import com.tiempometa.pandora.ipicoreader.ReadListener;
+import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.timing.model.RawChipRead;
 

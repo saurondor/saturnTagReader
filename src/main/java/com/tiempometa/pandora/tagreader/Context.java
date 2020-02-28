@@ -9,10 +9,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.tiempometa.pandora.ipicoreader.JPandoraApplication;
-import com.tiempometa.pandora.ipicoreader.PandoraSettings;
-import com.tiempometa.pandora.ipicoreader.PreviewHelper;
-import com.tiempometa.pandora.ipicoreader.SettingsHandler;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
 

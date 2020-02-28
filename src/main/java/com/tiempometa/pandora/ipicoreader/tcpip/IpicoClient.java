@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.ipicoreader.tcpip;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.pandora.ipicoreader.DataLoadProperties;
+import com.tiempometa.pandora.ipicoreader.IpicoRead;
+import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.timing.model.RawChipRead;
 
 /**

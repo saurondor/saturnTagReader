@@ -2,11 +2,15 @@
  * Created by JFormDesigner on Sun Nov 17 07:55:43 CST 2019
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import javax.swing.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
+import com.tiempometa.pandora.ipicoreader.TagReadListener;
+import com.tiempometa.pandora.ipicoreader.tcpip.JIpicoEliteReaderPanel;
+import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
 
 import org.apache.log4j.Logger;
 

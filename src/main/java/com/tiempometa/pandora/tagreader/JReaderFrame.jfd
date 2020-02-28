@@ -36,11 +36,6 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "openEventMenuItemActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "importBackupMenuItem"
-						"text": new FormMessage( null, "JIpicoReaderFrame.importBackupMenuItem.text" )
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importBackupMenuItemActionPerformed", true ) )
-					} )
-					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "closeMenuItem"
 						"text": new FormMessage( null, "JIpicoReaderFrame.closeMenuItem.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "closeMenuItemActionPerformed", true ) )
@@ -62,6 +57,11 @@ new FormModel {
 							"text": new FormMessage( null, "JIpicoReaderFrame.addUsbReaderMenuItem.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addUsbReaderMenuItemActionPerformed", true ) )
 						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "importBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importBackupMenuItemActionPerformed", true ) )
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu5"
@@ -70,6 +70,10 @@ new FormModel {
 							name: "menuItem1"
 							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem1.text" )
 						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem5"
+							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem5.text" )
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu6"
@@ -77,6 +81,10 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem2"
 							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem2.text" )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem6"
+							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem6.text" )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
@@ -89,6 +97,22 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem4"
 							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem4.text" )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem7"
+							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem7.text" )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menu8"
+						"text": new FormMessage( null, "JIpicoReaderFrame.menu8.text" )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem8"
+							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem8.text" )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem9"
+							"text": new FormMessage( null, "JIpicoReaderFrame.menuItem9.text" )
 						} )
 					} )
 				} )

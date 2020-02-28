@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.io.File;
 import java.io.FileReader;

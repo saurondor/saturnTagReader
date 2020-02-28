@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.Context;
+import com.tiempometa.pandora.tagreader.PandoraSettings;
+import com.tiempometa.pandora.tagreader.RawChipReadTableModel;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.timing.model.dao.RouteDao;

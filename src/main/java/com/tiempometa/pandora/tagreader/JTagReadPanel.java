@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 15:10:41 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import java.util.*;

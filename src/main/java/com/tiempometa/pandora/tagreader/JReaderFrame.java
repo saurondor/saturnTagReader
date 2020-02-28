@@ -21,9 +21,6 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewConfig;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
 import com.tiempometa.pandora.ipicoreader.JImportBackupsFrame;
-import com.tiempometa.pandora.ipicoreader.JPandoraApplication;
-import com.tiempometa.pandora.ipicoreader.JReaderListPanel;
-import com.tiempometa.pandora.ipicoreader.JTagReadPanel;
 import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
@@ -266,43 +263,47 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		openEventMenuItem = new JMenuItem();
-		importBackupMenuItem = new JMenuItem();
 		closeMenuItem = new JMenuItem();
 		menu2 = new JMenu();
 		menu4 = new JMenu();
 		addEliteReaderMenuItem = new JMenuItem();
 		addUsbReaderMenuItem = new JMenuItem();
+		importBackupMenuItem = new JMenuItem();
 		menu5 = new JMenu();
 		menuItem1 = new JMenuItem();
+		menuItem5 = new JMenuItem();
 		menu6 = new JMenu();
 		menuItem2 = new JMenuItem();
+		menuItem6 = new JMenuItem();
 		menu7 = new JMenu();
 		menuItem3 = new JMenuItem();
 		menuItem4 = new JMenuItem();
+		menuItem7 = new JMenuItem();
+		menu8 = new JMenu();
+		menuItem8 = new JMenuItem();
+		menuItem9 = new JMenuItem();
 		menu3 = new JMenu();
 		checaTuChipConfigurationMenuItem = new JMenuItem();
 		showPreviewMenuItem = new JMenuItem();
 		readerListPanel = new JReaderListPanel();
 		tagReadPanel = new JTagReadPanel();
 
-		// ======== this ========
-		setIconImage(new ImageIcon(
-				getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png"))
-						.getImage());
+		//======== this ========
+		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		// ======== menuBar1 ========
+		//======== menuBar1 ========
 		{
 
-			// ======== menu1 ========
+			//======== menu1 ========
 			{
 				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				// ---- openEventMenuItem ----
+				//---- openEventMenuItem ----
 				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
 				openEventMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -312,17 +313,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				});
 				menu1.add(openEventMenuItem);
 
-				// ---- importBackupMenuItem ----
-				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
-				importBackupMenuItem.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						importBackupMenuItemActionPerformed(e);
-					}
-				});
-				menu1.add(importBackupMenuItem);
-
-				// ---- closeMenuItem ----
+				//---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -334,15 +325,15 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 			menuBar1.add(menu1);
 
-			// ======== menu2 ========
+			//======== menu2 ========
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				// ======== menu4 ========
+				//======== menu4 ========
 				{
 					menu4.setText(bundle.getString("JIpicoReaderFrame.menu4.text"));
 
-					// ---- addEliteReaderMenuItem ----
+					//---- addEliteReaderMenuItem ----
 					addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
 					addEliteReaderMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -352,7 +343,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 					});
 					menu4.add(addEliteReaderMenuItem);
 
-					// ---- addUsbReaderMenuItem ----
+					//---- addUsbReaderMenuItem ----
 					addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
 					addUsbReaderMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -361,52 +352,87 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 						}
 					});
 					menu4.add(addUsbReaderMenuItem);
+
+					//---- importBackupMenuItem ----
+					importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
+					importBackupMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							importBackupMenuItemActionPerformed(e);
+						}
+					});
+					menu4.add(importBackupMenuItem);
 				}
 				menu2.add(menu4);
 
-				// ======== menu5 ========
+				//======== menu5 ========
 				{
 					menu5.setText(bundle.getString("JIpicoReaderFrame.menu5.text"));
 
-					// ---- menuItem1 ----
+					//---- menuItem1 ----
 					menuItem1.setText(bundle.getString("JIpicoReaderFrame.menuItem1.text"));
 					menu5.add(menuItem1);
+
+					//---- menuItem5 ----
+					menuItem5.setText(bundle.getString("JIpicoReaderFrame.menuItem5.text"));
+					menu5.add(menuItem5);
 				}
 				menu2.add(menu5);
 
-				// ======== menu6 ========
+				//======== menu6 ========
 				{
 					menu6.setText(bundle.getString("JIpicoReaderFrame.menu6.text"));
 
-					// ---- menuItem2 ----
+					//---- menuItem2 ----
 					menuItem2.setText(bundle.getString("JIpicoReaderFrame.menuItem2.text"));
 					menu6.add(menuItem2);
+
+					//---- menuItem6 ----
+					menuItem6.setText(bundle.getString("JIpicoReaderFrame.menuItem6.text"));
+					menu6.add(menuItem6);
 				}
 				menu2.add(menu6);
 
-				// ======== menu7 ========
+				//======== menu7 ========
 				{
 					menu7.setText(bundle.getString("JIpicoReaderFrame.menu7.text"));
 
-					// ---- menuItem3 ----
+					//---- menuItem3 ----
 					menuItem3.setText(bundle.getString("JIpicoReaderFrame.menuItem3.text"));
 					menu7.add(menuItem3);
 
-					// ---- menuItem4 ----
+					//---- menuItem4 ----
 					menuItem4.setText(bundle.getString("JIpicoReaderFrame.menuItem4.text"));
 					menu7.add(menuItem4);
+
+					//---- menuItem7 ----
+					menuItem7.setText(bundle.getString("JIpicoReaderFrame.menuItem7.text"));
+					menu7.add(menuItem7);
 				}
 				menu2.add(menu7);
+
+				//======== menu8 ========
+				{
+					menu8.setText(bundle.getString("JIpicoReaderFrame.menu8.text"));
+
+					//---- menuItem8 ----
+					menuItem8.setText(bundle.getString("JIpicoReaderFrame.menuItem8.text"));
+					menu8.add(menuItem8);
+
+					//---- menuItem9 ----
+					menuItem9.setText(bundle.getString("JIpicoReaderFrame.menuItem9.text"));
+					menu8.add(menuItem9);
+				}
+				menu2.add(menu8);
 			}
 			menuBar1.add(menu2);
 
-			// ======== menu3 ========
+			//======== menu3 ========
 			{
 				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				// ---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem
-						.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+				//---- checaTuChipConfigurationMenuItem ----
+				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
 				checaTuChipConfigurationMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -415,7 +441,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				});
 				menu3.add(checaTuChipConfigurationMenuItem);
 
-				// ---- showPreviewMenuItem ----
+				//---- showPreviewMenuItem ----
 				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
 				showPreviewMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -439,19 +465,25 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	private JMenuItem openEventMenuItem;
-	private JMenuItem importBackupMenuItem;
 	private JMenuItem closeMenuItem;
 	private JMenu menu2;
 	private JMenu menu4;
 	private JMenuItem addEliteReaderMenuItem;
 	private JMenuItem addUsbReaderMenuItem;
+	private JMenuItem importBackupMenuItem;
 	private JMenu menu5;
 	private JMenuItem menuItem1;
+	private JMenuItem menuItem5;
 	private JMenu menu6;
 	private JMenuItem menuItem2;
+	private JMenuItem menuItem6;
 	private JMenu menu7;
 	private JMenuItem menuItem3;
 	private JMenuItem menuItem4;
+	private JMenuItem menuItem7;
+	private JMenu menu8;
+	private JMenuItem menuItem8;
+	private JMenuItem menuItem9;
 	private JMenu menu3;
 	private JMenuItem checaTuChipConfigurationMenuItem;
 	private JMenuItem showPreviewMenuItem;
