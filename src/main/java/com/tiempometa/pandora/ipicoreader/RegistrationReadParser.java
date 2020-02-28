@@ -46,24 +46,24 @@ public class RegistrationReadParser implements ReadParser {
 	}
 
 	public void parseBuffer() {
-		if (log.isDebugEnabled()) {
-			log.debug("Buffer " + dataBuffer.toString());
-		}
+//		if (log.isDebugEnabled()) {
+//			log.debug("Buffer " + dataBuffer.toString());
+//		}
 		if (dataBuffer.length() >= 36) {
 			// we have enough characters to process
 			do {
 				String data = dataBuffer.substring(0, 36);
-				if (log.isDebugEnabled()) {
-					log.debug("Data Length is " + data.length());
-				}
+//				if (log.isDebugEnabled()) {
+//					log.debug("Data Length is " + data.length());
+//				}
 				if (data.substring(0, 2).equals("aa")) {
-					if (log.isDebugEnabled()) {
-						log.debug("Proper start characters [aa]");
-					}
+//					if (log.isDebugEnabled()) {
+//						log.debug("Proper start characters [aa]");
+//					}
 					String crc = crc(data);
-					if (log.isDebugEnabled()) {
-						log.debug("CRC is " + crc + " vs " + data.substring(34));
-					}
+//					if (log.isDebugEnabled()) {
+//						log.debug("CRC is " + crc + " vs " + data.substring(34));
+//					}
 					if (crc.equals(data.substring(34))) {
 						log.info("Proper string " + data);
 						IpicoRead read = chipReader.readChip(data);
@@ -74,9 +74,9 @@ public class RegistrationReadParser implements ReadParser {
 					}
 				}
 				dataBuffer.delete(0, 36);
-				if (log.isInfoEnabled()) {
-					log.info("Deleteting 36 chars");
-				}
+//				if (log.isInfoEnabled()) {
+//					log.info("Deleteting 36 chars");
+//				}
 			} while (dataBuffer.length() >= 36);
 		}
 		dataBuffer = new StringBuffer();
@@ -88,22 +88,22 @@ public class RegistrationReadParser implements ReadParser {
 		for (int i = 0; i < numBytes; i++) {
 			String addValue = Integer.toHexString(dataBytes[i]);
 			if (addValue.equals("d")) {
-				if (log.isDebugEnabled()) {
-					log.debug("Carriage Return");
-				}
+//				if (log.isDebugEnabled()) {
+//					log.debug("Carriage Return");
+//				}
 				carriageReturn = true;
 			} else if (addValue.equals("a")) {
-				if (log.isDebugEnabled()) {
-					log.debug("Line Feed");
-				}
+//				if (log.isDebugEnabled()) {
+//					log.debug("Line Feed");
+//				}
 				if (carriageReturn) {
 					parseBuffer();
 					carriageReturn = false;
 				}
 			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("DATA:" + dataBytes[i]);
-				}
+//				if (log.isDebugEnabled()) {
+//					log.debug("DATA:" + dataBytes[i]);
+//				}
 
 				dataBuffer.append((char) dataBytes[i]);
 			}

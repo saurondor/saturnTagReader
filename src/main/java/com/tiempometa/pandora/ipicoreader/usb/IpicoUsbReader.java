@@ -23,11 +23,11 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 	private static final Logger logger = Logger.getLogger(IpicoUsbReader.class);
 	TagReadListener tagReadListener;
 	private SerialReader serialReader = new SerialReader(this);
-	private String checkPointOne;
-	private String checkPointTwo;
-	private String terminal;
+//	private String checkPointOne;
+//	private String checkPointTwo;
+//	private String terminal;
 	private String lastRfid;
-	private Integer mode = JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP;
+//	private Integer mode = JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP;
 
 	public List<String> getSerialPorts() {
 		return serialReader.getPorts();
@@ -46,33 +46,33 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 		return tagReadListener;
 	}
 
-	public String getCheckPointOne() {
-		return checkPointOne;
-	}
-
-	public String getCheckPointTwo() {
-		return checkPointTwo;
-	}
-
-	public String getTerminal() {
-		return terminal;
-	}
+//	public String getCheckPointOne() {
+//		return checkPointOne;
+//	}
+//
+//	public String getCheckPointTwo() {
+//		return checkPointTwo;
+//	}
+//
+//	public String getTerminal() {
+//		return terminal;
+//	}
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
 		this.tagReadListener = tagReadListener;
 	}
 
-	public void setCheckPointOne(String checkPointOne) {
-		this.checkPointOne = checkPointOne;
-	}
-
-	public void setCheckPointTwo(String checkPointTwo) {
-		this.checkPointTwo = checkPointTwo;
-	}
-
-	public void setTerminal(String terminal) {
-		this.terminal = terminal;
-	}
+//	public void setCheckPointOne(String checkPointOne) {
+//		this.checkPointOne = checkPointOne;
+//	}
+//
+//	public void setCheckPointTwo(String checkPointTwo) {
+//		this.checkPointTwo = checkPointTwo;
+//	}
+//
+//	public void setTerminal(String terminal) {
+//		this.terminal = terminal;
+//	}
 
 	@Override
 	public void run() {
@@ -102,25 +102,9 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 			lastRfid = rfid;
 			RawChipRead chipRead = new RawChipRead();
 			chipRead.setRfidString(rfid);
-			chipRead.setCheckPoint(checkPointOne);
-			chipRead.setLoadName(terminal);
 			LocalDateTime time = LocalDateTime.now();
 			chipRead.setReadTime(time);
 			chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
-			switch (mode) {
-			case JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP:
-				chipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
-				break;
-			case JIpicoUsbReaderPanel.MODE_CHECA_TU_RESULTADO:
-				chipRead.setReadType(CookedChipRead.TYPE_CHECATURESULTADO);
-				break;
-			case JIpicoUsbReaderPanel.MODE_ROUTE_POINT:
-				chipRead.setReadType(CookedChipRead.TYPE_TAG);
-				break;
-			default:
-				chipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
-				break;
-			}
 			List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 			chipReadList.add(chipRead);
 			tagReadListener.notifyTagReads(chipReadList);
@@ -142,13 +126,13 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 			clearThread.start();
 		}
 	}
-
-	public Integer getMode() {
-		return mode;
-	}
-
-	public void setMode(Integer mode) {
-		this.mode = mode;
-	}
+//
+//	public Integer getMode() {
+//		return mode;
+//	}
+//
+//	public void setMode(Integer mode) {
+//		this.mode = mode;
+//	}
 
 }

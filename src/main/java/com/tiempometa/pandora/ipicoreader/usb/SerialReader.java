@@ -108,16 +108,16 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 		boolean portOpened = false;
 		// parse ports and if the default port is found, initialized the reader
 		try {
-			System.out.println("getting portlist");
+//			System.out.println("getting portlist");
 			portList = CommPortIdentifier.getPortIdentifiers();
-			System.out.println(portList);
+//			System.out.println(portList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Missing rxtx Serial");
 		}
 		while (portList.hasMoreElements()) {
 			portId = (CommPortIdentifier) portList.nextElement();
-			System.out.println("Checking port " + portId.getName() + " - " + portId.getPortType());
+//			System.out.println("Checking port " + portId.getName() + " - " + portId.getPortType());
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 				if (portId.getName().equals(commPort)) {
 					if (log.isInfoEnabled()) {
@@ -223,7 +223,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 
 	@Override
 	public void serialEvent(SerialPortEvent event) {
-		log.info("Serial event");
+//		log.info("Serial event");
 		switch (event.getEventType()) {
 		case SerialPortEvent.BI:
 		case SerialPortEvent.OE:
@@ -247,11 +247,11 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 				// }
 				// print data
 				String result = new String(readBuffer);
-				System.out.println("Read: " + numBytes);
-				for (int counter = 0; counter < numBytes; counter++) {
-					System.out.print(Integer.toHexString(Byte.valueOf(readBuffer[counter]).intValue()) + "-");
-				}
-				System.out.println("");
+//				System.out.println("Read: " + numBytes);
+//				for (int counter = 0; counter < numBytes; counter++) {
+//					System.out.print(Integer.toHexString(Byte.valueOf(readBuffer[counter]).intValue()) + "-");
+//				}
+//				System.out.println("");
 				parser.addCharacters(numBytes, readBuffer);
 			} catch (IOException e) {
 			}

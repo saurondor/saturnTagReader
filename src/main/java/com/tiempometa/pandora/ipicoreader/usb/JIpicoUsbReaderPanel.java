@@ -27,6 +27,7 @@ import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
+import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RouteDao;
 
@@ -47,6 +48,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	private JReaderListPanel listPanel;
 	private IpicoUsbReader reader = new IpicoUsbReader();
 	private String checkPoint1 = null;
+	private String terminal = null;
 	private TagReadListener tagReadListener;
 	private int mode = MODE_CHECA_TU_CHIP;
 	private Integer tagCount = 0;
@@ -194,8 +196,9 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
-		reader.setCheckPointOne(checkPoint1);
-		reader.setTerminal(terminalTextField.getText());
+		terminal = terminalTextField.getText();
+//		reader.setCheckPointOne(checkPoint1);
+//		reader.setTerminal(terminalTextField.getText());
 //		reader.setCheckPoint(checkPoint1);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
@@ -253,21 +256,21 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
 
-		//======== this ========
+		// ======== this ========
 		setMaximumSize(new Dimension(550, 120));
 		setMinimumSize(new Dimension(550, 120));
 		setPreferredSize(new Dimension(550, 120));
 		setBorder(new TitledBorder(bundle.getString("JIpicoUsbReaderPanel.this.border")));
 		setLayout(new FormLayout(
-			"5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 79dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 41dlu, $lcgap, 22dlu",
-			"5dlu, 3*($lgap, default)"));
+				"5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 79dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 41dlu, $lcgap, 22dlu",
+				"5dlu, 3*($lgap, default)"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoUsbReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 		add(serialPortComboBox, CC.xy(5, 3));
 
-		//---- connectButton ----
+		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoUsbReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -278,8 +281,9 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(connectButton, CC.xy(7, 3));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+		// ---- removeReaderButton ----
+		removeReaderButton
+				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -288,16 +292,13 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(removeReaderButton, CC.xy(15, 3));
 
-		//---- label3 ----
+		// ---- label3 ----
 		label3.setText(bundle.getString("JIpicoUsbReaderPanel.label3.text"));
 		add(label3, CC.xy(3, 5));
 
-		//---- modeComboBox ----
-		modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Checa Tu Chip",
-			"Checa tu Resultado",
-			"Punto en ruta"
-		}));
+		// ---- modeComboBox ----
+		modeComboBox.setModel(
+				new DefaultComboBoxModel<>(new String[] { "Checa Tu Chip", "Checa tu Resultado", "Punto en ruta" }));
 		modeComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -306,17 +307,17 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(modeComboBox, CC.xy(5, 5));
 
-		//---- label4 ----
+		// ---- label4 ----
 		label4.setText(bundle.getString("JIpicoUsbReaderPanel.label4.text"));
 		add(label4, CC.xywh(9, 5, 3, 1));
 		add(terminalTextField, CC.xywh(13, 5, 3, 1));
 
-		//---- pointLabel ----
+		// ---- pointLabel ----
 		pointLabel.setText(bundle.getString("JIpicoUsbReaderPanel.pointLabel.text"));
 		pointLabel.setEnabled(false);
 		add(pointLabel, CC.xy(3, 7));
 
-		//---- checkPointComboBox1 ----
+		// ---- checkPointComboBox1 ----
 		checkPointComboBox1.setBackground(Color.red);
 		checkPointComboBox1.setEnabled(false);
 		checkPointComboBox1.addItemListener(new ItemListener() {
@@ -327,7 +328,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(checkPointComboBox1, CC.xy(5, 7));
 
-		//---- applyCheckpointButton ----
+		// ---- applyCheckpointButton ----
 		applyCheckpointButton.setText(bundle.getString("JIpicoUsbReaderPanel.applyCheckpointButton.text"));
 		applyCheckpointButton.setBackground(Color.red);
 		applyCheckpointButton.setEnabled(false);
@@ -339,11 +340,11 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		});
 		add(applyCheckpointButton, CC.xy(7, 7));
 
-		//---- label5 ----
+		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoUsbReaderPanel.label5.text"));
 		add(label5, CC.xy(13, 7));
 
-		//---- tagsReadLabel ----
+		// ---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JIpicoUsbReaderPanel.tagsReadLabel.text"));
 		add(tagsReadLabel, CC.xy(15, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
@@ -363,11 +364,28 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	private JButton applyCheckpointButton;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
+
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
 		logger.info("Handle raw chip reads");
 		for (RawChipRead rawChipRead : chipReadList) {
+			rawChipRead.setCheckPoint(checkPoint1);
+			rawChipRead.setLoadName(terminal);
+			switch (mode) {
+			case JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP:
+				rawChipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
+				break;
+			case JIpicoUsbReaderPanel.MODE_CHECA_TU_RESULTADO:
+				rawChipRead.setReadType(CookedChipRead.TYPE_CHECATURESULTADO);
+				break;
+			case JIpicoUsbReaderPanel.MODE_ROUTE_POINT:
+				rawChipRead.setReadType(CookedChipRead.TYPE_TAG);
+				break;
+			default:
+				rawChipRead.setReadType(CookedChipRead.TYPE_CHECATUCHIP);
+				break;
+			}
 			logger.debug(rawChipRead);
 		}
 		tagReadListener.notifyTagReads(chipReadList);
@@ -413,6 +431,6 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 
 	public void setTerminal(String terminal) {
 		terminalTextField.setText(terminal);
-		reader.setTerminal(terminal);
+		this.terminal = terminal;
 	}
 }

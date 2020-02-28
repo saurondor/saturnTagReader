@@ -25,6 +25,7 @@ import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.RegistrationWebservice;
+import com.tiempometa.webservice.ResultsWebservice;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -39,7 +40,8 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	private String eventTitle;
 	JPreviewFrame previewFrame = new JPreviewFrame();
 	String serverAddress = null;
-	private RegistrationWebservice client;
+	private RegistrationWebservice registrationWebservice;
+	private ResultsWebservice resultsWebservice;
 	ZoneId zoneId = null;
 
 	/**
@@ -52,9 +54,9 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
 			logger.info("Connecting webservice to " + wsAddress);
 			factory.setAddress(wsAddress);
-			client = (RegistrationWebservice) factory.create();
-			logger.info("Client created");
-			String zoneIdString = client.getZoneId();
+			registrationWebservice = (RegistrationWebservice) factory.create();
+			logger.info("Registration client created");
+			String zoneIdString = registrationWebservice.getZoneId();
 			try {
 				zoneId = ZoneId.of(zoneIdString);
 			} catch (DateTimeException e) {
@@ -63,6 +65,14 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				e.printStackTrace();
 			}
 			logger.info("Set timezone to " + zoneIdString);
+
+			factory = new JaxWsProxyFactoryBean();
+			factory.setServiceClass(ResultsWebservice.class);
+			wsAddress = "http://" + serverAddress + ":9000/resultsClient";
+			logger.info("Connecting webservice to " + wsAddress);
+			factory.setAddress(wsAddress);
+			resultsWebservice = (ResultsWebservice) factory.create();
+			logger.info("Results client created");
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this,
@@ -83,7 +93,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				serverAddress = Context.loadServerAddress();
 				showProgress("Probando conexión al servidor @" + serverAddress, 40);
 				initWebserviceClient();
-				client.getZoneId();
+				registrationWebservice.getZoneId();
 //				Context.openEvent();
 				connected = true;
 //				Context.setApplicationTitle(Context.registrationHelper.getEvent().getTitle());
@@ -288,22 +298,24 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		readerListPanel = new JReaderListPanel();
 		tagReadPanel = new JTagReadPanel();
 
-		//======== this ========
-		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
+		// ======== this ========
+		setIconImage(new ImageIcon(
+				getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png"))
+						.getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		//======== menuBar1 ========
+		// ======== menuBar1 ========
 		{
 
-			//======== menu1 ========
+			// ======== menu1 ========
 			{
 				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				//---- openEventMenuItem ----
+				// ---- openEventMenuItem ----
 				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
 				openEventMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -313,7 +325,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				});
 				menu1.add(openEventMenuItem);
 
-				//---- closeMenuItem ----
+				// ---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -325,15 +337,15 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 			menuBar1.add(menu1);
 
-			//======== menu2 ========
+			// ======== menu2 ========
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				//======== menu4 ========
+				// ======== menu4 ========
 				{
 					menu4.setText(bundle.getString("JIpicoReaderFrame.menu4.text"));
 
-					//---- addEliteReaderMenuItem ----
+					// ---- addEliteReaderMenuItem ----
 					addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
 					addEliteReaderMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -343,7 +355,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 					});
 					menu4.add(addEliteReaderMenuItem);
 
-					//---- addUsbReaderMenuItem ----
+					// ---- addUsbReaderMenuItem ----
 					addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
 					addUsbReaderMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -353,7 +365,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 					});
 					menu4.add(addUsbReaderMenuItem);
 
-					//---- importBackupMenuItem ----
+					// ---- importBackupMenuItem ----
 					importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
 					importBackupMenuItem.addActionListener(new ActionListener() {
 						@Override
@@ -365,61 +377,61 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				}
 				menu2.add(menu4);
 
-				//======== menu5 ========
+				// ======== menu5 ========
 				{
 					menu5.setText(bundle.getString("JIpicoReaderFrame.menu5.text"));
 
-					//---- menuItem1 ----
+					// ---- menuItem1 ----
 					menuItem1.setText(bundle.getString("JIpicoReaderFrame.menuItem1.text"));
 					menu5.add(menuItem1);
 
-					//---- menuItem5 ----
+					// ---- menuItem5 ----
 					menuItem5.setText(bundle.getString("JIpicoReaderFrame.menuItem5.text"));
 					menu5.add(menuItem5);
 				}
 				menu2.add(menu5);
 
-				//======== menu6 ========
+				// ======== menu6 ========
 				{
 					menu6.setText(bundle.getString("JIpicoReaderFrame.menu6.text"));
 
-					//---- menuItem2 ----
+					// ---- menuItem2 ----
 					menuItem2.setText(bundle.getString("JIpicoReaderFrame.menuItem2.text"));
 					menu6.add(menuItem2);
 
-					//---- menuItem6 ----
+					// ---- menuItem6 ----
 					menuItem6.setText(bundle.getString("JIpicoReaderFrame.menuItem6.text"));
 					menu6.add(menuItem6);
 				}
 				menu2.add(menu6);
 
-				//======== menu7 ========
+				// ======== menu7 ========
 				{
 					menu7.setText(bundle.getString("JIpicoReaderFrame.menu7.text"));
 
-					//---- menuItem3 ----
+					// ---- menuItem3 ----
 					menuItem3.setText(bundle.getString("JIpicoReaderFrame.menuItem3.text"));
 					menu7.add(menuItem3);
 
-					//---- menuItem4 ----
+					// ---- menuItem4 ----
 					menuItem4.setText(bundle.getString("JIpicoReaderFrame.menuItem4.text"));
 					menu7.add(menuItem4);
 
-					//---- menuItem7 ----
+					// ---- menuItem7 ----
 					menuItem7.setText(bundle.getString("JIpicoReaderFrame.menuItem7.text"));
 					menu7.add(menuItem7);
 				}
 				menu2.add(menu7);
 
-				//======== menu8 ========
+				// ======== menu8 ========
 				{
 					menu8.setText(bundle.getString("JIpicoReaderFrame.menu8.text"));
 
-					//---- menuItem8 ----
+					// ---- menuItem8 ----
 					menuItem8.setText(bundle.getString("JIpicoReaderFrame.menuItem8.text"));
 					menu8.add(menuItem8);
 
-					//---- menuItem9 ----
+					// ---- menuItem9 ----
 					menuItem9.setText(bundle.getString("JIpicoReaderFrame.menuItem9.text"));
 					menu8.add(menuItem9);
 				}
@@ -427,12 +439,13 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 			menuBar1.add(menu2);
 
-			//======== menu3 ========
+			// ======== menu3 ========
 			{
 				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				//---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+				// ---- checaTuChipConfigurationMenuItem ----
+				checaTuChipConfigurationMenuItem
+						.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
 				checaTuChipConfigurationMenuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -441,7 +454,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				});
 				menu3.add(checaTuChipConfigurationMenuItem);
 
-				//---- showPreviewMenuItem ----
+				// ---- showPreviewMenuItem ----
 				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
 				showPreviewMenuItem.addActionListener(new ActionListener() {
 					@Override
@@ -513,12 +526,29 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	@Override
 	public void notifyTagReads(List<RawChipRead> readings) {
 		logger.debug("GOT TAG READS...");
+		List<com.tiempometa.webservice.model.RawChipRead> wsReadings = new ArrayList<com.tiempometa.webservice.model.RawChipRead>();
 		for (RawChipRead tagRead : readings) {
 			logger.debug(tagRead);
 			tagReadPanel.add(tagRead);
+			com.tiempometa.webservice.model.RawChipRead wsRead = new com.tiempometa.webservice.model.RawChipRead();
+			wsRead.setCheckPoint(tagRead.getCheckPoint());
+			wsRead.setChipNumber(tagRead.getChipNumber());
+			wsRead.setCooked(tagRead.getCooked());
+			wsRead.setEventId(tagRead.getEventId());
+			wsRead.setFiltered(tagRead.getFiltered());
+			wsRead.setId(tagRead.getId());
+			wsRead.setLoadName(tagRead.getLoadName());
+			wsRead.setPhase(tagRead.getPhase());
+//			wsRead.setReadTime(tagRead.getReadTime());
+			wsRead.setReadType(tagRead.getReadType());
+			wsRead.setRfidString(tagRead.getRfidString());
+			wsRead.setTime(tagRead.getTime());
+			wsRead.setTimeMillis(tagRead.getTimeMillis());
+			wsReadings.add(wsRead);
 		}
-		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
-		chipDao.batchSave(readings);
+		resultsWebservice.saveRawChipReads(wsReadings);
+//		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
+//		chipDao.batchSave(readings);
 
 	}
 }
