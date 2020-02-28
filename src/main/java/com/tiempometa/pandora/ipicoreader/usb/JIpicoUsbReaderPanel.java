@@ -167,8 +167,9 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 					reader.connect((String) serialPortComboBox.getSelectedItem());
 					setConnected();
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar " + e1.getMessage(), "Error de conexión",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this,
+							"No se pudo conectar " + e1.getMessage() + " - " + e1.getClass().getCanonicalName(),
+							"Error de conexión", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}

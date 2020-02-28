@@ -26,6 +26,7 @@ import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.RegistrationWebservice;
 import com.tiempometa.webservice.ResultsWebservice;
+import com.tiempometa.webservice.model.ParticipantRegistration;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -530,25 +531,45 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		for (RawChipRead tagRead : readings) {
 			logger.debug(tagRead);
 			tagReadPanel.add(tagRead);
-			com.tiempometa.webservice.model.RawChipRead wsRead = new com.tiempometa.webservice.model.RawChipRead();
-			wsRead.setCheckPoint(tagRead.getCheckPoint());
-			wsRead.setChipNumber(tagRead.getChipNumber());
-			wsRead.setCooked(tagRead.getCooked());
-			wsRead.setEventId(tagRead.getEventId());
-			wsRead.setFiltered(tagRead.getFiltered());
-			wsRead.setId(tagRead.getId());
-			wsRead.setLoadName(tagRead.getLoadName());
-			wsRead.setPhase(tagRead.getPhase());
-//			wsRead.setReadTime(tagRead.getReadTime());
-			wsRead.setReadType(tagRead.getReadType());
-			wsRead.setRfidString(tagRead.getRfidString());
-			wsRead.setTime(tagRead.getTime());
-			wsRead.setTimeMillis(tagRead.getTimeMillis());
+			com.tiempometa.webservice.model.RawChipRead wsRead = tagReadToWsRead(tagRead);
 			wsReadings.add(wsRead);
 		}
 		resultsWebservice.saveRawChipReads(wsReadings);
 //		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
 //		chipDao.batchSave(readings);
+		for (RawChipRead tagRead : readings) {
+			logger.debug(tagRead);
+			List<ParticipantRegistration> registrationList = registrationWebservice.findByTag(tagRead.getRfidString());
+			showParticipantInfo(registrationList);
+		}
+	}
 
+	private void showParticipantInfo(List<ParticipantRegistration> registrationList) {
+		for (ParticipantRegistration participantRegistration : registrationList) {
+			previewFrame.setRegistration(participantRegistration);
+		}
+
+	}
+
+	/**
+	 * @param tagRead
+	 * @return
+	 */
+	private com.tiempometa.webservice.model.RawChipRead tagReadToWsRead(RawChipRead tagRead) {
+		com.tiempometa.webservice.model.RawChipRead wsRead = new com.tiempometa.webservice.model.RawChipRead();
+		wsRead.setCheckPoint(tagRead.getCheckPoint());
+		wsRead.setChipNumber(tagRead.getChipNumber());
+		wsRead.setCooked(tagRead.getCooked());
+		wsRead.setEventId(tagRead.getEventId());
+		wsRead.setFiltered(tagRead.getFiltered());
+		wsRead.setId(tagRead.getId());
+		wsRead.setLoadName(tagRead.getLoadName());
+		wsRead.setPhase(tagRead.getPhase());
+//			wsRead.setReadTime(tagRead.getReadTime());
+		wsRead.setReadType(tagRead.getReadType());
+		wsRead.setRfidString(tagRead.getRfidString());
+		wsRead.setTime(tagRead.getTime());
+		wsRead.setTimeMillis(tagRead.getTimeMillis());
+		return wsRead;
 	}
 }

@@ -104,7 +104,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 		return portFound;
 	}
 
-	public boolean openPort(String commPort) throws Exception {
+	public void openPort(String commPort) throws Exception {
 		boolean portOpened = false;
 		// parse ports and if the default port is found, initialized the reader
 		try {
@@ -113,7 +113,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 //			System.out.println(portList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Missing rxtx Serial");
+			throw e;
 		}
 		while (portList.hasMoreElements()) {
 			portId = (CommPortIdentifier) portList.nextElement();
@@ -144,19 +144,19 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 				serialPort.notifyOnOutputEmpty(true);
 			} catch (IOException e) {
 				e.printStackTrace();
-				portOpened = false;
+				throw e;
 			} catch (PortInUseException e) {
 				e.printStackTrace();
-				portOpened = false;
+				throw e;
 			} catch (TooManyListenersException e) {
 				e.printStackTrace();
-				portOpened = false;
+				throw e;
 			} catch (UnsupportedCommOperationException e) {
 				e.printStackTrace();
-				portOpened = false;
+				throw e;
 			} catch (Exception e) {
 				e.printStackTrace();
-				portOpened = false;
+				throw e;
 			}
 
 		} else {
@@ -169,7 +169,7 @@ public class SerialReader implements Runnable, SerialPortEventListener {
 			runme = true;
 			readThread.start();
 		}
-		return portOpened;
+//		return portOpened;
 	}
 
 	public void closePort() {
