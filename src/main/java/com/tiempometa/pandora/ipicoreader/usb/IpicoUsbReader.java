@@ -27,7 +27,7 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 	private String checkPointTwo;
 	private String terminal;
 	private String lastRfid;
-	private Integer mode;
+	private Integer mode = JIpicoUsbReaderPanel.MODE_CHECA_TU_CHIP;
 
 	public List<String> getSerialPorts() {
 		return serialReader.getPorts();

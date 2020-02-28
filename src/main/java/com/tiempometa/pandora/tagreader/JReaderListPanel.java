@@ -62,7 +62,7 @@ public class JReaderListPanel extends JPanel {
 		this.tagReadListener = tagReadListener;
 	}
 
-	public void addUsbReader() {
+	public void addIpicoUsbReader() {
 		JIpicoUsbReaderPanel reader = new JIpicoUsbReaderPanel(this);
 		reader.setTagReadListener(tagReadListener);
 		reader.setListPanel(this);
@@ -78,7 +78,7 @@ public class JReaderListPanel extends JPanel {
 //		repaint();
 	}
 
-	public void addEliteReader() {
+	public void addIpicoEliteReader() {
 		JIpicoEliteReaderPanel reader = new JIpicoEliteReaderPanel(this);
 		reader.setTagReadListener(tagReadListener);
 		reader.setListPanel(this);

@@ -121,7 +121,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
-		readerListPanel.addEliteReader();
+		readerListPanel.addIpicoEliteReader();
 	}
 
 	private void handleInvalidDatabaseSchema() {
@@ -249,11 +249,11 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	}
 
 	private void addUsbReaderMenuItemActionPerformed(ActionEvent e) {
-		readerListPanel.addUsbReader();
+		readerListPanel.addIpicoUsbReader();
 	}
 
 	private void addEliteReaderMenuItemActionPerformed(ActionEvent e) {
-		readerListPanel.addEliteReader();
+		readerListPanel.addIpicoEliteReader();
 	}
 
 	private void initComponents() {
