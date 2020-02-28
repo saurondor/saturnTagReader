@@ -2,8 +2,8 @@ JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
-	"i18n.bundlePackage": "com.tiempometa.pandora.ipicoreader"
-	"i18n.bundleName": "ipicoreader"
+	"i18n.bundlePackage": "com.tiempometa.pandora.tagreader"
+	"i18n.bundleName": "tagreader"
 	"i18n.keyPrefix": "JSplashScreen"
 	contentType: "form/swing"
 	root: new FormRoot {

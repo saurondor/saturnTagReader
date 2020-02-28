@@ -36,10 +36,10 @@ public class JReaderListPanel extends JPanel {
 		// //GEN-BEGIN:initComponents
 		listPanel = new JPanel();
 
-		// ======== this ========
+		//======== this ========
 		setLayout(new BorderLayout());
 
-		// ======== listPanel ========
+		//======== listPanel ========
 		{
 			listPanel.setAutoscrolls(true);
 			listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));

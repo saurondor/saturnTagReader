@@ -31,7 +31,7 @@ public class JSplashScreen extends JFrame {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		panel1 = new JPanel();
 		button1 = new JButton();
 		label1 = new JLabel();

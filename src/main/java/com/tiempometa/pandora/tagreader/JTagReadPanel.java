@@ -34,21 +34,23 @@ public class JTagReadPanel extends JPanel {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		label1 = new JLabel();
 		scrollPane1 = new JScrollPane();
 		tagReadTable = new JTable();
 
-		// ======== this ========
+		//======== this ========
 		setFont(new Font("Tahoma", Font.BOLD, 12));
-		setLayout(new FormLayout("7dlu, 159dlu, 7dlu", "2*(default, $lgap), default"));
+		setLayout(new FormLayout(
+			"7dlu, 159dlu, 7dlu",
+			"2*(default, $lgap), default"));
 
-		// ---- label1 ----
+		//---- label1 ----
 		label1.setText(bundle.getString("JTagReadPanel.label1.text"));
 		label1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		add(label1, CC.xy(2, 1));
 
-		// ======== scrollPane1 ========
+		//======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadTable);
 		}

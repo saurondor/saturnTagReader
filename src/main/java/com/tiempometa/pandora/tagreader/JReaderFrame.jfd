@@ -2,8 +2,8 @@ JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
-	"i18n.bundlePackage": "com.tiempometa.pandora.ipicoreader"
-	"i18n.bundleName": "ipicoreader"
+	"i18n.bundlePackage": "com.tiempometa.pandora.tagreader"
+	"i18n.bundleName": "tagreader"
 	"i18n.keyPrefix": "JIpicoReaderFrame"
 	contentType: "form/swing"
 	root: new FormRoot {
@@ -15,12 +15,12 @@ new FormModel {
 			"defaultCloseOperation": 0
 			"$sizePolicy": 1
 			"resizable": false
-			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JReaderListPanel" ) {
+			add( new FormComponent( "com.tiempometa.pandora.tagreader.JReaderListPanel" ) {
 				name: "readerListPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
-			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JTagReadPanel" ) {
+			add( new FormComponent( "com.tiempometa.pandora.tagreader.JTagReadPanel" ) {
 				name: "tagReadPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "East"
