@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tiempometa.pandora</groupId>
-	<artifactId>ipicoreader</artifactId>
+	<artifactId>tagreader</artifactId>
 	<version>4.0.1-SNAPSHOT</version>
-	<name>IPICO Reader</name>
+	<name>Tag Reader</name>
 	<description>Elite, Lite and USB reader interface</description>
 
 	<properties>
@@ -81,7 +81,7 @@
 								</transformer>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.tiempometa.pandora.ipicoreader.JIpicoReaderFrame</mainClass>
+									<mainClass>com.tiempometa.pandora.tagreader.JIpicoReaderFrame</mainClass>
 								</transformer>
 							</transformers>
 							<filters>

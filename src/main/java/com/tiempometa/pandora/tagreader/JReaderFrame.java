@@ -2,38 +2,80 @@
  * Created by JFormDesigner on Sat Feb 22 14:35:58 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.time.DateTimeException;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
 
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewConfig;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
+import com.tiempometa.pandora.ipicoreader.JImportBackupsFrame;
+import com.tiempometa.pandora.ipicoreader.JPandoraApplication;
+import com.tiempometa.pandora.ipicoreader.JReaderListPanel;
+import com.tiempometa.pandora.ipicoreader.JTagReadPanel;
+import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
+import com.tiempometa.webservice.RegistrationWebservice;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, TagReadListener {
+public class JReaderFrame extends JFrame implements JPandoraApplication, TagReadListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5737894657705021013L;
-	private static final Logger logger = Logger.getLogger(JIpicoReaderFrame.class);
+	private static final Logger logger = Logger.getLogger(JReaderFrame.class);
 	static JSplashScreen splash = new JSplashScreen();
 	private String eventTitle;
 	JPreviewFrame previewFrame = new JPreviewFrame();
+	String serverAddress = null;
+	private RegistrationWebservice client;
+	ZoneId zoneId = null;
 
-	public JIpicoReaderFrame() {
+	/**
+	 * 
+	 */
+	private void initWebserviceClient() {
+		try {
+			JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
+			factory.setServiceClass(RegistrationWebservice.class);
+			String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
+			logger.info("Connecting webservice to " + wsAddress);
+			factory.setAddress(wsAddress);
+			client = (RegistrationWebservice) factory.create();
+			logger.info("Client created");
+			String zoneIdString = client.getZoneId();
+			try {
+				zoneId = ZoneId.of(zoneIdString);
+			} catch (DateTimeException e) {
+				JOptionPane.showMessageDialog(this, "No se pudo establecer la zona horaria." + e.getMessage(),
+						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+			logger.info("Set timezone to " + zoneIdString);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this,
+					"No se pudo conectar a la base de datos.\nVerifica que el Saturno esté funcionando y disponible en la dirección :"
+							+ serverAddress + "\nError:" + e.getMessage(),
+					"Error de conexión: ", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public JReaderFrame() {
 		splash.setVisible(true);
 		boolean connected = false;
 		do {
@@ -41,10 +83,13 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				showProgress("Cargando configuración", 20);
 				Context.setApplication(this);
 				Context.loadSettings();
-				showProgress("Abriendo evento", 40);
-				Context.openEvent();
+				serverAddress = Context.loadServerAddress();
+				showProgress("Probando conexión al servidor @" + serverAddress, 40);
+				initWebserviceClient();
+				client.getZoneId();
+//				Context.openEvent();
 				connected = true;
-				Context.setApplicationTitle(Context.registrationHelper.getEvent().getTitle());
+//				Context.setApplicationTitle(Context.registrationHelper.getEvent().getTitle());
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "No se pudo cargar la configuración " + e.getMessage(),
 						"Error de configuración", JOptionPane.ERROR_MESSAGE);
@@ -55,7 +100,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				if (e instanceof org.springframework.dao.InvalidDataAccessResourceUsageException) {
 					handleInvalidDatabaseSchema();
 				} else {
-					connected = handleMissingDatabase(connected, e);
+//					connected = handleMissingDatabase(connected, e);
 				}
 //				JOptionPane.showMessageDialog(this, "Inicializar el evento. " + e.getMessage(),
 //						"Error de configuración", JOptionPane.ERROR_MESSAGE);
@@ -87,33 +132,33 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 
 	}
 
-	private void openEvent(boolean b) {
-		JOpenEventDialog openEventDialog = new JOpenEventDialog(this);
-		logger.debug("Opening new event");
-		openEventDialog.setVisible(true);
-		logger.debug("Event opened");
-	}
+//	private void openEvent(boolean b) {
+//		JOpenEventDialog openEventDialog = new JOpenEventDialog(this);
+//		logger.debug("Opening new event");
+//		openEventDialog.setVisible(true);
+//		logger.debug("Event opened");
+//	}
 
-	private boolean handleMissingDatabase(boolean connected, Exception e) {
-		// if invalid database format
-		int response = JOptionPane.showConfirmDialog(this,
-				"La base de datos seleccionada no es compatible con esta versión. \n¿Deseas cambiar de base de datos?",
-				"Error conectando a la base", JOptionPane.YES_NO_CANCEL_OPTION);
-		switch (response) {
-		case JOptionPane.CANCEL_OPTION:
-			dispose();
-			System.exit(0);
-			break;
-		case JOptionPane.YES_OPTION:
-			openEvent(true);
-			return true;
-		case JOptionPane.NO_OPTION:
-			return false;
-		default:
-			return false;
-		}
-		return false;
-	}
+//	private boolean handleMissingDatabase(boolean connected, Exception e) {
+//		// if invalid database format
+//		int response = JOptionPane.showConfirmDialog(this,
+//				"La base de datos seleccionada no es compatible con esta versión. \n¿Deseas cambiar de base de datos?",
+//				"Error conectando a la base", JOptionPane.YES_NO_CANCEL_OPTION);
+//		switch (response) {
+//		case JOptionPane.CANCEL_OPTION:
+//			dispose();
+//			System.exit(0);
+//			break;
+//		case JOptionPane.YES_OPTION:
+//			openEvent(true);
+//			return true;
+//		case JOptionPane.NO_OPTION:
+//			return false;
+//		default:
+//			return false;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * @param status
@@ -176,7 +221,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		} catch (IllegalAccessException e) {
 			// handle exception
 		}
-		JIpicoReaderFrame timer = new JIpicoReaderFrame();
+		JReaderFrame timer = new JReaderFrame();
 		timer.setVisible(true);
 	}
 
@@ -221,11 +266,19 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		openEventMenuItem = new JMenuItem();
+		importBackupMenuItem = new JMenuItem();
 		closeMenuItem = new JMenuItem();
 		menu2 = new JMenu();
+		menu4 = new JMenu();
 		addEliteReaderMenuItem = new JMenuItem();
 		addUsbReaderMenuItem = new JMenuItem();
-		importBackupMenuItem = new JMenuItem();
+		menu5 = new JMenu();
+		menuItem1 = new JMenuItem();
+		menu6 = new JMenu();
+		menuItem2 = new JMenuItem();
+		menu7 = new JMenu();
+		menuItem3 = new JMenuItem();
+		menuItem4 = new JMenuItem();
 		menu3 = new JMenu();
 		checaTuChipConfigurationMenuItem = new JMenuItem();
 		showPreviewMenuItem = new JMenuItem();
@@ -234,7 +287,7 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 
 		// ======== this ========
 		setIconImage(new ImageIcon(
-				getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png"))
+				getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png"))
 						.getImage());
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -259,6 +312,16 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 				});
 				menu1.add(openEventMenuItem);
 
+				// ---- importBackupMenuItem ----
+				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
+				importBackupMenuItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						importBackupMenuItemActionPerformed(e);
+					}
+				});
+				menu1.add(importBackupMenuItem);
+
 				// ---- closeMenuItem ----
 				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
 				closeMenuItem.addActionListener(new ActionListener() {
@@ -275,35 +338,65 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 			{
 				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				// ---- addEliteReaderMenuItem ----
-				addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
-				addEliteReaderMenuItem.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						addEliteReaderMenuItemActionPerformed(e);
-					}
-				});
-				menu2.add(addEliteReaderMenuItem);
+				// ======== menu4 ========
+				{
+					menu4.setText(bundle.getString("JIpicoReaderFrame.menu4.text"));
 
-				// ---- addUsbReaderMenuItem ----
-				addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
-				addUsbReaderMenuItem.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						addUsbReaderMenuItemActionPerformed(e);
-					}
-				});
-				menu2.add(addUsbReaderMenuItem);
+					// ---- addEliteReaderMenuItem ----
+					addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
+					addEliteReaderMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							addEliteReaderMenuItemActionPerformed(e);
+						}
+					});
+					menu4.add(addEliteReaderMenuItem);
 
-				// ---- importBackupMenuItem ----
-				importBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importBackupMenuItem.text"));
-				importBackupMenuItem.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						importBackupMenuItemActionPerformed(e);
-					}
-				});
-				menu2.add(importBackupMenuItem);
+					// ---- addUsbReaderMenuItem ----
+					addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
+					addUsbReaderMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							addUsbReaderMenuItemActionPerformed(e);
+						}
+					});
+					menu4.add(addUsbReaderMenuItem);
+				}
+				menu2.add(menu4);
+
+				// ======== menu5 ========
+				{
+					menu5.setText(bundle.getString("JIpicoReaderFrame.menu5.text"));
+
+					// ---- menuItem1 ----
+					menuItem1.setText(bundle.getString("JIpicoReaderFrame.menuItem1.text"));
+					menu5.add(menuItem1);
+				}
+				menu2.add(menu5);
+
+				// ======== menu6 ========
+				{
+					menu6.setText(bundle.getString("JIpicoReaderFrame.menu6.text"));
+
+					// ---- menuItem2 ----
+					menuItem2.setText(bundle.getString("JIpicoReaderFrame.menuItem2.text"));
+					menu6.add(menuItem2);
+				}
+				menu2.add(menu6);
+
+				// ======== menu7 ========
+				{
+					menu7.setText(bundle.getString("JIpicoReaderFrame.menu7.text"));
+
+					// ---- menuItem3 ----
+					menuItem3.setText(bundle.getString("JIpicoReaderFrame.menuItem3.text"));
+					menu7.add(menuItem3);
+
+					// ---- menuItem4 ----
+					menuItem4.setText(bundle.getString("JIpicoReaderFrame.menuItem4.text"));
+					menu7.add(menuItem4);
+				}
+				menu2.add(menu7);
 			}
 			menuBar1.add(menu2);
 
@@ -346,11 +439,19 @@ public class JIpicoReaderFrame extends JFrame implements JPandoraApplication, Ta
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	private JMenuItem openEventMenuItem;
+	private JMenuItem importBackupMenuItem;
 	private JMenuItem closeMenuItem;
 	private JMenu menu2;
+	private JMenu menu4;
 	private JMenuItem addEliteReaderMenuItem;
 	private JMenuItem addUsbReaderMenuItem;
-	private JMenuItem importBackupMenuItem;
+	private JMenu menu5;
+	private JMenuItem menuItem1;
+	private JMenu menu6;
+	private JMenuItem menuItem2;
+	private JMenu menu7;
+	private JMenuItem menuItem3;
+	private JMenuItem menuItem4;
 	private JMenu menu3;
 	private JMenuItem checaTuChipConfigurationMenuItem;
 	private JMenuItem showPreviewMenuItem;

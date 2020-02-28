@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 15:10:04 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import java.util.*;
@@ -45,7 +45,7 @@ public class JSplashScreen extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setUndecorated(true);
-		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 
@@ -57,7 +57,7 @@ public class JSplashScreen extends JFrame {
 				"20dlu, 2*($lgap, default), $lgap, 26dlu, $lgap, default, $lgap, 86dlu, 2*($lgap, default)"));
 
 			//---- button1 ----
-			button1.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png")));
+			button1.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")));
 			button1.setFocusable(false);
 			panel1.add(button1, CC.xywh(3, 3, 1, 9));
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -9,6 +9,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.pandora.ipicoreader.JPandoraApplication;
+import com.tiempometa.pandora.ipicoreader.PandoraSettings;
+import com.tiempometa.pandora.ipicoreader.PreviewHelper;
+import com.tiempometa.pandora.ipicoreader.SettingsHandler;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
 
@@ -22,7 +26,7 @@ public class Context extends com.tiempometa.timing.Context {
 	public static SettingsHandler settings = null;
 	private static JPandoraApplication application;
 
-	public static void setApplication(JIpicoReaderFrame app) {
+	public static void setApplication(JReaderFrame app) {
 		application = app;
 	}
 
@@ -69,9 +73,9 @@ public class Context extends com.tiempometa.timing.Context {
 	public static void loadSettings() throws IOException {
 		settings = new SettingsHandler();
 		settings.init();
-		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
-		databasePassword = Context.loadSetting(PandoraSettings.DB_PASSWORD, "");
-		databaseUsername = Context.loadSetting(PandoraSettings.DB_USERNAME, "root");
+//		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
+//		databasePassword = Context.loadSetting(PandoraSettings.DB_PASSWORD, "");
+//		databaseUsername = Context.loadSetting(PandoraSettings.DB_USERNAME, "root");
 	}
 
 	public static void saveReaderAddress(String address) throws IOException {

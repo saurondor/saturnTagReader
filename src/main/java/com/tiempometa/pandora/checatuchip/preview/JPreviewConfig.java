@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.gui.*;
-import com.tiempometa.pandora.ipicoreader.Context;
+import com.tiempometa.pandora.tagreader.Context;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

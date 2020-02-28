@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.ipicoreader.Context;
+import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.Bib;
 import com.tiempometa.webservice.model.Participant;
 import com.tiempometa.webservice.model.ParticipantRegistration;

@@ -40,7 +40,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "removeReaderButton"
-				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/ipicoreader/x-remove.png" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 15

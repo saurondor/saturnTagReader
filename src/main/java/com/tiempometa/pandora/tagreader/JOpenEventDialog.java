@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Fri May 24 10:18:31 EDT 2019
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -16,6 +16,7 @@ import javax.swing.*;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.ipicoreader.PandoraSettings;
 import com.tiempometa.timing.model.Event;
 
 import org.hibernate.HibernateException;

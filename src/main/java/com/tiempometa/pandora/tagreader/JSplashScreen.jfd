@@ -15,7 +15,7 @@ new FormModel {
 			"$sizePolicy": 1
 			"resizable": false
 			"undecorated": true
-			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png" )
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png" )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 				"$columnSpecs": "20dlu, labelcompgap, 179dlu, labelcompgap, 159dlu"
 				"$rowSpecs": "20dlu, linegap, default, linegap, default, linegap, 26dlu, linegap, default, linegap, 86dlu, linegap, default, linegap, default"
@@ -24,7 +24,7 @@ new FormModel {
 				"font": new java.awt.Font( "Tahoma", 1, 14 )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button1"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png" )
 					"focusable": false
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 3

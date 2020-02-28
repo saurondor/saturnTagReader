@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
+import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RouteDao;
 
@@ -274,7 +275,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 		add(connectButton, CC.xy(7, 3));
 
 		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/ipicoreader/x-remove.png")));
+		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
