@@ -28,12 +28,13 @@ import com.tiempometa.pandora.macsha.commands.StartCommand;
 import com.tiempometa.pandora.macsha.commands.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
+import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler, TagReadListener {
+public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */
@@ -165,7 +166,7 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		listPanel.removeReader(this);
 	}
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {

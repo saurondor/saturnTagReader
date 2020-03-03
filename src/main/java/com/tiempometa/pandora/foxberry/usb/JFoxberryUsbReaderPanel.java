@@ -27,6 +27,7 @@ import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
+import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.timing.model.dao.RouteDao;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
@@ -34,7 +35,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryUsbReaderPanel extends JIpicoReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JFoxberryUsbReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */

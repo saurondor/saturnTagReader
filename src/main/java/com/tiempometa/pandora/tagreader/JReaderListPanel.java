@@ -49,7 +49,7 @@ public class JReaderListPanel extends JPanel {
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
-	public void removeReader(JIpicoReaderPanel reader) {
+	public void removeReader(JReaderPanel reader) {
 		listPanel.remove(reader);
 		listPanel.validate();
 		listPanel.repaint();
