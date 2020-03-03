@@ -206,12 +206,12 @@ public class FoxberryUSBClient implements Runnable {
 	}
 
 	public List<String> getSerialPorts() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> ports = new ArrayList<String>();
+		return ports;
 	}
 
 	public void connect(String selectedItem) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

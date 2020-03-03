@@ -7,11 +7,15 @@ package com.tiempometa.pandora.tagreader;
 import java.awt.*;
 import javax.swing.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.foxberry.tcpip.JFoxberryReaderPanel;
+import com.tiempometa.pandora.foxberry.usb.JFoxberryUsbReaderPanel;
 import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
 import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.tcpip.JIpicoEliteReaderPanel;
 import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
 import com.tiempometa.pandora.macsha.JMacshaReaderPanel;
+import com.tiempometa.pandora.rfidtiming.JUltraReaderPanel;
+import com.tiempometa.pandora.timinsense.JTSCollectorPanel;
 
 import org.apache.log4j.Logger;
 
@@ -112,22 +116,61 @@ public class JReaderListPanel extends JPanel {
 	}
 
 	public void addUltraReader() {
-		// TODO Auto-generated method stub
-		
+		JUltraReaderPanel reader = new JUltraReaderPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
 	}
 
 	public void addFoxberryReader() {
-		// TODO Auto-generated method stub
+		JFoxberryReaderPanel reader = new JFoxberryReaderPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
 		
 	}
 
 	public void addFoxberryUSBReader() {
-		// TODO Auto-generated method stub
+		JFoxberryUsbReaderPanel reader = new JFoxberryUsbReaderPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
 		
 	}
 
 	public void addTSCollector() {
-		// TODO Auto-generated method stub
+		JTSCollectorPanel reader = new JTSCollectorPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
 		
 	}
 }
