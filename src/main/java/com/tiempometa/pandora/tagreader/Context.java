@@ -30,7 +30,7 @@ public class Context extends com.tiempometa.timing.Context {
 	private static RegistrationWebservice registrationWebservice;
 	private static ResultsWebservice resultsWebservice;
 	private static String serverAddress = null;
-	private static ZoneId zoneId = null;
+//	private static ZoneId zoneId = null;
 
 	public static void initWebservieClients() {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
@@ -42,7 +42,8 @@ public class Context extends com.tiempometa.timing.Context {
 		logger.info("Registration client created");
 		registrationWebservice.findByTag("TAG");
 		String zoneIdString = registrationWebservice.getZoneId();
-		zoneId = ZoneId.of(zoneIdString);
+		logger.info("Setting zone id to " + zoneIdString);
+		setZoneId(ZoneId.of(zoneIdString));
 		logger.info("Set timezone to " + zoneIdString);
 		factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(ResultsWebservice.class);
@@ -167,5 +168,13 @@ public class Context extends com.tiempometa.timing.Context {
 	public static RegistrationWebservice getRegistrationWebservice() {
 		return registrationWebservice;
 	}
+
+//	public static ZoneId getZoneId() {
+//		return zoneId;
+//	}
+//
+//	public static void setZoneId(ZoneId zoneId) {
+//		Context.zoneId = zoneId;
+//	}
 
 }

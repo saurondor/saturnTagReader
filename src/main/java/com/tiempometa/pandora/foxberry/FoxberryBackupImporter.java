@@ -16,7 +16,6 @@ import org.apache.commons.csv.CSVRecord;
 
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.tagreader.Context;
-import com.tiempometa.pandora.timinsense.TimingsenseTagRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
