@@ -41,7 +41,6 @@ public class TimingsenseBackupImporter implements BackupImporter {
 	public void load(File dataFile) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(dataFile));
 		chipReads = new ArrayList<RawChipRead>();
-		String dataLine;
 		Reader in = new FileReader(dataFile);
 		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
 		for (CSVRecord record : records) {
