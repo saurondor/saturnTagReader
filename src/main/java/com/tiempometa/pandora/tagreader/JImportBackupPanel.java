@@ -24,6 +24,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  * @author Gerardo Esteban Tasistro Giubetic
  */
 public class JImportBackupPanel extends JPanel {
+	BackupImporter importer;
 	/**
 	 * 
 	 */
@@ -41,7 +42,6 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private void loadCheckPoints() {
-//		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
 		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
 		String[] checkPointArray = new String[checkPoints.size()];
 		if (checkPointArray.length > 0) {
@@ -76,18 +76,10 @@ public class JImportBackupPanel extends JPanel {
 	}
 
 	private void loadDataFile() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(dataFile));
-		List<RawChipRead> chipReads = new ArrayList<RawChipRead>();
-		String dataLine;
-		while ((dataLine = br.readLine()) != null) {
-			IpicoRead tagRead = IpicoRead.parseString(dataLine, Context.getZoneId());
-			chipReads.add(tagRead.toRawChipRead());
-		}
-		logger.info("Read log count " + chipReads.size());
-		tableModel.setChipReads(chipReads);
+		importer.load(dataFile);
+		tableModel.setChipReads(importer.getChipReads());
 		tableModel.fireTableDataChanged();
 		loadCheckPoints();
-		br.close();
 	}
 
 	private void applyCheckPointButtonActionPerformed(ActionEvent e) {
@@ -118,17 +110,16 @@ public class JImportBackupPanel extends JPanel {
 		applyCheckPointButton = new JButton();
 		importButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"8dlu, $lcgap, 334dlu",
-			"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
+		// ======== this ========
+		setLayout(new FormLayout("8dlu, $lcgap, 334dlu",
+				"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JImportBackupPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 		add(fileLabel, CC.xy(3, 5));
 
-		//---- fileOpenButton ----
+		// ---- fileOpenButton ----
 		fileOpenButton.setText(bundle.getString("JImportBackupPanel.fileOpenButton.text"));
 		fileOpenButton.addActionListener(new ActionListener() {
 			@Override
@@ -138,17 +129,17 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(fileOpenButton, CC.xy(3, 7));
 
-		//======== scrollPane1 ========
+		// ======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadsTable);
 		}
 		add(scrollPane1, CC.xy(3, 9));
 
-		//---- checkPointComboBox ----
+		// ---- checkPointComboBox ----
 		checkPointComboBox.setEnabled(false);
 		add(checkPointComboBox, CC.xy(3, 11));
 
-		//---- applyCheckPointButton ----
+		// ---- applyCheckPointButton ----
 		applyCheckPointButton.setText(bundle.getString("JImportBackupPanel.applyCheckPointButton.text"));
 		applyCheckPointButton.addActionListener(new ActionListener() {
 			@Override
@@ -158,7 +149,7 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(applyCheckPointButton, CC.xy(3, 13));
 
-		//---- importButton ----
+		// ---- importButton ----
 		importButton.setText(bundle.getString("JImportBackupPanel.importButton.text"));
 		importButton.setEnabled(false);
 		importButton.addActionListener(new ActionListener() {
@@ -181,4 +172,8 @@ public class JImportBackupPanel extends JPanel {
 	private JButton applyCheckPointButton;
 	private JButton importButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
+
+	public void setImporter(BackupImporter importer) {
+		this.importer = importer;
+	}
 }

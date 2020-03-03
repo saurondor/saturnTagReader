@@ -23,6 +23,7 @@ public class JImportBackupsFrame extends JFrame {
 	public JImportBackupsFrame(BackupImporter importer) {
 		initComponents();
 		this.importer = importer;
+		importPanel.setImporter(importer);
 	}
 
 	private void initComponents() {

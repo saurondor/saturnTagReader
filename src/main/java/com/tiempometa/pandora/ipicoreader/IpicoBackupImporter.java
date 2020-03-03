@@ -3,27 +3,44 @@
  */
 package com.tiempometa.pandora.ipicoreader;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
+import com.tiempometa.pandora.tagreader.Context;
 
 /**
  * @author gtasi
  *
  */
 public class IpicoBackupImporter implements BackupImporter {
+	List<RawChipRead> chipReads = new ArrayList<RawChipRead>();
 
 	@Override
-	public void load(String fileName) {
-		// TODO Auto-generated method stub
-
+	public void load(String fileName) throws IOException {
+		load(new File(fileName));
 	}
 
 	@Override
 	public List<RawChipRead> getChipReads() {
-		// TODO Auto-generated method stub
-		return null;
+		return chipReads;
+	}
+
+	@Override
+	public void load(File dataFile) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(dataFile));
+		chipReads = new ArrayList<RawChipRead>();
+		String dataLine;
+		while ((dataLine = br.readLine()) != null) {
+			IpicoRead tagRead = IpicoRead.parseString(dataLine, Context.getZoneId());
+			chipReads.add(tagRead.toRawChipRead());
+		}
+		br.close();
 	}
 
 }

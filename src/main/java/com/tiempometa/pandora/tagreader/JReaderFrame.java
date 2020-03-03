@@ -117,34 +117,6 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	}
 
-//	private void openEvent(boolean b) {
-//		JOpenEventDialog openEventDialog = new JOpenEventDialog(this);
-//		logger.debug("Opening new event");
-//		openEventDialog.setVisible(true);
-//		logger.debug("Event opened");
-//	}
-
-//	private boolean handleMissingDatabase(boolean connected, Exception e) {
-//		// if invalid database format
-//		int response = JOptionPane.showConfirmDialog(this,
-//				"La base de datos seleccionada no es compatible con esta versión. \n¿Deseas cambiar de base de datos?",
-//				"Error conectando a la base", JOptionPane.YES_NO_CANCEL_OPTION);
-//		switch (response) {
-//		case JOptionPane.CANCEL_OPTION:
-//			dispose();
-//			System.exit(0);
-//			break;
-//		case JOptionPane.YES_OPTION:
-//			openEvent(true);
-//			return true;
-//		case JOptionPane.NO_OPTION:
-//			return false;
-//		default:
-//			return false;
-//		}
-//		return false;
-//	}
-
 	/**
 	 * @param status
 	 * @param progress
