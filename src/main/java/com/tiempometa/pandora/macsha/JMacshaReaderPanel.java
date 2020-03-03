@@ -61,7 +61,6 @@ public class JMacshaReaderPanel extends JPanel implements CommandResponseHandler
 	 * 
 	 */
 	private void loadCheckPoints() {
-//		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
 		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
