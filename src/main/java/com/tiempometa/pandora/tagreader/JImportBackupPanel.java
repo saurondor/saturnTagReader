@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 15:31:19 CST 2020
  */
 
-package com.tiempometa.pandora.ipicoreader;
+package com.tiempometa.pandora.tagreader;
 
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -17,9 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.tagreader.Context;
-import com.tiempometa.pandora.tagreader.PandoraSettings;
-import com.tiempometa.pandora.tagreader.RawChipReadTableModel;
+import com.tiempometa.pandora.ipicoreader.IpicoRead;
 import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.timing.model.dao.RouteDao;
@@ -113,7 +111,7 @@ public class JImportBackupPanel extends JPanel {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		label1 = new JLabel();
 		fileLabel = new JLabel();
 		fileOpenButton = new JButton();
@@ -123,16 +121,17 @@ public class JImportBackupPanel extends JPanel {
 		applyCheckPointButton = new JButton();
 		importButton = new JButton();
 
-		// ======== this ========
-		setLayout(new FormLayout("8dlu, $lcgap, 334dlu",
-				"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
+		//======== this ========
+		setLayout(new FormLayout(
+			"8dlu, $lcgap, 334dlu",
+			"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
 
-		// ---- label1 ----
+		//---- label1 ----
 		label1.setText(bundle.getString("JImportBackupPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 		add(fileLabel, CC.xy(3, 5));
 
-		// ---- fileOpenButton ----
+		//---- fileOpenButton ----
 		fileOpenButton.setText(bundle.getString("JImportBackupPanel.fileOpenButton.text"));
 		fileOpenButton.addActionListener(new ActionListener() {
 			@Override
@@ -142,17 +141,17 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(fileOpenButton, CC.xy(3, 7));
 
-		// ======== scrollPane1 ========
+		//======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadsTable);
 		}
 		add(scrollPane1, CC.xy(3, 9));
 
-		// ---- checkPointComboBox ----
+		//---- checkPointComboBox ----
 		checkPointComboBox.setEnabled(false);
 		add(checkPointComboBox, CC.xy(3, 11));
 
-		// ---- applyCheckPointButton ----
+		//---- applyCheckPointButton ----
 		applyCheckPointButton.setText(bundle.getString("JImportBackupPanel.applyCheckPointButton.text"));
 		applyCheckPointButton.addActionListener(new ActionListener() {
 			@Override
@@ -162,7 +161,7 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(applyCheckPointButton, CC.xy(3, 13));
 
-		// ---- importButton ----
+		//---- importButton ----
 		importButton.setText(bundle.getString("JImportBackupPanel.importButton.text"));
 		importButton.setEnabled(false);
 		importButton.addActionListener(new ActionListener() {

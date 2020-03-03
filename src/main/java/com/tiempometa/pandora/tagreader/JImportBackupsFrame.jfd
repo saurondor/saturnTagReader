@@ -2,8 +2,8 @@ JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
-	"i18n.bundlePackage": "com.tiempometa.pandora.ipicoreader"
-	"i18n.bundleName": "ipicoreader"
+	"i18n.bundlePackage": "com.tiempometa.pandora.tagreader"
+	"i18n.bundleName": "tagreader"
 	"i18n.keyPrefix": "JImportBackupsFrame"
 	contentType: "form/swing"
 	root: new FormRoot {
@@ -11,8 +11,8 @@ new FormModel {
 			name: "this"
 			"title": new FormMessage( null, "JImportBackupsFrame.this.title" )
 			"$sizePolicy": 1
-			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/ipicoreader/tiempometa_icon_large_alpha.png" )
-			add( new FormComponent( "com.tiempometa.pandora.ipicoreader.JImportBackupPanel" ) {
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png" )
+			add( new FormComponent( "com.tiempometa.pandora.tagreader.JImportBackupPanel" ) {
 				name: "importPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
