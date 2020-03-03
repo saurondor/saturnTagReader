@@ -18,9 +18,7 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.ipicoreader.IpicoRead;
-import com.tiempometa.timing.model.RawChipRead;
-import com.tiempometa.timing.model.dao.RawChipReadDao;
-import com.tiempometa.timing.model.dao.RouteDao;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -43,8 +41,8 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private void loadCheckPoints() {
-		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
-		List<String> checkPoints = rDao.getCheckPointNames();
+//		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
+		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
 		String[] checkPointArray = new String[checkPoints.size()];
 		if (checkPointArray.length > 0) {
 			checkPointComboBox.setEnabled(true);
@@ -102,8 +100,7 @@ public class JImportBackupPanel extends JPanel {
 	}
 
 	private void importButtonActionPerformed(ActionEvent e) {
-		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
-		chipDao.batchSave(tableModel.getChipReads());
+		Context.getResultsWebservice().batchSaveRawReads(tableModel.getChipReads());
 		JOptionPane.showMessageDialog(this, "Se guardaron " + tableModel.getChipReads().size() + " lecturas",
 				"Importación exitosa", JOptionPane.INFORMATION_MESSAGE);
 	}

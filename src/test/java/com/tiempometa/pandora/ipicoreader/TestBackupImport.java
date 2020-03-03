@@ -5,22 +5,27 @@ package com.tiempometa.pandora.ipicoreader;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.tiempometa.pandora.tagreader.BackupImporter;
+import com.tiempometa.webservice.model.RawChipRead;
+
+
 /**
  * @author gtasi
  *
  */
-public class TestTextFile {
-	private static final Logger logger = Logger.getLogger(TestTextFile.class);
+public class TestBackupImport {
+
+	private static final Logger logger = Logger.getLogger(TestBackupImport.class);
 
 	/**
 	 * @throws java.lang.Exception
@@ -34,6 +39,19 @@ public class TestTextFile {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testBackupImporter() {
+		BackupImporter importer = new IpicoBackupImporter();
+		String fileName = "/backups/ipico/FS_LS.log.txt";
+		try {
+			importer.load(fileName);
+			List<RawChipRead> readList = importer.getChipReads();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -75,7 +93,7 @@ public class TestTextFile {
 	public void testParseLineFromFile() {
 //		this.getClass().getResourceAsStream("FS_LS.log.txt");
 		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(this.getClass().getResourceAsStream("/FS_LS.log.txt")));
+				new InputStreamReader(this.getClass().getResourceAsStream("/backups/ipico/FS_LS.log.txt")));
 		String line = null;
 		do {
 			try {

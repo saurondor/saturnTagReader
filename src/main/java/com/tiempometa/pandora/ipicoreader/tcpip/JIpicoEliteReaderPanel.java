@@ -26,8 +26,8 @@ import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
-import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RouteDao;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

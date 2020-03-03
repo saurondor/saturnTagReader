@@ -4,13 +4,19 @@
 package com.tiempometa.pandora.tagreader;
 
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.log4j.Logger;
 
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
+import com.tiempometa.webservice.RegistrationWebservice;
+import com.tiempometa.webservice.ResultsWebservice;
 
 /**
  * @author gtasi
@@ -21,6 +27,31 @@ public class Context extends com.tiempometa.timing.Context {
 	public static PreviewHelper previewHelper = new PreviewHelper();
 	public static SettingsHandler settings = null;
 	private static JPandoraApplication application;
+	private static RegistrationWebservice registrationWebservice;
+	private static ResultsWebservice resultsWebservice;
+	private static String serverAddress = null;
+	private static ZoneId zoneId = null;
+
+	public static void initWebservieClients() {
+		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
+		factory.setServiceClass(RegistrationWebservice.class);
+		String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
+		logger.info("Connecting webservice to " + wsAddress);
+		factory.setAddress(wsAddress);
+		registrationWebservice = (RegistrationWebservice) factory.create();
+		logger.info("Registration client created");
+		registrationWebservice.findByTag("TAG");
+		String zoneIdString = registrationWebservice.getZoneId();
+		zoneId = ZoneId.of(zoneIdString);
+		logger.info("Set timezone to " + zoneIdString);
+		factory = new JaxWsProxyFactoryBean();
+		factory.setServiceClass(ResultsWebservice.class);
+		wsAddress = "http://" + serverAddress + ":9000/resultsClient";
+		logger.info("Connecting webservice to " + wsAddress);
+		factory.setAddress(wsAddress);
+		resultsWebservice = (ResultsWebservice) factory.create();
+		logger.info("Results client created");
+	}
 
 	public static void setApplication(JReaderFrame app) {
 		application = app;
@@ -90,8 +121,8 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	public static String loadServerAddress() {
-		String address = Context.loadSetting("serverAddress", "127.0.0.1");
-		return address;
+		serverAddress = Context.loadSetting("serverAddress", "127.0.0.1");
+		return serverAddress;
 	}
 
 	public static String loadSetting(String setting, String defaultValue) {
@@ -123,6 +154,18 @@ public class Context extends com.tiempometa.timing.Context {
 	public static void setDatabaseNameSetting(String selectedItem) throws IOException {
 		// TODO Auto-generated method stub
 
+	}
+
+	public static String getServerAddress() {
+		return serverAddress;
+	}
+
+	public static ResultsWebservice getResultsWebservice() {
+		return resultsWebservice;
+	}
+
+	public static RegistrationWebservice getRegistrationWebservice() {
+		return registrationWebservice;
 	}
 
 }

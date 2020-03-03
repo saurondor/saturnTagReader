@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.webservice.model.RawChipRead;
+
 
 /**
  * @author gtasi

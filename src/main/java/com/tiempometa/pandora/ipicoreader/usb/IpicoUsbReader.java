@@ -13,8 +13,7 @@ import com.tiempometa.Utils;
 import com.tiempometa.pandora.ipicoreader.ReadListener;
 import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.tagreader.SerialReader;
-import com.tiempometa.timing.model.CookedChipRead;
-import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author gtasi

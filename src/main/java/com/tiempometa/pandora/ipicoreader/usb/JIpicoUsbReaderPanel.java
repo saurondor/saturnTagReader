@@ -27,9 +27,8 @@ import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
-import com.tiempometa.timing.model.CookedChipRead;
-import com.tiempometa.timing.model.RawChipRead;
-import com.tiempometa.timing.model.dao.RouteDao;
+import com.tiempometa.webservice.model.CookedChipRead;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -144,8 +143,7 @@ public class JIpicoUsbReaderPanel extends JIpicoReaderPanel implements CommandRe
 	}
 
 	private void loadCheckPoints() {
-		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
-		List<String> checkPoints = rDao.getCheckPointNames();
+		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);

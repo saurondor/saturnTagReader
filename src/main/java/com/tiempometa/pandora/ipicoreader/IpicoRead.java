@@ -10,7 +10,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import com.tiempometa.Utils;
-import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * Raw Chip read data structure to represent each individual time data.

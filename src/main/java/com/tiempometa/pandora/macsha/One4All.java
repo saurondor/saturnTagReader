@@ -35,8 +35,8 @@ import com.tiempometa.pandora.macsha.commands.SetTimeCommand;
 import com.tiempometa.pandora.macsha.commands.StartCommand;
 import com.tiempometa.pandora.macsha.commands.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
-import com.tiempometa.timing.model.RawChipRead;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author gtasi
@@ -290,7 +290,7 @@ public class One4All implements Runnable {
 	}
 
 	private void notifyTagReads(List<MacshaTagRead> readings) {
-		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
+//		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
 		List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 		for (MacshaTagRead macshaTagRead : readings) {
 			RawChipRead chipRead = macshaTagRead.toRawChipRead();
@@ -299,7 +299,7 @@ public class One4All implements Runnable {
 			}
 			chipReadList.add(chipRead);
 		}
-		chipDao.batchSave(chipReadList);
+//		chipDao.batchSave(chipReadList);
 		tagReadListener.notifyTagReads(chipReadList);
 	}
 

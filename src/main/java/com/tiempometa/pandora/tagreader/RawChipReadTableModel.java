@@ -8,7 +8,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.webservice.model.RawChipRead;
+
 
 /**
  * @author gtasi

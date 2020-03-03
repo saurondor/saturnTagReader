@@ -26,12 +26,11 @@ import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
-import com.tiempometa.timing.model.RawChipRead;
-import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.RegistrationWebservice;
 import com.tiempometa.webservice.ResultsWebservice;
 import com.tiempometa.webservice.model.Bib;
 import com.tiempometa.webservice.model.ParticipantRegistration;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -45,46 +44,22 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	static JSplashScreen splash = new JSplashScreen();
 	private String eventTitle;
 	JPreviewFrame previewFrame = new JPreviewFrame();
-	String serverAddress = null;
-	private RegistrationWebservice registrationWebservice;
-	private ResultsWebservice resultsWebservice;
-	ZoneId zoneId = null;
 
 	/**
 	 * 
 	 */
 	private void initWebserviceClient() {
 		try {
-			JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-			factory.setServiceClass(RegistrationWebservice.class);
-			String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
-			logger.info("Connecting webservice to " + wsAddress);
-			factory.setAddress(wsAddress);
-			registrationWebservice = (RegistrationWebservice) factory.create();
-			logger.info("Registration client created");
-			registrationWebservice.findByTag("TAG");
-			String zoneIdString = registrationWebservice.getZoneId();
-			try {
-				zoneId = ZoneId.of(zoneIdString);
-			} catch (DateTimeException e) {
-				JOptionPane.showMessageDialog(this, "No se pudo establecer la zona horaria." + e.getMessage(),
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-			logger.info("Set timezone to " + zoneIdString);
-
-			factory = new JaxWsProxyFactoryBean();
-			factory.setServiceClass(ResultsWebservice.class);
-			wsAddress = "http://" + serverAddress + ":9000/resultsClient";
-			logger.info("Connecting webservice to " + wsAddress);
-			factory.setAddress(wsAddress);
-			resultsWebservice = (ResultsWebservice) factory.create();
-			logger.info("Results client created");
+			Context.initWebservieClients();
+		} catch (DateTimeException e) {
+			JOptionPane.showMessageDialog(this, "No se pudo establecer la zona horaria." + e.getMessage(),
+					"Error de configuración", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this,
 					"No se pudo conectar a la base de datos.\nVerifica que el Saturno esté funcionando y disponible en la dirección :"
-							+ serverAddress + "\nError:" + e.getMessage(),
+							+ Context.getServerAddress() + "\nError:" + e.getMessage(),
 					"Error de conexión: ", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -97,13 +72,11 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				showProgress("Cargando configuración", 20);
 				Context.setApplication(this);
 				Context.loadSettings();
-				serverAddress = Context.loadServerAddress();
-				showProgress("Probando conexión al servidor @" + serverAddress, 40);
+				Context.loadServerAddress();
+				showProgress("Probando conexión al servidor @" + Context.getServerAddress(), 40);
 				initWebserviceClient();
-				registrationWebservice.getZoneId();
-//				Context.openEvent();
+				Context.getZoneId();
 				connected = true;
-//				Context.setApplicationTitle(Context.registrationHelper.getEvent().getTitle());
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "No se pudo cargar la configuración " + e.getMessage(),
 						"Error de configuración", JOptionPane.ERROR_MESSAGE);
@@ -116,8 +89,6 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				} else {
 //					connected = handleMissingDatabase(connected, e);
 				}
-//				JOptionPane.showMessageDialog(this, "Inicializar el evento. " + e.getMessage(),
-//						"Error de configuración", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			} catch (ExceptionInInitializerError e) {
 				JOptionPane.showMessageDialog(this,
@@ -640,24 +611,19 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		for (RawChipRead tagRead : readings) {
 			logger.debug(tagRead);
 			tagReadPanel.add(tagRead);
-			com.tiempometa.webservice.model.RawChipRead wsRead = tagReadToWsRead(tagRead);
-			wsReadings.add(wsRead);
+			wsReadings.add(tagRead);
 		}
-		resultsWebservice.saveRawChipReads(wsReadings);
-//		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
-//		chipDao.batchSave(readings);
+		Context.getResultsWebservice().saveRawChipReads(wsReadings);
 		for (RawChipRead tagRead : readings) {
 			logger.debug("Query participants by tag " + tagRead);
-			List<ParticipantRegistration> registrationList = registrationWebservice.findByTag(tagRead.getRfidString());
+			List<ParticipantRegistration> registrationList = Context.getRegistrationWebservice()
+					.findByTag(tagRead.getRfidString());
 			if (registrationList == null) {
 
 			} else {
 				logger.debug("Registration list size " + registrationList);
 				showParticipantInfo(registrationList);
 			}
-//			logger.debug("Query bibs by tag " + tagRead);
-//			List<Bib> bibs = registrationWebservice.getBibByRfidString(tagRead.getRfidString());
-//			logger.debug("Bib list size " + bibs);
 		}
 	}
 
@@ -668,25 +634,4 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	}
 
-	/**
-	 * @param tagRead
-	 * @return
-	 */
-	private com.tiempometa.webservice.model.RawChipRead tagReadToWsRead(RawChipRead tagRead) {
-		com.tiempometa.webservice.model.RawChipRead wsRead = new com.tiempometa.webservice.model.RawChipRead();
-		wsRead.setCheckPoint(tagRead.getCheckPoint());
-		wsRead.setChipNumber(tagRead.getChipNumber());
-		wsRead.setCooked(tagRead.getCooked());
-		wsRead.setEventId(tagRead.getEventId());
-		wsRead.setFiltered(tagRead.getFiltered());
-		wsRead.setId(tagRead.getId());
-		wsRead.setLoadName(tagRead.getLoadName());
-		wsRead.setPhase(tagRead.getPhase());
-//			wsRead.setReadTime(tagRead.getReadTime());
-		wsRead.setReadType(tagRead.getReadType());
-		wsRead.setRfidString(tagRead.getRfidString());
-		wsRead.setTime(tagRead.getTime());
-		wsRead.setTimeMillis(tagRead.getTimeMillis());
-		return wsRead;
-	}
 }
