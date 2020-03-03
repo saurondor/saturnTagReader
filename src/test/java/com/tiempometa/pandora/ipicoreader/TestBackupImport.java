@@ -18,7 +18,6 @@ import org.junit.Test;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
 
-
 /**
  * @author gtasi
  *
@@ -43,8 +42,10 @@ public class TestBackupImport {
 
 	@Test
 	public void testBackupImporter() {
+		String cwd = System.getProperty("user.dir");
+		logger.info("Current working directory : " + cwd);
 		BackupImporter importer = new IpicoBackupImporter();
-		String fileName = "/backups/ipico/FS_LS.log.txt";
+		String fileName = cwd + "/src/test/resources/backups/ipico/FS_LS.log.txt";
 		try {
 			importer.load(fileName);
 			List<RawChipRead> readList = importer.getChipReads();
