@@ -286,7 +286,9 @@ public class One4All implements Runnable {
 				readings.add(tagRead);
 			}
 		}
-		notifyTagReads(readings);
+		if (readings.size() > 0) {
+			notifyTagReads(readings);
+		}
 	}
 
 	private void notifyTagReads(List<MacshaTagRead> readings) {
@@ -295,7 +297,7 @@ public class One4All implements Runnable {
 		for (MacshaTagRead macshaTagRead : readings) {
 			RawChipRead chipRead = macshaTagRead.toRawChipRead();
 			synchronized (this) {
-				chipRead.setCheckPoint(checkPoint);				
+				chipRead.setCheckPoint(checkPoint);
 			}
 			chipReadList.add(chipRead);
 		}
@@ -447,7 +449,7 @@ public class One4All implements Runnable {
 
 	public void setCheckPoint(String checkPoint) {
 		synchronized (this) {
-			this.checkPoint = checkPoint;			
+			this.checkPoint = checkPoint;
 		}
 	}
 
