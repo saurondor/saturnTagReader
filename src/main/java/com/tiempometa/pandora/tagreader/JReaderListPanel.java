@@ -10,7 +10,6 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.foxberry.tcpip.JFoxberryReaderPanel;
 import com.tiempometa.pandora.foxberry.usb.JFoxberryUsbReaderPanel;
 import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
-import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.ipicoreader.tcpip.JIpicoEliteReaderPanel;
 import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
 import com.tiempometa.pandora.macsha.JMacshaReaderPanel;

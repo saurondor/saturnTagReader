@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.tiempometa.pandora.ipicoreader.DataLoadProperties;
 import com.tiempometa.pandora.ipicoreader.IpicoRead;
-import com.tiempometa.pandora.ipicoreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.TagReadListener;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**

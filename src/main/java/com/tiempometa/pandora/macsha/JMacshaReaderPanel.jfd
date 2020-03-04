@@ -8,7 +8,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "11dlu, labelcompgap, default, labelcompgap, 65dlu, labelcompgap, 70dlu, labelcompgap, 75dlu, labelcompgap, 35dlu, labelcompgap, 18dlu"
+			"$columnSpecs": "11dlu, labelcompgap, default, labelcompgap, 65dlu, labelcompgap, 61dlu, labelcompgap, 69dlu, labelcompgap, 52dlu, labelcompgap, 18dlu"
 			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
@@ -74,13 +74,18 @@ new FormModel {
 				"gridX": 7
 				"gridY": 3
 			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "newFileButton"
-				"text": new FormMessage( null, "JMacshaReaderPanel.newFileButton.text" )
-				"enabled": false
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "modeComboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "Modo ruta"
+					addElement( "Modo ruta" )
+					addElement( "Modo checa tu chip" )
+					addElement( "Modo checa tu resultado" )
+				}
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 9
 				"gridY": 3
+				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "acPowerRadioButton"
@@ -135,13 +140,22 @@ new FormModel {
 				"gridY": 7
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "newFileButton"
+				"text": new FormMessage( null, "JMacshaReaderPanel.newFileButton.text" )
+				"enabled": false
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "setBuzzerButton"
 				"text": new FormMessage( null, "JMacshaReaderPanel.setBuzzerButton.text" )
 				"enabled": false
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "setBuzzerButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 9
+				"gridX": 11
 				"gridY": 7
+				"gridWidth": 3
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

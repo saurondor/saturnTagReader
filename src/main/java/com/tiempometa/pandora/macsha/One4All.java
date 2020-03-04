@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.tiempometa.pandora.ipicoreader.TagReadListener;
 import com.tiempometa.pandora.macsha.commands.ClearFilesCommand;
 import com.tiempometa.pandora.macsha.commands.GetFileCommand;
 import com.tiempometa.pandora.macsha.commands.GetFileInfoCommand;
@@ -35,6 +34,7 @@ import com.tiempometa.pandora.macsha.commands.SetTimeCommand;
 import com.tiempometa.pandora.macsha.commands.StartCommand;
 import com.tiempometa.pandora.macsha.commands.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
+import com.tiempometa.pandora.tagreader.TagReadListener;
 import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -73,7 +73,7 @@ public class One4All implements Runnable {
 	private OutputStream dataOutputStream = null;
 	private boolean doReadings = true; // flag indicating continue reading tags
 	private TagReadListener tagReadListener;
-	private String checkPoint;
+//	private String checkPoint;
 	private CommandResponseHandler commandResponseHandler;
 	private KeepAlive keepAlive;
 
@@ -296,9 +296,9 @@ public class One4All implements Runnable {
 		List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 		for (MacshaTagRead macshaTagRead : readings) {
 			RawChipRead chipRead = macshaTagRead.toRawChipRead();
-			synchronized (this) {
-				chipRead.setCheckPoint(checkPoint);
-			}
+//			synchronized (this) {
+//				chipRead.setCheckPoint(checkPoint);
+//			}
 			chipReadList.add(chipRead);
 		}
 //		chipDao.batchSave(chipReadList);
@@ -443,15 +443,15 @@ public class One4All implements Runnable {
 		this.tagReadListener = tagReadListener;
 	}
 
-	public String getCheckPoint() {
-		return checkPoint;
-	}
-
-	public void setCheckPoint(String checkPoint) {
-		synchronized (this) {
-			this.checkPoint = checkPoint;
-		}
-	}
+//	public String getCheckPoint() {
+//		return checkPoint;
+//	}
+//
+//	public void setCheckPoint(String checkPoint) {
+//		synchronized (this) {
+//			this.checkPoint = checkPoint;
+//		}
+//	}
 
 	public CommandResponseHandler getCommandResponseHandler() {
 		return commandResponseHandler;
