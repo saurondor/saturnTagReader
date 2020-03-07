@@ -101,6 +101,7 @@ public class Context extends com.tiempometa.timing.Context {
 	public static void loadSettings() throws IOException {
 		settings = new SettingsHandler();
 		settings.init();
+		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
 //		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
 //		databasePassword = Context.loadSetting(PandoraSettings.DB_PASSWORD, "");
 //		databaseUsername = Context.loadSetting(PandoraSettings.DB_USERNAME, "root");
@@ -122,7 +123,7 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	public static String loadServerAddress() {
-		serverAddress = Context.loadSetting("serverAddress", "127.0.0.1");
+		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
 		return serverAddress;
 	}
 
@@ -167,6 +168,12 @@ public class Context extends com.tiempometa.timing.Context {
 
 	public static RegistrationWebservice getRegistrationWebservice() {
 		return registrationWebservice;
+	}
+
+	public static void setServerAddress(String serverAddress) throws IOException {
+		Context.serverAddress = serverAddress;
+		Context.saveSetting(PandoraSettings.SERVER_IP, Context.serverAddress);
+		Context.flushSettings();
 	}
 
 //	public static ZoneId getZoneId() {
