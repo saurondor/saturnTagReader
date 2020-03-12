@@ -3,13 +3,10 @@
  */
 package com.tiempometa.pandora.macsha;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import com.tiempometa.webservice.model.RawChipRead;
@@ -25,7 +22,7 @@ public class MacshaCloudRead {
 	// 1;800;2020-03-11 12:24:17.131;16.7578038;-93.116542;Sent;;;GMT-06:00
 
 	private Integer passing;
-	private String bib;
+	private Integer bib;
 	private String date_time;
 	private Double latitude;
 	private Double longitude;
@@ -35,19 +32,8 @@ public class MacshaCloudRead {
 	private String timezone;
 	private LocalDateTime time;
 	private Long timeMillis;
-//	private String antenna;
-	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-//	public static MacshaCloudRead parseString(String data, ZoneId zoneId) {
-//		MacshaCloudRead macshaCloudRead = new MacshaCloudRead();
-////		try {
-//////			CSVParser parser = CSVParser.parse(data, CSVFormat.newFormat(";".charAt(0)).);
-////		} catch (IOException e) {
-////			// TODO Auto-generated catch block
-////			e.printStackTrace();
-////		}
-//		return macshaCloudRead;
-//	}
+	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
 	public static MacshaCloudRead parseRecord(CSVRecord record) {
 		MacshaCloudRead read = new MacshaCloudRead();
@@ -58,7 +44,11 @@ public class MacshaCloudRead {
 		} catch (NumberFormatException e) {
 			read.setPassing(null);
 		}
-		read.setBib(record.get(1));
+		try {
+			read.setBib(Integer.valueOf(record.get(1)));
+		} catch (Exception e) {
+			read.setBib(null);
+		}
 		read.setDate_time(record.get(2));
 		try {
 			read.setLatitude(Double.valueOf(record.get(3)));
@@ -79,20 +69,13 @@ public class MacshaCloudRead {
 		read.setTimeMillis(dateTime.atZone(ZoneId.of(read.getTimezone())).toInstant().toEpochMilli());
 		return read;
 	}
-//	public static MacshaCloudRead row(String[] row, ZoneId zoneId) {
-//		MacshaCloudRead reading = new MacshaCloudRead();
-//		String epc = row[1] + row[2];
-//		reading.setTime(LocalDateTime.parse(row[3] + " " + row[4], dateTimeFormatter));
-//		reading.setTimeMillis(Long.valueOf(reading.getTime().atZone(zoneId).toInstant().toEpochMilli()));
-//		reading.setRfidString(epc);
-//		return reading;
-//	}
 
 	public RawChipRead toRawChipRead() {
 		RawChipRead chipRead = new RawChipRead();
-//		chipRead.setRfidString(getRfidString());
-//		chipRead.setTimeMillis(getTimeMillis());
-//		chipRead.setTime(getTime());
+		chipRead.setRfidString(getChip());
+		chipRead.setTimeMillis(getTimeMillis());
+		chipRead.setTime(getTime());
+		chipRead.setChipNumber(bib);
 		return chipRead;
 	}
 
@@ -100,7 +83,7 @@ public class MacshaCloudRead {
 		return passing;
 	}
 
-	public String getBib() {
+	public Integer getBib() {
 		return bib;
 	}
 
@@ -148,7 +131,7 @@ public class MacshaCloudRead {
 		this.passing = passing;
 	}
 
-	public void setBib(String bib) {
+	public void setBib(Integer bib) {
 		this.bib = bib;
 	}
 

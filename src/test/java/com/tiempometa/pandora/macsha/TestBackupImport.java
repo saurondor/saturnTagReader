@@ -5,11 +5,11 @@ package com.tiempometa.pandora.macsha;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.ZoneId;
 import java.util.List;
 
 import org.apache.commons.csv.CSVRecord;
@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tiempometa.pandora.tagreader.BackupImporter;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author gtasi
@@ -56,25 +57,19 @@ public class TestBackupImport {
 			for (CSVRecord csvRecord : list) {
 				logger.info("\t" + csvRecord);
 				MacshaCloudRead cloudRead = MacshaCloudRead.parseRecord(csvRecord);
-				logger.info("\t"+cloudRead);
+				logger.info("\t" + cloudRead);
+			}
+			inputStream.close();
+			importer.load(new File(fileName));
+			List<RawChipRead> reads = importer.getChipReads();
+			logger.info("\t CHIP READS>>>");
+			for (RawChipRead rawChipRead : reads) {
+				logger.info("\t" + rawChipRead);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-//		Context.setZoneId(ZoneId.of("GMT-5"));
-//		try {
-//			importer.load(fileName);
-//			List<RawChipRead> readList = importer.getChipReads();
-//			logger.debug("Read list size " + readList.size());
-//			for (RawChipRead rawChipRead : readList) {
-//				logger.debug("Tag read " + rawChipRead);
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

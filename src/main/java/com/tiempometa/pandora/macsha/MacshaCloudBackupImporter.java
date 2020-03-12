@@ -3,15 +3,15 @@
  */
 package com.tiempometa.pandora.macsha;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.csv.CSVRecord;
+
 import com.tiempometa.pandora.tagreader.BackupImporter;
-import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
@@ -20,6 +20,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  */
 public class MacshaCloudBackupImporter implements BackupImporter {
 	List<RawChipRead> chipReads = new ArrayList<RawChipRead>();
+	MacshaCSVParser parser = new MacshaCSVParser();
 
 	@Override
 	public void load(String fileName) throws IOException {
@@ -33,14 +34,14 @@ public class MacshaCloudBackupImporter implements BackupImporter {
 
 	@Override
 	public void load(File dataFile) throws IOException {
-//		chipReads = new ArrayList<RawChipRead>();
-//		BufferedReader br = new BufferedReader(new FileReader(dataFile));
-//		String dataLine;
-//		while ((dataLine = br.readLine()) != null) {
-//			MacshaCloudRead tagRead = MacshaCloudRead.parseString(dataLine, Context.getZoneId());
-//			chipReads.add(tagRead.toRawChipRead());
-//		}
-//		br.close();
+		chipReads = new ArrayList<RawChipRead>();
+		List<CSVRecord> list = parser.parse(new FileInputStream(dataFile));
+		for (CSVRecord csvRecord : list) {
+			MacshaCloudRead reading = MacshaCloudRead.parseRecord(csvRecord);
+			if (reading.getBib() != null) {
+				chipReads.add(reading.toRawChipRead());
+			}
+		}
 	}
 
 }
