@@ -8,9 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,36 +33,21 @@ import com.tiempometa.pandora.macsha.commands.one4all.StartCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.TagReadListener;
-import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author gtasi
  *
  */
-public class One4All implements Runnable {
+public class Ocelot implements Runnable {
 
-	public static final String COMMAND_GETPROTOCOL = "GETPROTOCOL";
-	public static final String COMMAND_SETPROTOCOL = "SETPROTOCOL";
-	public static final String COMMAND_START = "START";
-	public static final String COMMAND_STOP = "STOP";
-	public static final String COMMAND_PUSHTAGS = "PUSHTAGS";
-	public static final String COMMAND_SETBOUNCE = "SETBOUNCE";
-	public static final String COMMAND_SETTIME = "SETTIME";
-	public static final String COMMAND_GETTIME = "GETTIME";
-	public static final String COMMAND_SETBUZZER = "SETBUZZER";
-	public static final String COMMAND_NEWFILE = "NEWFILE";
-	public static final String COMMAND_PASSINGS = "PASSINGS";
-	public static final String COMMAND_GETPASSINGS = "GETPASSINGS";
-	public static final String COMMAND_READBATTERY = "READBATTERY";
-	public static final String COMMAND_PING = "PING";
-	public static final String COMMAND_LISTFILES = "LISTFILES";
-	public static final String COMMAND_GETFILEINFO = "GETFILEINFO";
-	public static final String COMMAND_GETFILE = "GETFILE";
-	public static final String COMMAND_CLEARFILES = "CLEARFILES";
-	private static final String COMMAND_HELLO = "HELLO";
-
-	private static final Logger logger = Logger.getLogger(One4All.class);
+	private static final Logger logger = Logger.getLogger(Ocelot.class);
+	public static final String COMMAND_START = "Start";
+	public static final String COMMAND_STOP = "Stop";
+	public static final String COMMAND_CONNECTED = "CONECTADO";
+	public static final String COMMAND_STARTED = "START-OK";
+	public static final String COMMAND_OPERATION_STARTED = "OPERATION-MODE-STARTED";
+	public static final String COMMAND_STOPPED = "STOP-OK";
 
 	private int port = 10002; // use default port
 	private String hostname = "";
@@ -75,48 +58,7 @@ public class One4All implements Runnable {
 	private TagReadListener tagReadListener;
 //	private String checkPoint;
 	private CommandResponseHandler commandResponseHandler;
-	private KeepAlive keepAlive;
-
-	private class KeepAlive implements Runnable {
-		private boolean runMe = true;
-
-		public void stop() {
-			synchronized (this) {
-				runMe = false;
-			}
-		}
-
-		@Override
-		public void run() {
-			boolean run = true;
-			logger.debug("Starting keepalive worker thread");
-			while (run) {
-				try {
-					ReadBatteryCommand command = new ReadBatteryCommand();
-					command.sendCommand(dataOutputStream);
-					Thread.sleep(10000);
-					logger.debug("Send battery keepalive");
-					synchronized (this) {
-						run = runMe;
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					commandResponseHandler.notifyCommException(e);
-					e.printStackTrace();
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
-
-	}
+//	private KeepAlive keepAlive;
 
 	public boolean isConnected() {
 		if ((dataInputStream == null) || (dataOutputStream == null)) {
@@ -141,18 +83,9 @@ public class One4All implements Runnable {
 		logger.info("Opening socket");
 		openSocket();
 		logger.info("Socket opened");
-		startKeepAlive();
+//		startKeepAlive();
 //		notifyConnected();
 		logger.info("Notify successful connect");
-	}
-
-	/**
-	 * 
-	 */
-	private void startKeepAlive() {
-		keepAlive = new KeepAlive();
-		Thread thread = new Thread(keepAlive);
-		thread.start();
 	}
 
 	public void connect(String hostName) throws UnknownHostException, IOException {
@@ -160,7 +93,7 @@ public class One4All implements Runnable {
 		logger.info("Opening socket");
 		openSocket();
 		logger.info("Socket opened");
-		startKeepAlive();
+//		startKeepAlive();
 //		notifyConnected();
 		logger.info("Notify successful connect");
 	}
@@ -202,41 +135,13 @@ public class One4All implements Runnable {
 							dataInputStream.read(b);
 							String dataString = new String(b);
 							if (logger.isDebugEnabled()) {
-								logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
+								logger.debug("IN BUFFER>\n" + dataString + "\nLEN:" + dataString.length());
 							}
 							parsePayload(dataString);
-//							if (dataString.indexOf("CONECTADO_4") >= 0) {
-//								logListener.log(new String[] { "KEEPALIVE - CONECTADO_4" });
-//							}
-							// filter out CONECTADO_4 that sometimes appears prior to valid payload
-							dataString = dataString.replace("CONECTADO_4", "");
-//							StringBuffer buffer = new StringBuffer((new Date()) + " " + dataString);
-//							String[] dataRows = dataString.split("\\n");
-							// HW specific split rows? pipe for version 4 and prior, \n\r for generation 5
-							String[] dataRows = dataString.split("\\|");
-//							if (logListener != null) {
-//								logListener.log(dataRows);
-//							}
+//							dataString = dataString.replace("CONECTADO_4", "");
 
-//							List<TagReading> readings = new ArrayList<TagReading>();
-//							for (String string : dataRows) {
-//								logger.debug(">>> DATA ROW (" + string.length() + ")");
-//								logger.debug(string);
-//								if (string.length() > 0) {
-//									logger.debug(Integer.toHexString(string.toCharArray()[0]));
-//									if (string.replaceAll("\\r", "").length() > 0) {
-////									TagReading reading = new TagReading(string);
-//										TagReading reading = TagReading.parseMacsha(string);
-//										if ((reading != null) && (reading.isValid())) {
-//											logger.debug(reading);
-//											readings.add(reading);
-//										} else {
-//											logger.warn("Invalid reading - " + reading);
-//										}
-//									}
-//								}
-//							}
-//							notifyListeners(readings);
+//							String[] dataRows = dataString.split("\\|");
+
 						} else {
 						}
 					} catch (IOException e1) {
@@ -272,7 +177,8 @@ public class One4All implements Runnable {
 		if (logger.isDebugEnabled()) {
 			logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
 		}
-		String[] dataRows = dataString.split("\\r\\n");
+//		String[] dataRows = dataString.split("\\r\\n");
+		String[] dataRows = dataString.split("\\|");
 		if (logger.isDebugEnabled()) {
 			logger.debug("DATAROWS>\t:" + dataRows.length);
 		}
@@ -306,14 +212,22 @@ public class One4All implements Runnable {
 	}
 
 	private MacshaTagRead parseRow(String[] row) {
-		if (row[0].startsWith(COMMAND_HELLO)) {
-			logger.debug("GOT HELLO");
+		if (row[0].startsWith(COMMAND_CONNECTED)) {
+			logger.debug("GOT Connected");
+			return null;
+		} else if (row[0].startsWith(COMMAND_STARTED)) {
+			logger.debug("GOT Started");
+			return null;
+		} else if (row[0].startsWith(COMMAND_OPERATION_STARTED)) {
+			logger.debug("GOT Operation STARTED");
+			return null;
+		} else if (row[0].startsWith(COMMAND_STOPPED)) {
+			logger.debug("GOT Stop");
 			return null;
 		} else {
 			try {
-				Integer readId = Integer.valueOf(row[0]);
 				logger.debug("GOT TAG READ ROW");
-				MacshaTagRead tagRead = MacshaTagRead.row(row, Context.getZoneId());
+				MacshaTagRead tagRead = MacshaTagRead.row(row[0], Context.getZoneId());
 				logger.debug("TAG: " + tagRead);
 				return tagRead;
 			} catch (NumberFormatException e) {
@@ -328,89 +242,6 @@ public class One4All implements Runnable {
 	private void parseCommandResponse(String[] row) {
 		MacshaCommand command = null;
 		switch (row[0]) {
-		case COMMAND_CLEARFILES:
-			logger.debug("GOT CLEARFILES COMMAND");
-			command = new ClearFilesCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_GETFILE:
-			logger.debug("GOT GETFILE COMMAND");
-			command = new GetFileCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_GETFILEINFO:
-			logger.debug("GOT GETFILEINFO COMMAND");
-			command = new GetFileInfoCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_GETPASSINGS:
-			logger.debug("GOT GETPASSINGS COMMAND");
-			command = new GetPassingsCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_GETPROTOCOL:
-			logger.debug("GOT GETPROTOCOL COMMAND");
-			command = new GetProtocolCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_GETTIME:
-			logger.debug("GOT GETTIME COMMAND");
-			command = new GetTimeCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_HELLO:
-			logger.debug("GOT HELLO COMMAND");
-			break;
-		case COMMAND_LISTFILES:
-			logger.debug("GOT LISTFILES COMMAND");
-			command = new ListFilesCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_NEWFILE:
-			logger.debug("GOT NEWFILE COMMAND");
-			command = new NewFileCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_PASSINGS:
-			logger.debug("GOT PASSINGS COMMAND");
-			command = new StartCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_PING:
-			logger.debug("GOT PING COMMAND");
-			command = new PingCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_PUSHTAGS:
-			logger.debug("GOT PUSHTAGS COMMAND");
-			command = new PushTagsCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_READBATTERY:
-			logger.debug("GOT READBATTERY COMMAND");
-			command = new ReadBatteryCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_SETBOUNCE:
-			logger.debug("GOT SETBOUNCE COMMAND");
-			command = new SetBounceCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_SETBUZZER:
-			logger.debug("GOT SETBUZZER COMMAND");
-			command = new SetBuzzerCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_SETPROTOCOL:
-			logger.debug("GOT SETPROTOCOL COMMAND");
-			command = new SetProtocolCommand();
-			command.parseCommandRow(row);
-			break;
-		case COMMAND_SETTIME:
-			logger.debug("GOT SETTIME COMMAND");
-			command = new SetTimeCommand();
-			command.parseCommandRow(row);
-			break;
 		case COMMAND_START:
 			logger.debug("GOT START COMMAND");
 			command = new StartCommand();
@@ -463,7 +294,7 @@ public class One4All implements Runnable {
 
 	public void stop() throws IOException {
 		disconnect();
-		keepAlive.stop();
+//		keepAlive.stop();
 	}
 
 }

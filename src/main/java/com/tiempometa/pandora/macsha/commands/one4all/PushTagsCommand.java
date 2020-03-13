@@ -1,50 +1,42 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.one4all;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
+
 /**
  * @author gtasi
  *
  */
-public class SetBuzzerCommand extends MacshaCommand {
+public class PushTagsCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(SetBuzzerCommand.class);
+	private static final Logger logger = Logger.getLogger(PushTagsCommand.class);
 
-	// Con el fin de habilitar/deshabilitar el buzzer y la señal lumínica, el host
-	// envía SETBUZZER;<Status><CrLf>.
+	// Con el fin de habilitar/deshabilitar la transmisión en vivo de las pasadas al
+	// host, el host envía PUSHTAGS;<Status><CrLf>. Por defecto, el Push mode está
+	// deshabilitado. Las pasadas serán enviadas a la última conexión activa
+	// solamente.
 	//
 	// Donde <Status> es:
-	// true, para habilitar el buzzer.
-	// false, para deshabilitar el buzzer.
+	// true, para habilitar el Push mode.
+	// false, para deshabilitar el Push mode.
 	//
 	// El One4All responde:
-	// SETBUZZER;<Response><CrLf>
+	// PUSHTAGS;<Response><CrLf>
 	//
 	// Donde <Response> es:
 	// true, false, en el éxito.
 	// ERR, si ocurrió algún error.
 	//
 	// Ejemplo:
-	// < SETBUZZER;true<CrLf>
-	// > SETBUZZER;true<CrLf>
-
-	private boolean buzzerStatus = true;
-
-	public SetBuzzerCommand(boolean buzzerStatus) {
-		super();
-		this.buzzerStatus = buzzerStatus;
-	}
-
-	public SetBuzzerCommand() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	// < PUSHTAGS;true<CrLf>
+	// > PUSHTAGS;true<CrLf>
 
 	/*
 	 * (non-Javadoc)
@@ -53,19 +45,32 @@ public class SetBuzzerCommand extends MacshaCommand {
 	 * com.tiempometa.pandora.macshareader.commands.MacshaCommand#parseCommandRow(
 	 * java.lang.String[])
 	 */
+
+	private boolean pushStatus = true;
+
+	public PushTagsCommand() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PushTagsCommand(boolean pushStatus) {
+		super();
+		this.pushStatus = pushStatus;
+	}
+
 	@Override
 	public void parseCommandRow(String[] row) {
 		if (row.length > 1) {
 			switch (row[1]) {
 			case RESPONSE_TRUE:
-				buzzerStatus = true;
+				pushStatus = true;
 				setStatus(STATUS_OK);
 				break;
 			case RESPONSE_FALSE:
-				buzzerStatus = false;
+				pushStatus = false;
 				setStatus(STATUS_OK);
 				break;
-			case "ERR":
+			case RESPONSE_ERR:
 				setErrorCode(RESPONSE_ERR);
 				setStatus(STATUS_ERROR);
 				break;
@@ -85,13 +90,13 @@ public class SetBuzzerCommand extends MacshaCommand {
 	 */
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		String payload = "SETBUZZER;" + buzzerStatus + "\r\n";
+		String payload = "PUSHTAGS;" + pushStatus + "\r\n";
 		dataOutputStream.write(payload.getBytes());
 		dataOutputStream.flush();
 	}
 
-	public boolean isBuzzerStatus() {
-		return buzzerStatus;
+	public boolean isPushStatus() {
+		return pushStatus;
 	}
 
 }

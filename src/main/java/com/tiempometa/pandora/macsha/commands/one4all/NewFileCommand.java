@@ -1,12 +1,14 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.one4all;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
  * @author gtasi

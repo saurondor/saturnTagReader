@@ -1,43 +1,42 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.one4all;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
  * @author gtasi
  *
  */
-public class SetTimeCommand extends MacshaCommand {
+public class SetProtocolCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(SetTimeCommand.class);
-	
-	// Con el fin de configurar la fecha y hora interna del sistema, el host envía
-	// SETTIME;yyyy-MM-dd;HH:mm:ss<CrLf>. Esta operación puede ser realizada
-	// solamente en Stop mode.
+	private static final Logger logger = Logger.getLogger(SetProtocolCommand.class);
+
+	// Para configurar la versión de protocolo en el sistema, el host envía
+	// SETPROTOCOL<Version><CrLf>. Esta operación puede ser realizada solamente en
+	// Stop mode.
 	//
 	// El One4All responde:
-	// SETTIME;<Response><CrLf>
+	// SETPROTOCOL;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// En el éxito, la fecha y hora configurada con el siguiente formato:
-	// yyyy-MM-dd;HH:mm:ss
+	// <Version>, en el éxito, la versión actual del protocolo.
 	// STARTMODE, si el sistema esta en Start mode.
+	// UNKNOWN, si la versión solicitada no existe o no esta disponible.
 	// ERR, si ocurrió algún error.
 	//
 	// Ejemplo:
-	// < SETTIME;2017-12-23;15:30:55<CrLf>
-	// > SETTIME;2017-12-23;15:30:55<CrLf>
+	// < SETPROTOCOL;3.0<CrLf>
+	// > SETPROTOCOL;3.0<CrLf>
 
-	private String timeString;
+	private String protocolVersion;
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -48,10 +47,13 @@ public class SetTimeCommand extends MacshaCommand {
 	@Override
 	public void parseCommandRow(String[] row) {
 		if (row.length > 1) {
-
 			switch (row[1]) {
 			case RESPONSE_STARTMODE:
 				setErrorCode(RESPONSE_STARTMODE);
+				setStatus(STATUS_ERROR);
+				break;
+			case RESPONSE_UNKNOWN:
+				setErrorCode(RESPONSE_UNKNOWN);
 				setStatus(STATUS_ERROR);
 				break;
 			case RESPONSE_ERR:
@@ -59,9 +61,9 @@ public class SetTimeCommand extends MacshaCommand {
 				setStatus(STATUS_ERROR);
 				break;
 			default:
-				timeString = row[1];
+				protocolVersion = row[1];
 				setStatus(STATUS_OK);
-				logger.debug("Reader time is :" + timeString);
+				logger.debug("Protocol version " + protocolVersion);
 				break;
 			}
 		} else {
@@ -79,18 +81,14 @@ public class SetTimeCommand extends MacshaCommand {
 	 */
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		Date dateTime = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		String date = dateFormat.format(dateTime);
-		String time = timeFormat.format(dateTime);
-		String payload = "SETTIME;" + date + ";" + time + "\r\n";
+		String protocol = "3.0";
+		String payload = "SETPROTOCOL;" + protocol + "\r\n";
 		dataOutputStream.write(payload.getBytes());
 		dataOutputStream.flush();
 	}
 
-	public String getTimeString() {
-		return timeString;
+	public String getProtocolVersion() {
+		return protocolVersion;
 	}
 
 }

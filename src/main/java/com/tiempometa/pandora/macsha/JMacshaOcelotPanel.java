@@ -19,12 +19,12 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.PushTagsCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.ReadBatteryCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetBuzzerCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetTimeCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.StartCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.StopCommand;
+//import com.tiempometa.pandora.macsha.commands.one4all.PushTagsCommand;
+//import com.tiempometa.pandora.macsha.commands.one4all.ReadBatteryCommand;
+//import com.tiempometa.pandora.macsha.commands.one4all.SetBuzzerCommand;
+//import com.tiempometa.pandora.macsha.commands.one4all.SetTimeCommand;
+import com.tiempometa.pandora.macsha.commands.ocelot.StartCommand;
+import com.tiempometa.pandora.macsha.commands.ocelot.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
@@ -35,23 +35,23 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2774027271874159969L;
-	private static final Logger logger = Logger.getLogger(JMacshaReaderPanel.class);
+	private static final Logger logger = Logger.getLogger(JMacshaOcelotPanel.class);
 
 	private JReaderListPanel listPanel;
 	private TagReadListener tagReadListener;
-	One4All reader = new One4All();
+	Ocelot reader = new Ocelot();
 	Thread workerThread = null;
 	private String checkPoint = null;
 	private boolean started = false;
 	private boolean buzzerStatus = true;
 	private Integer tagsRead = 0;
 
-	public JMacshaReaderPanel(JReaderListPanel listPanel) {
+	public JMacshaOcelotPanel(JReaderListPanel listPanel) {
 		super();
 		this.listPanel = listPanel;
 		initComponents();
@@ -72,7 +72,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		checkPointComboBox.setModel(new DefaultComboBoxModel<String>(checkPoints.toArray(checkPointArray)));
 	}
 
-	public JMacshaReaderPanel() {
+	public JMacshaOcelotPanel() {
 		initComponents();
 		reader.setCommandResponseHandler(this);
 		loadCheckPoints();
@@ -142,26 +142,26 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			logger.info("Send push tags command.");
-			reader.sendCommand(new PushTagsCommand());
+//			logger.info("Send push tags command.");
+//			reader.sendCommand(new PushTagsCommand());
 			started = true;
 			startReadingButton.setText("Detener Lectura");
 		}
 	}
 
 	private void setTimeButtonActionPerformed(ActionEvent e) {
-		reader.sendCommand(new SetTimeCommand());
+//		reader.sendCommand(new SetTimeCommand());
 	}
 
 	private void setBuzzerButtonActionPerformed(ActionEvent e) {
-		if (buzzerStatus) {
-			buzzerStatus = false;
-			setBuzzerButton.setText("Encender Buzzer");
-		} else {
-			buzzerStatus = true;
-			setBuzzerButton.setText("Apagar Buzzer");
-		}
-		reader.sendCommand(new SetBuzzerCommand(buzzerStatus));
+//		if (buzzerStatus) {
+//			buzzerStatus = false;
+//			setBuzzerButton.setText("Encender Buzzer");
+//		} else {
+//			buzzerStatus = true;
+//			setBuzzerButton.setText("Apagar Buzzer");
+//		}
+//		reader.sendCommand(new SetBuzzerCommand(buzzerStatus));
 	}
 
 	private void openBackupsButtonActionPerformed(ActionEvent e) {
@@ -205,7 +205,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		setBuzzerButton = new JButton();
 
 		//======== this ========
-		setBorder(new TitledBorder("Macsha One4All"));
+		setBorder(new TitledBorder("Macsha Ocelot"));
 		setMaximumSize(new Dimension(550, 120));
 		setMinimumSize(new Dimension(550, 120));
 		setPreferredSize(new Dimension(550, 120));
@@ -375,31 +375,31 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void handleCommandResponse(MacshaCommand command) {
 		logger.info("Handling command " + command.getClass().getCanonicalName());
-		if (command instanceof SetTimeCommand) {
-			JOptionPane.showMessageDialog(this, "Se fijó la hora del reader");
-		}
-		if (command instanceof ReadBatteryCommand) {
-			ReadBatteryCommand batteryCommand = (ReadBatteryCommand) command;
-			batteryLabel.setText("Voltaje : " + batteryCommand.getVoltage() + "V Carga : "
-					+ batteryCommand.getCharge().intValue() + " %");
-			batteryLabel.setEnabled(true);
-			acPowerRadioButton.setEnabled(true);
-
-			if (batteryCommand.getCharge() > 50) {
-				batteryLabel.setForeground(Color.BLACK);
-			} else if (batteryCommand.getCharge() > 30) {
-				batteryLabel.setForeground(Color.ORANGE);
-			} else {
-				batteryLabel.setForeground(Color.RED);
-			}
-			if (batteryCommand.isHasPower()) {
-				acPowerRadioButton.setText("AC Conectado");
-				acPowerRadioButton.setForeground(Color.GREEN);
-			} else {
-				acPowerRadioButton.setText("AC No Conectado");
-				acPowerRadioButton.setForeground(Color.RED);
-			}
-		}
+//		if (command instanceof SetTimeCommand) {
+//			JOptionPane.showMessageDialog(this, "Se fijó la hora del reader");
+//		}
+//		if (command instanceof ReadBatteryCommand) {
+//			ReadBatteryCommand batteryCommand = (ReadBatteryCommand) command;
+//			batteryLabel.setText("Voltaje : " + batteryCommand.getVoltage() + "V Carga : "
+//					+ batteryCommand.getCharge().intValue() + " %");
+//			batteryLabel.setEnabled(true);
+//			acPowerRadioButton.setEnabled(true);
+//
+//			if (batteryCommand.getCharge() > 50) {
+//				batteryLabel.setForeground(Color.BLACK);
+//			} else if (batteryCommand.getCharge() > 30) {
+//				batteryLabel.setForeground(Color.ORANGE);
+//			} else {
+//				batteryLabel.setForeground(Color.RED);
+//			}
+//			if (batteryCommand.isHasPower()) {
+//				acPowerRadioButton.setText("AC Conectado");
+//				acPowerRadioButton.setForeground(Color.GREEN);
+//			} else {
+//				acPowerRadioButton.setText("AC No Conectado");
+//				acPowerRadioButton.setForeground(Color.RED);
+//			}
+//		}
 
 	}
 

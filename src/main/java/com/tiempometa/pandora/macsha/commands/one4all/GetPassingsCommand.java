@@ -1,46 +1,47 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.one4all;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
+
 /**
  * @author gtasi
  *
  */
-public class GetFileCommand extends MacshaCommand {
+public class GetPassingsCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(GetFileCommand.class);
+	private static final Logger logger = Logger.getLogger(GetPassingsCommand.class);
 
-	// Para obtener las pasadas específicas de un cierto archivo de backup, el host
-	// envía GETFILE;<FileName>;<StartPassing>;<EndPassing><CrLf>.
+	// Con el fin de recibir los datos completos de las pasadas del archivo de
+	// sesión actual, el host envía GETPASSINGS;<StartPassing>;<EndPassing><CrLf>.
 	//
 	// Donde:
-	// <FileName>, es el nombre del archivo de backup, con el formato
-	// yyyyMMdd-HHmmss.csv.
 	// <StartPassing>, es el número inicial de las pasadas a enviar.
 	// <EndPassing>, es el número final de las pasadas a enviar.
 	//
 	// Ejemplo:
-	// < GETFILE;20171222-093055.csv;15;17<CrLf>
+	// < GETPASSINGS;15;15<CrLf>
 	// > 15;MC;00001;2017-04-23;13:30:45.492;3;1;Z1y39<CrLf>
 	// 16;MC;00002;2017-04-23;13:30:46.543;4;1;O90ut<CrLf>
 	// 17;MC;00015;2017-04-23;13:30:46.993;4;1;kle23<CrLf>
 	// <CrLf>
-	//
 
-	private String fileName;
+	private Integer firstPassing;
+	private Integer lastPassing;
 
-	public GetFileCommand(String fileName) {
+	public GetPassingsCommand(Integer firstPassing, Integer lastPassing) {
 		super();
-		this.fileName = fileName;
+		this.firstPassing = firstPassing;
+		this.lastPassing = lastPassing;
 	}
 
-	public GetFileCommand() {
+	public GetPassingsCommand() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -54,7 +55,6 @@ public class GetFileCommand extends MacshaCommand {
 	 */
 	@Override
 	public void parseCommandRow(String[] row) {
-		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -66,7 +66,7 @@ public class GetFileCommand extends MacshaCommand {
 	 */
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		String payload = "GETFILE;" + fileName + "\r\n";
+		String payload = "GETPASSINGS;" + firstPassing + ";" + lastPassing + "\r\n";
 		dataOutputStream.write(payload.getBytes());
 		dataOutputStream.flush();
 	}

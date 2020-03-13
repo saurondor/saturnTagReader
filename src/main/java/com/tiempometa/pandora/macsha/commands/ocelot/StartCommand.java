@@ -1,12 +1,14 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.ocelot;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
  * @author gtasi
@@ -16,24 +18,19 @@ public class StartCommand extends MacshaCommand {
 
 	private static final Logger logger = Logger.getLogger(StartCommand.class);
 
-	// Start.
-	// Para comenzar la lectura de los chips, el host envía START<CrLf>
-	//
-	// El One4All responde:
-	// START;<Response><CrLf>
-	//
-	// Donde <Response> es:
-	// En el éxito, la fecha y hora del inicio de la sesión de cronometraje y el
-	// nombre del archivo de backup de la sesión con el siguiente formato:
-	// yyyyMMdd-HHmmss.csv
-	// STARTMODE, si el sistema ya se encuentra en Start mode.
-	// ERRANTENNAS, si no hay antenas conectadas al sistema.
-	// ERRCONNECT, ERRSTART, ERR, si ocurre algún otro error durante el proceso de
-	// inicio.
-	//
-	// Ejemplo:
-	// < START<CrLf>
-	// > START;20171223-153055.csv<CrLf>
+//	Para dar comienzo con la lectura de chips, debemos enviar la siguiente cadena:
+//		> “Start:”
+//		Posibles respuestas del One4All:
+//		> “MODO-REMOTE-OFF_[ID]”: El One4All no se encuentra en modo operación. No fue
+//		posible dar Start al sistema.
+//		> “OPERATION-MODE-STARTED_[ID]”: El One4All ya se encuentra en Start.
+//		> “START-OK_[ID]”: Start OK.
+//		Donde:
+//		[ID] = Se corresponde con el ID configurado en el sistema.
+//		Para dar fin a la lectura de chips, debemos enviar la siguiente cadena:
+//		> “Stop:”
+//		Posibles respuestas del One4All:
+//		> “STOP-OK_[ID]”: Stop OK.
 
 	private String logFileName;
 
@@ -74,7 +71,7 @@ public class StartCommand extends MacshaCommand {
 
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		dataOutputStream.write("START\r\n".getBytes());
+		dataOutputStream.write("Start:\r\n".getBytes());
 		dataOutputStream.flush();
 	}
 

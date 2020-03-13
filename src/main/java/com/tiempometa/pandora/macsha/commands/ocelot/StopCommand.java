@@ -1,12 +1,14 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.ocelot;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
+
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
  * @author gtasi
@@ -16,20 +18,19 @@ public class StopCommand extends MacshaCommand {
 
 	private static final Logger logger = Logger.getLogger(StopCommand.class);
 
-	// Para finalizar la lectura de los chips, el host envía STOP<CrLf>
-	//
-	// El One4All responde:
-	// STOP;<Response><CrLf>
-	//
-	// Donde <Response> es:
-	// OK, en el éxito.
-	// STOPMODE, si el sistema ya esta en Stop mode.
-	// ERRCLOSE, ERRSTOP, ERR, si ocurre algún otro error durante el proceso de
-	// parada.
-	//
-	// Ejemplo:
-	// < STOP<CrLf>
-	// > STOP;OK<CrLf>
+//	Para dar comienzo con la lectura de chips, debemos enviar la siguiente cadena:
+//	> “Start:”
+//	Posibles respuestas del One4All:
+//	> “MODO-REMOTE-OFF_[ID]”: El One4All no se encuentra en modo operación. No fue
+//	posible dar Start al sistema.
+//	> “OPERATION-MODE-STARTED_[ID]”: El One4All ya se encuentra en Start.
+//	> “START-OK_[ID]”: Start OK.
+//	Donde:
+//	[ID] = Se corresponde con el ID configurado en el sistema.
+//	Para dar fin a la lectura de chips, debemos enviar la siguiente cadena:
+//	> “Stop:”
+//	Posibles respuestas del One4All:
+//	> “STOP-OK_[ID]”: Stop OK.
 
 	/*
 	 * (non-Javadoc)
@@ -77,7 +78,7 @@ public class StopCommand extends MacshaCommand {
 	 */
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		dataOutputStream.write("STOP\r\n".getBytes());
+		dataOutputStream.write("Stop:\r\n".getBytes());
 		dataOutputStream.flush();
 	}
 

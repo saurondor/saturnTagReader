@@ -72,6 +72,11 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addOne4AllReaderMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "addOcelotReaderMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.addOcelotReaderMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addOcelotReaderMenuItemActionPerformed", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "importMacshaBackupMenuItem"
 							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaBackupMenuItem.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaBackupMenuItemActionPerformed", true ) )

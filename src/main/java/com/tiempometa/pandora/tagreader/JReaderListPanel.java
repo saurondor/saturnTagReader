@@ -12,6 +12,7 @@ import com.tiempometa.pandora.foxberry.usb.JFoxberryUsbReaderPanel;
 import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
 import com.tiempometa.pandora.ipicoreader.tcpip.JIpicoEliteReaderPanel;
 import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
+import com.tiempometa.pandora.macsha.JMacshaOcelotPanel;
 import com.tiempometa.pandora.macsha.JMacshaReaderPanel;
 import com.tiempometa.pandora.rfidtiming.JUltraReaderPanel;
 import com.tiempometa.pandora.timinsense.JTSCollectorPanel;
@@ -160,6 +161,21 @@ public class JReaderListPanel extends JPanel {
 
 	public void addTSCollector() {
 		JTSCollectorPanel reader = new JTSCollectorPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
+		
+	}
+
+	public void addOcelot() {
+		JMacshaOcelotPanel reader = new JMacshaOcelotPanel(this);
 		reader.setTagReadListener(tagReadListener);
 //		reader.setListPanel(this);
 		logger.debug("Adding reader...");

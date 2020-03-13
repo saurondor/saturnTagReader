@@ -1,32 +1,30 @@
 /**
  * 
  */
-package com.tiempometa.pandora.macsha.commands;
+package com.tiempometa.pandora.macsha.commands.one4all;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import com.tiempometa.pandora.macsha.commands.MacshaCommand;
+
 /**
  * @author gtasi
  *
  */
-public class ClearFilesCommand extends MacshaCommand {
+public class PingCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(ClearFilesCommand.class);
+	private static final Logger logger = Logger.getLogger(PingCommand.class);
 
-	// Para eliminar todos los archivos de backup disponibles en la memoria, el host
-	// envía CLEARFILES<CrLf>. Esta operación puede ser realizada solamente en Stop
-	// mode.
+	// Cuando el host envía PING<CrLf> al sistema, el One4All responde con
+	// PING;PONG<CrLf>.
 	//
-	// El One4All responde:
-	// CLEARFILES;<Response><CrLf>
-	//
-	// Donde <Response> es:
-	// OK, en el éxito.
-	// ERR, si ocurre algún error durante el proceso.
-	//
+	// Ejemplo:
+	// < PING<CrLf>
+	// > PING;PONG<CrLf>
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -38,12 +36,8 @@ public class ClearFilesCommand extends MacshaCommand {
 	public void parseCommandRow(String[] row) {
 		if (row.length > 1) {
 			switch (row[1]) {
-			case RESPONSE_OK:
+			case RESPONSE_PONG:
 				setStatus(STATUS_OK);
-				break;
-			case RESPONSE_ERR:
-				setErrorCode(RESPONSE_ERR);
-				setStatus(STATUS_ERROR);
 				break;
 			default:
 				setErrorCode(RESPONSE_LENGTH_ERROR);
@@ -65,7 +59,7 @@ public class ClearFilesCommand extends MacshaCommand {
 	 */
 	@Override
 	public void sendCommand(OutputStream dataOutputStream) throws IOException {
-		dataOutputStream.write("CLEARFILES\r\n".getBytes());
+		dataOutputStream.write("PING\r\n".getBytes());
 		dataOutputStream.flush();
 	}
 
