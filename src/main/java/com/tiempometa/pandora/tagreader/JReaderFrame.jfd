@@ -76,6 +76,11 @@ new FormModel {
 							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaBackupMenuItem.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaBackupMenuItemActionPerformed", true ) )
 						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "importMacshaCloudBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaCloudBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaCloudBackupMenuItemActionPerformed", true ) )
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menuTimingSense"

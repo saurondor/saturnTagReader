@@ -7,7 +7,13 @@ package com.tiempometa.pandora.tagreader;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+
+import com.tiempometa.pandora.foxberry.FoxberryBackupImporter;
 import com.tiempometa.pandora.ipicoreader.*;
+import com.tiempometa.pandora.macsha.MacshaBackupImporter;
+import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
+import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
+import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

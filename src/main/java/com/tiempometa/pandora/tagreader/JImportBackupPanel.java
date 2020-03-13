@@ -17,7 +17,13 @@ import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.foxberry.FoxberryBackupImporter;
+import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
 import com.tiempometa.pandora.ipicoreader.IpicoRead;
+import com.tiempometa.pandora.macsha.MacshaBackupImporter;
+import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
+import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
+import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
@@ -77,7 +83,14 @@ public class JImportBackupPanel extends JPanel {
 
 	private void loadDataFile() throws IOException {
 		importer.load(dataFile);
-		tableModel.setChipReads(importer.getChipReads());
+		if (importer instanceof MacshaCloudBackupImporter) {
+			// convert bib to rfid
+			List<RawChipRead> chipReads = Context.getResultsWebservice()
+					.populateRfidByChipNumber(importer.getChipReads());
+			tableModel.setChipReads(chipReads);
+		} else {
+			tableModel.setChipReads(importer.getChipReads());
+		}
 		tableModel.fireTableDataChanged();
 		loadCheckPoints();
 	}
@@ -175,5 +188,18 @@ public class JImportBackupPanel extends JPanel {
 
 	public void setImporter(BackupImporter importer) {
 		this.importer = importer;
+		if (importer instanceof FoxberryBackupImporter) {
+
+		} else if (importer instanceof IpicoBackupImporter) {
+
+		} else if (importer instanceof MacshaCloudBackupImporter) {
+
+		} else if (importer instanceof MacshaBackupImporter) {
+
+		} else if (importer instanceof TimingsenseBackupImporter) {
+
+		} else if (importer instanceof UltraBackupImporter) {
+
+		}
 	}
 }
