@@ -125,10 +125,12 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				}
 				e.printStackTrace();
 			} catch (ExceptionInInitializerError e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(this,
 						"No se pudo inicializar la aplicación. ¿Está corriendo la base de datos?",
 						"Error iniciando aplicación", JOptionPane.ERROR_MESSAGE);
 			} catch (NoClassDefFoundError e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(this,
 						"No se pudo inicializar la aplicación. Error inicializando application context. Error de sistema es: "
 								+ e.getMessage(),
