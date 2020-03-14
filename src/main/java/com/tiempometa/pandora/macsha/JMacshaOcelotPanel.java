@@ -48,7 +48,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	Thread workerThread = null;
 	private String checkPoint = null;
 	private boolean started = false;
-	private boolean buzzerStatus = true;
 	private Integer tagsRead = 0;
 
 	public JMacshaOcelotPanel(JReaderListPanel listPanel) {
@@ -85,7 +84,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 				connectButton.setText("Conectar");
 				connectButton.setBackground(Color.RED);
 				startReadingButton.setEnabled(false);
-				setTimeButton.setEnabled(false);
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
@@ -102,7 +100,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 				connectButton.setText("Desconectar");
 				connectButton.setBackground(Color.GREEN);
 				startReadingButton.setEnabled(true);
-				setTimeButton.setEnabled(true);
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
@@ -142,30 +139,9 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-//			logger.info("Send push tags command.");
-//			reader.sendCommand(new PushTagsCommand());
 			started = true;
 			startReadingButton.setText("Detener Lectura");
 		}
-	}
-
-	private void setTimeButtonActionPerformed(ActionEvent e) {
-//		reader.sendCommand(new SetTimeCommand());
-	}
-
-	private void setBuzzerButtonActionPerformed(ActionEvent e) {
-//		if (buzzerStatus) {
-//			buzzerStatus = false;
-//			setBuzzerButton.setText("Encender Buzzer");
-//		} else {
-//			buzzerStatus = true;
-//			setBuzzerButton.setText("Apagar Buzzer");
-//		}
-//		reader.sendCommand(new SetBuzzerCommand(buzzerStatus));
-	}
-
-	private void openBackupsButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
@@ -174,7 +150,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint = (String) checkPointComboBox.getSelectedItem();
-//		reader.setCheckPoint(checkPoint);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
@@ -195,30 +170,23 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		checkPointComboBox = new JComboBox();
 		applyCheckpointButton = new JButton();
 		modeComboBox = new JComboBox<>();
-		acPowerRadioButton = new JLabel();
-		batteryLabel = new JLabel();
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
-		openBackupsButton = new JButton();
-		setTimeButton = new JButton();
-		newFileButton = new JButton();
-		setBuzzerButton = new JButton();
 
-		//======== this ========
+		// ======== this ========
 		setBorder(new TitledBorder("Macsha Ocelot"));
 		setMaximumSize(new Dimension(550, 120));
 		setMinimumSize(new Dimension(550, 120));
 		setPreferredSize(new Dimension(550, 120));
-		setLayout(new FormLayout(
-			"11dlu, $lcgap, default, $lcgap, 55dlu, 2*($lcgap, 69dlu), $lcgap, 54dlu, $lcgap, 18dlu",
-			"3*(default, $lgap), default"));
+		setLayout(new FormLayout("11dlu, $lcgap, 60dlu, $lcgap, 55dlu, 2*($lcgap, 69dlu), $lcgap, 54dlu, $lcgap, 18dlu",
+				"3*(default, $lgap), 16dlu"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JMacshaReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 1));
 		add(readerAddressTextField, CC.xy(5, 1));
 
-		//---- connectButton ----
+		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JMacshaReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -229,7 +197,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		});
 		add(connectButton, CC.xy(7, 1));
 
-		//---- startReadingButton ----
+		// ---- startReadingButton ----
 		startReadingButton.setText(bundle.getString("JMacshaReaderPanel.startReadingButton.text"));
 		startReadingButton.setEnabled(false);
 		startReadingButton.addActionListener(new ActionListener() {
@@ -240,8 +208,9 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		});
 		add(startReadingButton, CC.xywh(9, 1, 3, 1));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+		// ---- removeReaderButton ----
+		removeReaderButton
+				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,11 +219,11 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		});
 		add(removeReaderButton, CC.xy(13, 1));
 
-		//---- label2 ----
+		// ---- label2 ----
 		label2.setText(bundle.getString("JMacshaReaderPanel.label2.text"));
 		add(label2, CC.xy(3, 3));
 
-		//---- checkPointComboBox ----
+		// ---- checkPointComboBox ----
 		checkPointComboBox.setBackground(Color.red);
 		checkPointComboBox.addItemListener(new ItemListener() {
 			@Override
@@ -264,7 +233,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		});
 		add(checkPointComboBox, CC.xy(5, 3));
 
-		//---- applyCheckpointButton ----
+		// ---- applyCheckpointButton ----
 		applyCheckpointButton.setText(bundle.getString("JMacshaReaderPanel.applyCheckpointButton.text"));
 		applyCheckpointButton.setBackground(Color.red);
 		applyCheckpointButton.addActionListener(new ActionListener() {
@@ -275,71 +244,18 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		});
 		add(applyCheckpointButton, CC.xy(7, 3));
 
-		//---- modeComboBox ----
-		modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Modo ruta",
-			"Modo checa tu chip",
-			"Modo checa tu resultado"
-		}));
+		// ---- modeComboBox ----
+		modeComboBox.setModel(new DefaultComboBoxModel<>(
+				new String[] { "Modo ruta", "Modo checa tu chip", "Modo checa tu resultado" }));
 		add(modeComboBox, CC.xywh(9, 3, 3, 1));
 
-		//---- acPowerRadioButton ----
-		acPowerRadioButton.setText(bundle.getString("JMacshaReaderPanel.acPowerRadioButton.text"));
-		acPowerRadioButton.setFocusable(false);
-		acPowerRadioButton.setForeground(Color.red);
-		acPowerRadioButton.setEnabled(false);
-		add(acPowerRadioButton, CC.xy(3, 5));
-
-		//---- batteryLabel ----
-		batteryLabel.setText(bundle.getString("JMacshaReaderPanel.batteryLabel.text"));
-		batteryLabel.setEnabled(false);
-		add(batteryLabel, CC.xywh(5, 5, 3, 1));
-
-		//---- label5 ----
+		// ---- label5 ----
 		label5.setText(bundle.getString("JMacshaReaderPanel.label5.text"));
 		add(label5, CC.xy(9, 5));
 
-		//---- tagsReadLabel ----
+		// ---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JMacshaReaderPanel.tagsReadLabel.text"));
 		add(tagsReadLabel, CC.xy(11, 5));
-
-		//---- openBackupsButton ----
-		openBackupsButton.setText(bundle.getString("JMacshaReaderPanel.openBackupsButton.text"));
-		openBackupsButton.setEnabled(false);
-		openBackupsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openBackupsButtonActionPerformed(e);
-			}
-		});
-		add(openBackupsButton, CC.xywh(3, 7, 3, 1));
-
-		//---- setTimeButton ----
-		setTimeButton.setText(bundle.getString("JMacshaReaderPanel.setTimeButton.text"));
-		setTimeButton.setEnabled(false);
-		setTimeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setTimeButtonActionPerformed(e);
-			}
-		});
-		add(setTimeButton, CC.xy(7, 7));
-
-		//---- newFileButton ----
-		newFileButton.setText(bundle.getString("JMacshaReaderPanel.newFileButton.text"));
-		newFileButton.setEnabled(false);
-		add(newFileButton, CC.xy(9, 7));
-
-		//---- setBuzzerButton ----
-		setBuzzerButton.setText(bundle.getString("JMacshaReaderPanel.setBuzzerButton.text"));
-		setBuzzerButton.setEnabled(false);
-		setBuzzerButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setBuzzerButtonActionPerformed(e);
-			}
-		});
-		add(setBuzzerButton, CC.xywh(11, 7, 3, 1));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
@@ -353,14 +269,8 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	private JComboBox checkPointComboBox;
 	private JButton applyCheckpointButton;
 	private JComboBox<String> modeComboBox;
-	private JLabel acPowerRadioButton;
-	private JLabel batteryLabel;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
-	private JButton openBackupsButton;
-	private JButton setTimeButton;
-	private JButton newFileButton;
-	private JButton setBuzzerButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public TagReadListener getTagReadListener() {
@@ -375,32 +285,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void handleCommandResponse(MacshaCommand command) {
 		logger.info("Handling command " + command.getClass().getCanonicalName());
-//		if (command instanceof SetTimeCommand) {
-//			JOptionPane.showMessageDialog(this, "Se fijó la hora del reader");
-//		}
-//		if (command instanceof ReadBatteryCommand) {
-//			ReadBatteryCommand batteryCommand = (ReadBatteryCommand) command;
-//			batteryLabel.setText("Voltaje : " + batteryCommand.getVoltage() + "V Carga : "
-//					+ batteryCommand.getCharge().intValue() + " %");
-//			batteryLabel.setEnabled(true);
-//			acPowerRadioButton.setEnabled(true);
-//
-//			if (batteryCommand.getCharge() > 50) {
-//				batteryLabel.setForeground(Color.BLACK);
-//			} else if (batteryCommand.getCharge() > 30) {
-//				batteryLabel.setForeground(Color.ORANGE);
-//			} else {
-//				batteryLabel.setForeground(Color.RED);
-//			}
-//			if (batteryCommand.isHasPower()) {
-//				acPowerRadioButton.setText("AC Conectado");
-//				acPowerRadioButton.setForeground(Color.GREEN);
-//			} else {
-//				acPowerRadioButton.setText("AC No Conectado");
-//				acPowerRadioButton.setForeground(Color.RED);
-//			}
-//		}
-
 	}
 
 	@Override
@@ -415,19 +299,15 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			reader.stop();
 			connectButton.setText("Conectar");
 			connectButton.setBackground(Color.RED);
-			batteryLabel.setEnabled(false);
-			acPowerRadioButton.setEnabled(false);
 			started = false;
 			startReadingButton.setText("Iniciar Lectura");
 			startReadingButton.setEnabled(false);
-			setTimeButton.setEnabled(false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
 					"Error de conexión", JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 
 	@Override
