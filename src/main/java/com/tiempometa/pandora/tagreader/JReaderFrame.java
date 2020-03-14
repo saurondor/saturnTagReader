@@ -245,6 +245,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			previewFrame.setVisible(false);
 		} else {
 			previewFrame.prepareView();
+			previewFrame.loadImages();
 			previewFrame.setVisible(true);
 		}
 	}
