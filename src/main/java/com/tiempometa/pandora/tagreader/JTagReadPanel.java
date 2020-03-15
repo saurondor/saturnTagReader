@@ -24,6 +24,7 @@ public class JTagReadPanel extends JPanel {
 	public JTagReadPanel() {
 		initComponents();
 		tagReadTable.setModel(tableModel);
+		tagReadTable.setAutoCreateRowSorter(true);
 	}
 
 	public void add(RawChipRead macshaTagRead) {
