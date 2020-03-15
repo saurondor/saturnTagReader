@@ -61,23 +61,24 @@ public class JImportBackupPanel extends JPanel {
 	private void fileOpenButtonActionPerformed(ActionEvent e) {
 		final JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("CSV/TXT/LOG (.csv, .txt, .log)", "csv", "txt", "log"));
-		String path = Context.loadSetting(PandoraSettings.EVENT_PATH, null);
-		if (path == null) {
-			fc.setCurrentDirectory(null);
-		} else {
-			fc.setCurrentDirectory(new File(path));
-		}
-		int returnVal = fc.showOpenDialog(this);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			dataFile = fc.getSelectedFile();
-			fileLabel.setText(dataFile.getName());
-			try {
-				loadDataFile();
-				importButton.setEnabled(false);
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "Error cargando los datos " + e1.getMessage(),
-						"Error de importación", JOptionPane.ERROR_MESSAGE);
+		try {
+			fc.setCurrentDirectory(Context.getWorkingDirectory());
+			int returnVal = fc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				dataFile = fc.getSelectedFile();
+				fileLabel.setText(dataFile.getName());
+				try {
+					loadDataFile();
+					Context.saveWorkingDirectory(dataFile.getPath());
+					importButton.setEnabled(false);
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(this, "Error cargando los datos " + e1.getMessage(),
+							"Error de importación", JOptionPane.ERROR_MESSAGE);
+				}
 			}
+		} catch (IOException e2) {
+			JOptionPane.showMessageDialog(this, "Error cargando los datos " + e2.getMessage(), "Error de importación",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

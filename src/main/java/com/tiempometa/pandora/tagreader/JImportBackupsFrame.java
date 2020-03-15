@@ -38,15 +38,13 @@ public class JImportBackupsFrame extends JFrame {
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		importPanel = new JImportBackupPanel();
 
-		// ======== this ========
+		//======== this ========
 		setTitle(bundle.getString("JImportBackupsFrame.this.title"));
-		setIconImage(new ImageIcon(
-				getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png"))
-						.getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(importPanel, BorderLayout.CENTER);
-		setSize(605, 315);
+		setSize(550, 315);
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}

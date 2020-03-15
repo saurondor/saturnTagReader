@@ -3,6 +3,7 @@
  */
 package com.tiempometa.pandora.tagreader;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.ZoneId;
@@ -34,6 +35,19 @@ public class Context extends com.tiempometa.timing.Context {
 	private static ResultsWebservice resultsWebservice;
 	private static String serverAddress = null;
 //	private static ZoneId zoneId = null;
+
+	public static void saveWorkingDirectory(String workingDirectory) throws IOException {
+		Context.saveSetting(PandoraSettings.EVENT_PATH, workingDirectory);
+		Context.flushSettings();
+	}
+
+	public static File getWorkingDirectory() throws IOException {
+		String path = Context.loadSetting(PandoraSettings.EVENT_PATH, null);
+		if (path == null) {
+			return null;
+		}
+		return new File(path);
+	}
 
 	public static void initWebservieClients() {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
