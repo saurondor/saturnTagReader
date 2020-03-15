@@ -27,7 +27,7 @@ public class JTagReadPanel extends JPanel {
 		tagReadTable.setAutoCreateRowSorter(true);
 	}
 
-	public void add(RawChipRead macshaTagRead) {
+	public void add(TagReadLog macshaTagRead) {
 		tableModel.getTagReads().add(macshaTagRead);
 		tableModel.fireTableDataChanged();
 	}
@@ -43,7 +43,7 @@ public class JTagReadPanel extends JPanel {
 		//======== this ========
 		setFont(new Font("Tahoma", Font.BOLD, 12));
 		setLayout(new FormLayout(
-			"7dlu, 159dlu, 7dlu",
+			"7dlu, 407dlu, 7dlu",
 			"2*(default, $lgap), default"));
 
 		//---- label1 ----

@@ -11,7 +11,6 @@ import javax.swing.table.AbstractTableModel;
 
 import com.tiempometa.webservice.model.RawChipRead;
 
-
 /**
  * @author gtasi
  *
@@ -22,8 +21,8 @@ public class TagReadTableModel extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 4901920600211371008L;
-	private static final String[] HEADERS = { "tag", "hora", "punto" };
-	private List<RawChipRead> tagReads = new ArrayList<RawChipRead>();
+	private static final String[] HEADERS = { "tag", "hora", "punto", "número", "nombre", "categoría" };
+	private List<TagReadLog> tagReads = new ArrayList<TagReadLog>();
 
 	/*
 	 * (non-Javadoc)
@@ -53,14 +52,20 @@ public class TagReadTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		RawChipRead tagRead = tagReads.get(rowIndex);
+		TagReadLog tagRead = tagReads.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return tagRead.getRfidString();
+			return tagRead.getTag();
 		case 1:
 			return DateTimeFormatter.ISO_LOCAL_TIME.format(tagRead.getTime());
 		case 2:
 			return tagRead.getCheckPoint();
+		case 3:
+			return tagRead.getBib();
+		case 4:
+			return tagRead.getName();
+		case 5:
+			return tagRead.getCategory();
 		default:
 			return null;
 		}
@@ -71,11 +76,11 @@ public class TagReadTableModel extends AbstractTableModel {
 		return HEADERS[column];
 	}
 
-	public List<RawChipRead> getTagReads() {
+	public List<TagReadLog> getTagReads() {
 		return tagReads;
 	}
 
-	public void setTagReads(List<RawChipRead> tagReads) {
+	public void setTagReads(List<TagReadLog> tagReads) {
 		this.tagReads = tagReads;
 	}
 

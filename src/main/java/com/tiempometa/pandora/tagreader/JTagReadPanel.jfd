@@ -8,7 +8,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "7dlu, 159dlu, 7dlu"
+			"$columnSpecs": "7dlu, 407dlu, 7dlu"
 			"$rowSpecs": "default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
@@ -32,7 +32,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 260, 300 )
+			"size": new java.awt.Dimension( 645, 300 )
 		} )
 	}
 }

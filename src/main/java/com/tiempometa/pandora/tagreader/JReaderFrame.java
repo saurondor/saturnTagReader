@@ -590,7 +590,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		setJMenuBar(menuBar1);
 		contentPane.add(readerListPanel, BorderLayout.CENTER);
 		contentPane.add(tagReadPanel, BorderLayout.EAST);
-		setSize(805, 505);
+		setSize(1215, 505);
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
@@ -652,7 +652,6 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		List<com.tiempometa.webservice.model.RawChipRead> wsReadings = new ArrayList<com.tiempometa.webservice.model.RawChipRead>();
 		for (RawChipRead tagRead : readings) {
 			logger.debug(tagRead);
-			tagReadPanel.add(tagRead);
 			wsReadings.add(tagRead);
 		}
 		Context.getResultsWebservice().saveRawChipReads(wsReadings);
@@ -661,9 +660,13 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			List<ParticipantRegistration> registrationList = Context.getRegistrationWebservice()
 					.findByTag(tagRead.getRfidString());
 			if (registrationList == null) {
-
+				tagReadPanel.add(TagReadLog.fromRawRead(tagRead));
 			} else {
 				logger.debug("Registration list size " + registrationList);
+				for (ParticipantRegistration registration : registrationList) {
+					tagReadPanel.add(TagReadLog.fromRawRead(tagRead, registration));
+				}
+				tagReadPanel.add(TagReadLog.fromRawRead(tagRead));
 				showParticipantInfo(registrationList);
 			}
 		}
