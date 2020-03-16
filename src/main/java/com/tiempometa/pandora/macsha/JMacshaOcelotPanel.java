@@ -78,6 +78,11 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
+		doConnectButton();
+	}
+
+	private void doConnectButton() {
+
 		if (reader.isConnected()) {
 			try {
 				reader.disconnect();
@@ -90,16 +95,22 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			}
 		} else {
 			try {
-				Thread workerThread = new Thread(reader);
-				if (ipHasPort()) {
-					connectByIpPort();
+				if (checkPoint == null) {
+					JOptionPane.showMessageDialog(this, "Se debe seleccionar un punto antes de conectar",
+							"Error de configuración", JOptionPane.WARNING_MESSAGE);
 				} else {
-					connectByIp();
+
+					Thread workerThread = new Thread(reader);
+					if (ipHasPort()) {
+						connectByIpPort();
+					} else {
+						connectByIp();
+					}
+					workerThread.start();
+					connectButton.setText("Desconectar");
+					connectButton.setBackground(Color.GREEN);
+					startReadingButton.setEnabled(true);
 				}
-				workerThread.start();
-				connectButton.setText("Desconectar");
-				connectButton.setBackground(Color.GREEN);
-				startReadingButton.setEnabled(true);
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
@@ -332,5 +343,19 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			}
 		}
 		tagReadListener.notifyTagReads(chipReadList);
+	}
+
+	@Override
+	public void notifyTimeout() {
+		logger.error("NOTIFIED TIMEOUT OCELOT");
+		doConnectButton();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		doConnectButton();
+
 	}
 }

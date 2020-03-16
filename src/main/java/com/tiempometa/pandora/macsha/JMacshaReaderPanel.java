@@ -453,4 +453,10 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		}
 		tagReadListener.notifyTagReads(chipReadList);
 	}
+
+	@Override
+	public void notifyTimeout() {
+		// TODO Auto-generated method stub
+		
+	}
 }

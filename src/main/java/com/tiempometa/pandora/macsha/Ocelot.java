@@ -9,26 +9,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.ClearFilesCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.GetFileCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.GetFileInfoCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.GetPassingsCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.GetProtocolCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.GetTimeCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.ListFilesCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.NewFileCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.PingCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.PushTagsCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.ReadBatteryCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetBounceCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetBuzzerCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetProtocolCommand;
-import com.tiempometa.pandora.macsha.commands.one4all.SetTimeCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.StartCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
@@ -56,9 +42,41 @@ public class Ocelot implements Runnable {
 	private OutputStream dataOutputStream = null;
 	private boolean doReadings = true; // flag indicating continue reading tags
 	private TagReadListener tagReadListener;
-//	private String checkPoint;
 	private CommandResponseHandler commandResponseHandler;
-//	private KeepAlive keepAlive;
+	private Integer keepAliveCounter = 0;
+	private KeepAlive keepAlive;
+
+	private class KeepAlive implements Runnable {
+		private boolean runMe = true;
+
+		public void stop() {
+			synchronized (this) {
+				runMe = false;
+			}
+		}
+
+		@Override
+		public void run() {
+			boolean run = true;
+			logger.debug("Starting keepalive worker thread");
+			while (run) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				synchronized (keepAlive) {
+					keepAliveCounter++;
+					if (keepAliveCounter >= 3) {
+						notifyTimeOut();
+					}
+				}
+				logger.debug("Increased keepalive counter to " + keepAliveCounter);
+			}
+		}
+
+	}
 
 	public boolean isConnected() {
 		if ((dataInputStream == null) || (dataOutputStream == null)) {
@@ -66,6 +84,11 @@ public class Ocelot implements Runnable {
 		} else {
 			return true;
 		}
+	}
+
+	public void notifyTimeOut() {
+		logger.error("TIMEOUT OCELOT " + (new Date()));
+		commandResponseHandler.notifyTimeout();
 	}
 
 	public void sendCommand(MacshaCommand command) {
@@ -83,19 +106,29 @@ public class Ocelot implements Runnable {
 		logger.info("Opening socket");
 		openSocket();
 		logger.info("Socket opened");
-//		startKeepAlive();
+		startKeepAlive();
 //		notifyConnected();
 		logger.info("Notify successful connect");
 	}
 
+	/**
+	 * 
+	 */
+	private void startKeepAlive() {
+		keepAlive = new KeepAlive();
+		Thread thread = new Thread(keepAlive);
+		thread.start();
+	}
+
 	public void connect(String hostName) throws UnknownHostException, IOException {
-		this.hostname = hostName;
-		logger.info("Opening socket");
-		openSocket();
-		logger.info("Socket opened");
-//		startKeepAlive();
-//		notifyConnected();
-		logger.info("Notify successful connect");
+		connect(hostName, port);
+//		this.hostname = hostName;
+//		logger.info("Opening socket");
+//		openSocket();
+//		logger.info("Socket opened");
+////		startKeepAlive();
+////		notifyConnected();
+//		logger.info("Notify successful connect");
 	}
 
 	private void openSocket() throws UnknownHostException, IOException {
@@ -109,7 +142,7 @@ public class Ocelot implements Runnable {
 		readerSocket.close();
 		dataInputStream = null;
 		dataOutputStream = null;
-//		notifyDisconnected();
+		keepAlive.stop();
 	}
 
 	@Override
@@ -126,7 +159,6 @@ public class Ocelot implements Runnable {
 					if (readerSocket.isClosed()) {
 						logger.warn("Socket is closed!");
 					}
-
 					int dataInStream;
 					try {
 						dataInStream = dataInputStream.available();
@@ -135,17 +167,13 @@ public class Ocelot implements Runnable {
 							dataInputStream.read(b);
 							String dataString = new String(b);
 							if (logger.isDebugEnabled()) {
-								logger.debug("IN BUFFER>\n" + dataString + "\nLEN:" + dataString.length());
+								logger.debug("IN BUFFER>\n\t\t\t\t\t\t" + dataString + "\n\t\t\t\t\t\tLEN>"
+										+ dataString.length());
 							}
 							parsePayload(dataString);
-//							dataString = dataString.replace("CONECTADO_4", "");
-
-//							String[] dataRows = dataString.split("\\|");
-
 						} else {
 						}
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						try {
 							disconnect();
@@ -174,10 +202,9 @@ public class Ocelot implements Runnable {
 
 	private void parsePayload(String dataString) {
 		List<MacshaTagRead> readings = new ArrayList<MacshaTagRead>();
-		if (logger.isDebugEnabled()) {
-			logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
-		}
-//		String[] dataRows = dataString.split("\\r\\n");
+//		if (logger.isDebugEnabled()) {
+//			logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
+//		}
 		String[] dataRows = dataString.split("\\|");
 		if (logger.isDebugEnabled()) {
 			logger.debug("DATAROWS>\t:" + dataRows.length);
@@ -198,22 +225,20 @@ public class Ocelot implements Runnable {
 	}
 
 	private void notifyTagReads(List<MacshaTagRead> readings) {
-//		RawChipReadDao chipDao = (RawChipReadDao) Context.getCtx().getBean("rawChipReadDao");
 		List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 		for (MacshaTagRead macshaTagRead : readings) {
 			RawChipRead chipRead = macshaTagRead.toRawChipRead();
-//			synchronized (this) {
-//				chipRead.setCheckPoint(checkPoint);
-//			}
 			chipReadList.add(chipRead);
 		}
-//		chipDao.batchSave(chipReadList);
 		tagReadListener.notifyTagReads(chipReadList);
 	}
 
 	private MacshaTagRead parseRow(String[] row) {
 		if (row[0].startsWith(COMMAND_CONNECTED)) {
-			logger.debug("GOT Connected");
+			synchronized (keepAlive) {
+				keepAliveCounter = 0;
+			}
+			logger.debug("GOT Connected. Keepalive now :" + keepAliveCounter);
 			return null;
 		} else if (row[0].startsWith(COMMAND_STARTED)) {
 			logger.debug("GOT Started");
@@ -273,16 +298,6 @@ public class Ocelot implements Runnable {
 	public void setTagReadListener(TagReadListener tagReadListener) {
 		this.tagReadListener = tagReadListener;
 	}
-
-//	public String getCheckPoint() {
-//		return checkPoint;
-//	}
-//
-//	public void setCheckPoint(String checkPoint) {
-//		synchronized (this) {
-//			this.checkPoint = checkPoint;
-//		}
-//	}
 
 	public CommandResponseHandler getCommandResponseHandler() {
 		return commandResponseHandler;

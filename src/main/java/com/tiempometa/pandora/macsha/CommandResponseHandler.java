@@ -12,6 +12,8 @@ import com.tiempometa.pandora.macsha.commands.MacshaCommand;
  *
  */
 public interface CommandResponseHandler {
+	
+	void notifyTimeout();
 
 	void handleCommandResponse(MacshaCommand command);
 
