@@ -82,6 +82,11 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaBackupMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "importMacshaOcelotBackupMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaOcelotBackupMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaOcelotBackupMenuItemActionPerformed", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "importMacshaCloudBackupMenuItem"
 							"text": new FormMessage( null, "JIpicoReaderFrame.importMacshaCloudBackupMenuItem.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importMacshaCloudBackupMenuItemActionPerformed", true ) )

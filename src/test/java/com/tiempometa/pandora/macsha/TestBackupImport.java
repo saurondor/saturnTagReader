@@ -43,6 +43,43 @@ public class TestBackupImport {
 	}
 
 	@Test
+	public void testOcelotImport() {
+		String cwd = System.getProperty("user.dir");
+		logger.info("Current working directory : " + cwd);
+		BackupImporter importer = new MacshaOcelotBackupImporter();
+		String fileName = cwd + "/src/test/resources/backups/macsha/azul-15032020_062119.csv";
+		InputStream inputStream;
+		try {
+			inputStream = new FileInputStream(fileName);
+			MacshaCSVParser parser = new MacshaCSVParser();
+			List<CSVRecord> list = parser.parse(inputStream);
+			logger.info("List size " + list.size());
+			for (CSVRecord csvRecord : list) {
+				if (csvRecord.size() > 2) {
+					logger.info("\t" + csvRecord);
+					MacshaOcelotRead cloudRead = MacshaOcelotRead.parseRecord(csvRecord,
+							MacshaOcelotRead.EXIT_READ_TIME);
+					logger.info("\t" + cloudRead);
+				}
+			}
+			inputStream.close();
+			importer.load(new File(fileName));
+			List<RawChipRead> reads = importer.getChipReads();
+			logger.info("\t CHIP READS>>>");
+			for (RawChipRead rawChipRead : reads) {
+				logger.info("\t" + rawChipRead);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
 	public void testCloudImport() {
 		String cwd = System.getProperty("user.dir");
 		logger.info("Current working directory : " + cwd);

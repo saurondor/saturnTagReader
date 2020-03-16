@@ -22,6 +22,7 @@ import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
 import com.tiempometa.pandora.ipicoreader.IpicoRead;
 import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
+import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
@@ -196,6 +197,8 @@ public class JImportBackupPanel extends JPanel {
 		} else if (importer instanceof MacshaCloudBackupImporter) {
 
 		} else if (importer instanceof MacshaBackupImporter) {
+
+		} else if (importer instanceof MacshaOcelotBackupImporter) {
 
 		} else if (importer instanceof TimingsenseBackupImporter) {
 
