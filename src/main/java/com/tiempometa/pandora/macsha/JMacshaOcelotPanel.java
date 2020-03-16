@@ -7,6 +7,7 @@ package com.tiempometa.pandora.macsha;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
@@ -32,6 +33,9 @@ import com.tiempometa.pandora.tagreader.TagReadListener;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
@@ -49,6 +53,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	private String checkPoint = null;
 	private boolean started = false;
 	private Integer tagsRead = 0;
+	boolean playback = false;
 
 	public JMacshaOcelotPanel(JReaderListPanel listPanel) {
 		super();
@@ -56,6 +61,12 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		initComponents();
 		reader.setCommandResponseHandler(this);
 		loadCheckPoints();
+		startReader();
+	}
+
+	private void startReader() {
+		workerThread = new Thread(reader);
+		workerThread.start();
 	}
 
 	/**
@@ -75,6 +86,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		initComponents();
 		reader.setCommandResponseHandler(this);
 		loadCheckPoints();
+		startReader();
 	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
@@ -82,13 +94,9 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private void doConnectButton() {
-
 		if (reader.isConnected()) {
 			try {
-				reader.disconnect();
-				connectButton.setText("Conectar");
-				connectButton.setBackground(Color.RED);
-				startReadingButton.setEnabled(false);
+				disconnectReader();
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
@@ -99,23 +107,41 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 					JOptionPane.showMessageDialog(this, "Se debe seleccionar un punto antes de conectar",
 							"Error de configuración", JOptionPane.WARNING_MESSAGE);
 				} else {
-
-					Thread workerThread = new Thread(reader);
-					if (ipHasPort()) {
-						connectByIpPort();
-					} else {
-						connectByIp();
-					}
-					workerThread.start();
-					connectButton.setText("Desconectar");
-					connectButton.setBackground(Color.GREEN);
-					startReadingButton.setEnabled(true);
+					connectReader();
 				}
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+
+	/**
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	private void connectReader() throws UnknownHostException, IOException {
+		if (ipHasPort()) {
+			connectByIpPort();
+		} else {
+			connectByIp();
+		}
+		synchronized (workerThread) {
+			playback = false;
+		}
+		connectButton.setText("Desconectar");
+		connectButton.setBackground(Color.GREEN);
+		startReadingButton.setEnabled(true);
+	}
+
+	/**
+	 * @throws IOException
+	 */
+	private void disconnectReader() throws IOException {
+		reader.disconnect();
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		startReadingButton.setEnabled(false);
 	}
 
 	private boolean ipHasPort() {
@@ -282,6 +308,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	private JComboBox<String> modeComboBox;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
+	private boolean retrying = false;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public TagReadListener getTagReadListener() {
@@ -348,14 +375,70 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void notifyTimeout() {
 		logger.error("NOTIFIED TIMEOUT OCELOT");
-		doConnectButton();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (retrying) {
+			logger.warn("Still waiting to reconnect...");
+		} else {
+			synchronized (this) {
+				retrying = true;
+			}
+			try {
+				disconnectReader();
+			} catch (IOException e1) {
+				logger.error("Unable to disconnect from reader on timeout. " + e1.getMessage());
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+//			for (int i = 0; i < 5; i++) {
+			logger.info("Trying to reconnect...");
+			try {
+				connectReader();
+			} catch (IOException e1) {
+				logger.error("Unable to connect to reader on timeout. " + e1.getMessage());
+				playback = true;
+				startWarningPlayback();
+			}
+//				try {
+//					Thread.sleep(5000);
+//				} catch (InterruptedException e) {
+//				}
+//			}
+			synchronized (this) {
+				retrying = false;
+			}
 		}
-		doConnectButton();
 
+	}
+
+	/**
+	 * 
+	 */
+	private void startWarningPlayback() {
+		(new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				boolean run = playback;
+				while (run) {
+					synchronized (workerThread) {
+						run = playback;
+					}
+					try {
+						playWarning();
+						logger.info("Done with warning playback");
+					} catch (JavaLayerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		})).start();
+	}
+
+	private void playWarning() throws JavaLayerException {
+		InputStream mp3Stream = this.getClass().getResourceAsStream("/keepalive.mp3");
+		Player player = new Player(mp3Stream);
+		player.play();
 	}
 }

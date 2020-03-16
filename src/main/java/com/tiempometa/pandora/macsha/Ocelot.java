@@ -34,6 +34,7 @@ public class Ocelot implements Runnable {
 	public static final String COMMAND_STARTED = "START-OK";
 	public static final String COMMAND_OPERATION_STARTED = "OPERATION-MODE-STARTED";
 	public static final String COMMAND_STOPPED = "STOP-OK";
+	public static final String COMMAND_REMOTE_OFF = "MODO-REMOTE-OFF";
 
 	private int port = 10002; // use default port
 	private String hostname = "";
@@ -44,12 +45,17 @@ public class Ocelot implements Runnable {
 	private TagReadListener tagReadListener;
 	private CommandResponseHandler commandResponseHandler;
 	private Integer keepAliveCounter = 0;
-	private KeepAlive keepAlive;
+	private KeepAlive keepAlive = new KeepAlive();
 
 	private class KeepAlive implements Runnable {
 		private boolean runMe = true;
 
+		public void start() {
+			runMe = true;
+		}
+
 		public void stop() {
+			logger.info("SIGNAL STOP KEEPALIVE");
 			synchronized (this) {
 				runMe = false;
 			}
@@ -58,22 +64,35 @@ public class Ocelot implements Runnable {
 		@Override
 		public void run() {
 			boolean run = true;
+
 			logger.debug("Starting keepalive worker thread");
 			while (run) {
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-				synchronized (keepAlive) {
-					keepAliveCounter++;
-					if (keepAliveCounter >= 3) {
-						notifyTimeOut();
+				synchronized (this) {
+					run = runMe;
+				}
+				if (run) {
+					synchronized (keepAlive) {
+						keepAliveCounter++;
+						if (keepAliveCounter >= 30) {
+							logger.debug("TIMEOUT!");
+							(new Thread(new Runnable() {
+								@Override
+								public void run() {
+									notifyTimeOut();
+
+								}
+							})).start();
+						}
+						logger.debug("Increased keepalive counter to " + keepAliveCounter);
 					}
 				}
-				logger.debug("Increased keepalive counter to " + keepAliveCounter);
 			}
+			logger.debug("ENDED KEEPALIVE!!");
+			runMe = true;
 		}
 
 	}
@@ -107,7 +126,6 @@ public class Ocelot implements Runnable {
 		openSocket();
 		logger.info("Socket opened");
 		startKeepAlive();
-//		notifyConnected();
 		logger.info("Notify successful connect");
 	}
 
@@ -115,20 +133,14 @@ public class Ocelot implements Runnable {
 	 * 
 	 */
 	private void startKeepAlive() {
-		keepAlive = new KeepAlive();
+//		keepAlive = new KeepAlive();
+//		keepAlive.start();
 		Thread thread = new Thread(keepAlive);
 		thread.start();
 	}
 
 	public void connect(String hostName) throws UnknownHostException, IOException {
 		connect(hostName, port);
-//		this.hostname = hostName;
-//		logger.info("Opening socket");
-//		openSocket();
-//		logger.info("Socket opened");
-////		startKeepAlive();
-////		notifyConnected();
-//		logger.info("Notify successful connect");
 	}
 
 	private void openSocket() throws UnknownHostException, IOException {
@@ -138,16 +150,18 @@ public class Ocelot implements Runnable {
 	}
 
 	public void disconnect() throws IOException {
+		keepAlive.stop();
 		doReadings = false;
 		readerSocket.close();
 		dataInputStream = null;
 		dataOutputStream = null;
-		keepAlive.stop();
 	}
 
 	@Override
 	public void run() {
-		try {
+		do {
+
+//			try {
 			boolean read = true;
 			while ((read) && (this.isConnected())) {
 				synchronized (this) {
@@ -174,30 +188,35 @@ public class Ocelot implements Runnable {
 						} else {
 						}
 					} catch (IOException e1) {
+						logger.error("Fault getting available bytes " + e1.getMessage());
 						e1.printStackTrace();
-						try {
-							disconnect();
-							connect(hostname);
-							dataInputStream = readerSocket.getInputStream();
-							dataOutputStream = readerSocket.getOutputStream();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
+//							try {
+//								disconnect();
+//								connect(hostname);
+//								dataInputStream = readerSocket.getInputStream();
+//								dataOutputStream = readerSocket.getOutputStream();
+//							} catch (IOException e2) {
+//								e2.printStackTrace();
+//							}
 					}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
 				}
 			}
-			logger.warn("STOPPING AND DISCONNECT!");
-			disconnect();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+//			logger.warn("STOPPING AND DISCONNECT!");
+//			disconnect();
+//			} catch (IOException e2) {
+//				// TODO Auto-generated catch block
+//				e2.printStackTrace();
+//			}
+			logger.debug("Waiting to connect");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		} while (true);
 	}
 
 	private void parsePayload(String dataString) {
@@ -248,6 +267,9 @@ public class Ocelot implements Runnable {
 			return null;
 		} else if (row[0].startsWith(COMMAND_STOPPED)) {
 			logger.debug("GOT Stop");
+			return null;
+		} else if (row[0].startsWith(COMMAND_REMOTE_OFF)) {
+			logger.debug("GOT Remote off");
 			return null;
 		} else {
 			try {
