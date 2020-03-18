@@ -220,7 +220,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	}
 
 	private void openEventMenuItemActionPerformed(ActionEvent e) {
-		String response = JOptionPane.showInputDialog("Dirección IP", Context.getServerAddress());
+		String response = JOptionPane.showInputDialog("Dirección IP del servidor remoto o 127.0.0.1 para local", Context.getServerAddress());
 		if (response == null) {
 
 		} else {

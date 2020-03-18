@@ -54,6 +54,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	private boolean started = false;
 	private Integer tagsRead = 0;
 	boolean playback = false;
+	boolean retrying = false;
 
 	public JMacshaOcelotPanel(JReaderListPanel listPanel) {
 		super();
@@ -62,6 +63,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		reader.setCommandResponseHandler(this);
 		loadCheckPoints();
 		startReader();
+		readerAddressComboBox.setSelectedIndex(-1);
 	}
 
 	private void startReader() {
@@ -145,21 +147,78 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private boolean ipHasPort() {
-		return readerAddressTextField.getText().contains(":");
+		return false;
+//		return readerAddressTextField.getText().contains(":");
 	}
 
 	private void connectByIpPort() throws UnknownHostException, IOException {
-		String[] readerIpPort = readerAddressTextField.getText().split(":");
-		String ipAddress = readerIpPort[0];
-		Integer port = Integer.valueOf(readerIpPort[1]);
-		logger.info("Connecting to " + ipAddress + ":" + port);
-		reader.connect(ipAddress, port);
+		// override code and just connect by address
+		connectByIp();
+
 	}
 
 	private void connectByIp() throws UnknownHostException, IOException {
-		String ipAddress = readerAddressTextField.getText();
+		String ipAddress = getIpAddress();
 		logger.info("Connecting to " + ipAddress + " with default port");
 		reader.connect(ipAddress);
+	}
+
+	private String getIpAddress() {
+		String ipAddress;
+		switch (readerAddressComboBox.getSelectedIndex()) {
+		case 0:
+			ipAddress = "192.168.1.10";
+			break;
+		case 1:
+			ipAddress = "192.168.1.11";
+			break;
+		case 2:
+			ipAddress = "192.168.1.12";
+			break;
+		case 3:
+			ipAddress = "192.168.1.13";
+			break;
+		case 4:
+			ipAddress = "192.168.1.14";
+			break;
+		case 5:
+			ipAddress = "192.168.1.15";
+			break;
+		case 6:
+			ipAddress = "192.168.1.16";
+			break;
+		case 7:
+			ipAddress = "192.168.1.17";
+			break;
+		case 8:
+			ipAddress = "192.168.1.18";
+			break;
+		case 9:
+			ipAddress = "192.168.1.19";
+			break;
+		case 10:
+			ipAddress = "192.168.1.20";
+			break;
+		case 11:
+			ipAddress = "192.168.1.21";
+			break;
+		case 12:
+			ipAddress = "192.168.1.22";
+			break;
+		case 13:
+			ipAddress = "192.168.1.23";
+			break;
+		case 14:
+			ipAddress = "192.168.1.24";
+			break;
+		case 15:
+			ipAddress = "192.168.1.25";
+			break;
+		default:
+			ipAddress = "192.168.1.10";
+			break;
+		}
+		return ipAddress;
 	}
 
 	private void startReadingButtonActionPerformed(ActionEvent e) {
@@ -199,7 +258,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		// //GEN-BEGIN:initComponents
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.macsha.macsha");
 		label1 = new JLabel();
-		readerAddressTextField = new JTextField();
+		readerAddressComboBox = new JComboBox<>();
 		connectButton = new JButton();
 		startReadingButton = new JButton();
 		removeReaderButton = new JButton();
@@ -221,7 +280,11 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		// ---- label1 ----
 		label1.setText(bundle.getString("JMacshaReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 1));
-		add(readerAddressTextField, CC.xy(5, 1));
+
+		// ---- readerAddressComboBox ----
+		readerAddressComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "ID0", "ID1", "ID2", "ID3", "ID4",
+				"ID5", "ID6", "ID7", "ID8", "ID9", "ID10", "ID11", "ID12", "ID13", "ID14", "ID15" }));
+		add(readerAddressComboBox, CC.xy(5, 1));
 
 		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JMacshaReaderPanel.connectButton.text"));
@@ -298,7 +361,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
 	private JLabel label1;
-	private JTextField readerAddressTextField;
+	private JComboBox<String> readerAddressComboBox;
 	private JButton connectButton;
 	private JButton startReadingButton;
 	private JButton removeReaderButton;
@@ -308,7 +371,6 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	private JComboBox<String> modeComboBox;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
-	private boolean retrying = false;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public TagReadListener getTagReadListener() {

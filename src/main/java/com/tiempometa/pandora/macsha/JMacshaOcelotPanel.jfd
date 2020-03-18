@@ -22,8 +22,27 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "readerAddressTextField"
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "readerAddressComboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "ID0"
+					addElement( "ID0" )
+					addElement( "ID1" )
+					addElement( "ID2" )
+					addElement( "ID3" )
+					addElement( "ID4" )
+					addElement( "ID5" )
+					addElement( "ID6" )
+					addElement( "ID7" )
+					addElement( "ID8" )
+					addElement( "ID9" )
+					addElement( "ID10" )
+					addElement( "ID11" )
+					addElement( "ID12" )
+					addElement( "ID13" )
+					addElement( "ID14" )
+					addElement( "ID15" )
+				}
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 			} )
