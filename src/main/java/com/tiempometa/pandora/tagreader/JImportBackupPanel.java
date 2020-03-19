@@ -25,6 +25,7 @@ import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
+import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
@@ -101,6 +102,7 @@ public class JImportBackupPanel extends JPanel {
 		List<RawChipRead> chipReads = tableModel.getChipReads();
 		for (RawChipRead rawChipRead : chipReads) {
 			rawChipRead.setCheckPoint((String) checkPointComboBox.getSelectedItem());
+			rawChipRead.setReadType(CookedChipRead.TYPE_BACKUP);
 		}
 		tableModel.fireTableDataChanged();
 		importButton.setEnabled(true);
