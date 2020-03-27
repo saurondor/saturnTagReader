@@ -43,7 +43,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 	private IpicoClient reader = new IpicoClient();
 	private String checkPoint1 = null;
 	private TagReadListener tagReadListener;
-	private Integer tagCount;
+	private Integer tagCount = 0;
 
 	public void setTerminal(String terminal) {
 		terminalTextField.setText(terminal);
