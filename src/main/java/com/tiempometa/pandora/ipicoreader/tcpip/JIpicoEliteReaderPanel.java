@@ -354,14 +354,15 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
-		logger.debug("Notified tag reads " + chipReadList.size());
-		for (RawChipRead rawChipRead : chipReadList) {
-			logger.debug("TAG READ " + rawChipRead.getRfidString());
+		if (chipReadList != null) {
+			logger.debug("Notified tag reads " + chipReadList.size());
+			for (RawChipRead rawChipRead : chipReadList) {
+				logger.debug("TAG READ " + rawChipRead.getRfidString());
+			}
+			tagReadListener.notifyTagReads(chipReadList);
+			tagCount = tagCount + chipReadList.size();
+			tagsReadLabel.setText(tagCount.toString());
 		}
-		tagReadListener.notifyTagReads(chipReadList);
-		tagCount = tagCount + chipReadList.size();
-		tagsReadLabel.setText(tagCount.toString());
 	}
 
 	@Override
