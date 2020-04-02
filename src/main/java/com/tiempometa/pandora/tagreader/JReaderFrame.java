@@ -53,7 +53,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		boolean retry = true;
 		do {
 			try {
-				Context.initWebservieClients();
+				Context.initWebserviceClients();
 				retry = false;
 			} catch (DateTimeException e) {
 				JOptionPane.showMessageDialog(this, "No se pudo establecer la zona horaria." + e.getMessage(),

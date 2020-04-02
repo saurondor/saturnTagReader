@@ -49,7 +49,7 @@ public class Context extends com.tiempometa.timing.Context {
 		return new File(path);
 	}
 
-	public static void initWebservieClients() {
+	public static void initWebserviceClients() {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(RegistrationWebservice.class);
 		String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
