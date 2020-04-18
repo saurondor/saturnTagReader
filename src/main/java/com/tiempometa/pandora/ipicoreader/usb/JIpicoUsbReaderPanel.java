@@ -84,9 +84,11 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 				foStream = new FileOutputStream(dllFile);
 				InputStream dllFileStream = null;
 				if (System.getProperty("os.arch").equals("x86")) {
+					logger.info("INSTALLING 32 bit DLL");
 					dllFileStream = this.getClass().getResourceAsStream("/rxtx/32bit/rxtxSerial.dll");
 				} else {
-					this.getClass().getResourceAsStream("/rxtx/64bit/rxtxSerial.dll");
+					logger.info("INSTALLING 64 bit DLL");
+					dllFileStream = this.getClass().getResourceAsStream("/rxtx/64bit/rxtxSerial.dll");
 				}
 				if (dllFileStream == null) {
 					logger.error("Unable to find resource file ");
