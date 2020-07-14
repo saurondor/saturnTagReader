@@ -1,0 +1,98 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.foxberry"
+	"i18n.bundleName": "foxberry"
+	"i18n.keyPrefix": "JIpicoReaderPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 63dlu, labelcompgap, 51dlu, labelcompgap, 15dlu, labelcompgap, 57dlu, labelcompgap, 22dlu"
+			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default"
+		} ) {
+			name: "this"
+			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoReaderPanel.this.border" )
+			"inheritsPopupMenu": true
+			"maximumSize": new java.awt.Dimension( 550, 120 )
+			"minimumSize": new java.awt.Dimension( 550, 120 )
+			"preferredSize": new java.awt.Dimension( 550, 120 )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label1.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "readerAddressTextField"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 3
+				"gridWidth": 8
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "connectButton"
+				"text": new FormMessage( null, "JIpicoReaderPanel.connectButton.text" )
+				"background": new java.awt.Color( 255, 0, 0, 255 )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "connectButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 15
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "removeReaderButton"
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 17
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label2.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label4.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label3.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label6"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label6.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 11
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": new FormMessage( null, "JIpicoReaderPanel.label5.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "tagsReadLabel"
+				"text": new FormMessage( null, "JIpicoReaderPanel.tagsReadLabel.text" )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 550, 120 )
+		} )
+	}
+}

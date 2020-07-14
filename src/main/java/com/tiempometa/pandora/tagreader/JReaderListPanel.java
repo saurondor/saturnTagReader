@@ -7,6 +7,7 @@ package com.tiempometa.pandora.tagreader;
 import java.awt.*;
 import javax.swing.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.pandora.cloud.tiempometa.JTiempoMetaCloudPanel;
 import com.tiempometa.pandora.foxberry.tcpip.JFoxberryReaderPanel;
 import com.tiempometa.pandora.foxberry.usb.JFoxberryUsbReaderPanel;
 import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
@@ -176,6 +177,21 @@ public class JReaderListPanel extends JPanel {
 
 	public void addOcelot() {
 		JMacshaOcelotPanel reader = new JMacshaOcelotPanel(this);
+		reader.setTagReadListener(tagReadListener);
+//		reader.setListPanel(this);
+		logger.debug("Adding reader...");
+		logger.debug("Component count " + listPanel.getComponentCount() + " before add");
+//		reader.setTerminal(Integer.valueOf(1 + listPanel.getComponentCount()).toString());
+		listPanel.add(reader);
+		listPanel.validate();
+		listPanel.repaint();
+		logger.debug("Component count " + listPanel.getComponentCount() + " after add");
+		logger.debug("Added reader!");
+		
+	}
+
+	public void addTiempoMetaCloud() {
+		JTiempoMetaCloudPanel reader = new JTiempoMetaCloudPanel(this);
 		reader.setTagReadListener(tagReadListener);
 //		reader.setListPanel(this);
 		logger.debug("Adding reader...");

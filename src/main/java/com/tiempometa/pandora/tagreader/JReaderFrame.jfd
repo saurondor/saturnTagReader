@@ -124,6 +124,11 @@ new FormModel {
 							"text": new FormMessage( null, "JIpicoReaderFrame.importFoxberryBackupMenuItem.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importFoxberryBackupMenuItemActionPerformed", true ) )
 						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "tiempoMetaCloudMenuItem"
+							"text": new FormMessage( null, "JIpicoReaderFrame.tiempoMetaCloudMenuItem.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tiempoMetaCloudMenuItemActionPerformed", true ) )
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menu8"
