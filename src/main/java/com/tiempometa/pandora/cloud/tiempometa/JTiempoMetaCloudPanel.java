@@ -7,6 +7,7 @@ package com.tiempometa.pandora.cloud.tiempometa;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -14,10 +15,12 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
+import com.tiempometa.api.DataRequestException;
 import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
 import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
 import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
@@ -42,36 +45,67 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	private JReaderListPanel listPanel;
 	private TiempoMetaCloudClient reader = new TiempoMetaCloudClient();
 	private TagReadListener tagReadListener;
-	private Integer tagCount;
+	private Integer tagCount = 0;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 	public JTiempoMetaCloudPanel(JReaderListPanel listPanel) {
 		initComponents();
 		this.listPanel = listPanel;
 		reader.registerTagReadListener(this);
-		loadCheckPoints();
 	}
-
-	/**
-	 * 
-	 */
-	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
-		logger.debug("Available checkpoints ");
-		for (String string : checkPoints) {
-			logger.debug(string);
-		}
-		String[] checkPointArray = new String[checkPoints.size()];
-	}
-
-//	private void checkPointComboBoxItemStateChanged(ItemEvent e) {
-//		// TODO add your code here
-//	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
+		try {
+			if (reader.connect(apiKeyTextField.getText(), null)) {
+				eventTitleLabel.setText(reader.getEvent().getTitle());
+				Thread thread = new Thread(reader);
+				thread.start();
+			} else {
+				eventTitleLabel.setText("Error conectando");
+			}
+		} catch (ClientProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (DataRequestException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void removeReaderButtonActionPerformed(ActionEvent e) {
 		listPanel.removeReader(this);
+	}
+
+	private void rewindTagReadsButtonActionPerformed(ActionEvent e) {
+		int response = JOptionPane.showConfirmDialog(this,
+				"Esta acción descargará todas las lecturas nuevamente. ¿Deseas continuar?", "Rebobinar lecturas",
+				JOptionPane.YES_NO_OPTION);
+		if (response == JOptionPane.YES_OPTION) {
+			reader.rewindAll();
+		}
+	}
+
+	private void clearTagReadsButtonActionPerformed(ActionEvent e) {
+		String confirmation = UUID.randomUUID().toString().substring(9, 13);
+		String response = JOptionPane.showInputDialog(this,
+				"Esto borrará todas las lecturas en la nube. Esta operación no se puede deshacer.\n"
+						+ "Para continuar por favor digita los siguientes caracteres para confirmar:" + confirmation,
+				null);
+		if ((response != null) && (response.equals(confirmation))) {
+			reader.clearTags();
+			JOptionPane.showMessageDialog(this, "Se borraron todos los tags.");
+		} else {
+			JOptionPane.showMessageDialog(this, "Operación cancelada.");
+		}
 	}
 
 	private void initComponents() {
@@ -79,32 +113,51 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 		// //GEN-BEGIN:initComponents
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.foxberry.foxberry");
 		label1 = new JLabel();
-		readerAddressTextField = new JTextField();
-		connectButton = new JButton();
+		apiKeyTextField = new JTextField();
 		removeReaderButton = new JButton();
+		eventTitleLabel = new JLabel();
+		connectButton = new JButton();
 		label2 = new JLabel();
-		label4 = new JLabel();
+		lastRequestLabel = new JLabel();
 		label3 = new JLabel();
-		label6 = new JLabel();
+		lastDownloadLabel = new JLabel();
+		rewindTagReadsButton = new JButton();
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
+		clearTagReadsButton = new JButton();
 
-		//======== this ========
+		// ======== this ========
 		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
 		setInheritsPopupMenu(true);
-		setMaximumSize(new Dimension(550, 120));
-		setMinimumSize(new Dimension(550, 120));
-		setPreferredSize(new Dimension(550, 120));
+		setMaximumSize(new Dimension(550, 130));
+		setMinimumSize(new Dimension(550, 130));
+		setPreferredSize(new Dimension(550, 130));
 		setLayout(new FormLayout(
-			"5dlu, $lcgap, default, $lcgap, 57dlu, $lcgap, 15dlu, $lcgap, 63dlu, $lcgap, 51dlu, $lcgap, 15dlu, $lcgap, 57dlu, $lcgap, 22dlu",
-			"5dlu, 3*($lgap, default)"));
+				"5dlu, $lcgap, default, $lcgap, 57dlu, $lcgap, 15dlu, $lcgap, 78dlu, $lcgap, 51dlu, $lcgap, 57dlu, $lcgap, 22dlu",
+				"3*(default, $lgap), default"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
-		add(label1, CC.xy(3, 3));
-		add(readerAddressTextField, CC.xywh(5, 3, 8, 1));
+		add(label1, CC.xy(3, 1));
+		add(apiKeyTextField, CC.xywh(5, 1, 9, 1));
 
-		//---- connectButton ----
+		// ---- removeReaderButton ----
+		removeReaderButton
+				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+		removeReaderButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeReaderButtonActionPerformed(e);
+			}
+		});
+		add(removeReaderButton, CC.xy(15, 1));
+
+		// ---- eventTitleLabel ----
+		eventTitleLabel.setText(bundle.getString("JIpicoReaderPanel.eventTitleLabel.text"));
+		eventTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(eventTitleLabel, CC.xywh(3, 3, 9, 1));
+
+		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -113,55 +166,70 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 				connectButtonActionPerformed(e);
 			}
 		});
-		add(connectButton, CC.xy(15, 3));
+		add(connectButton, CC.xywh(13, 3, 3, 1));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
-		removeReaderButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				removeReaderButtonActionPerformed(e);
-			}
-		});
-		add(removeReaderButton, CC.xy(17, 3));
-
-		//---- label2 ----
+		// ---- label2 ----
 		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
 		add(label2, CC.xy(3, 5));
 
-		//---- label4 ----
-		label4.setText(bundle.getString("JIpicoReaderPanel.label4.text"));
-		add(label4, CC.xy(5, 5));
+		// ---- lastRequestLabel ----
+		lastRequestLabel.setText(bundle.getString("JIpicoReaderPanel.lastRequestLabel.text"));
+		lastRequestLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lastRequestLabel, CC.xy(5, 5));
 
-		//---- label3 ----
+		// ---- label3 ----
 		label3.setText(bundle.getString("JIpicoReaderPanel.label3.text"));
 		add(label3, CC.xy(9, 5));
 
-		//---- label6 ----
-		label6.setText(bundle.getString("JIpicoReaderPanel.label6.text"));
-		add(label6, CC.xy(11, 5));
+		// ---- lastDownloadLabel ----
+		lastDownloadLabel.setText(bundle.getString("JIpicoReaderPanel.lastDownloadLabel.text"));
+		lastDownloadLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lastDownloadLabel, CC.xy(11, 5));
 
-		//---- label5 ----
+		// ---- rewindTagReadsButton ----
+		rewindTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.rewindTagReadsButton.text"));
+		rewindTagReadsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rewindTagReadsButtonActionPerformed(e);
+			}
+		});
+		add(rewindTagReadsButton, CC.xywh(13, 5, 3, 1));
+
+		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
-		add(label5, CC.xy(3, 7));
+		add(label5, CC.xy(9, 7));
 
-		//---- tagsReadLabel ----
+		// ---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
-		add(tagsReadLabel, CC.xy(5, 7));
+		add(tagsReadLabel, CC.xy(11, 7));
+
+		// ---- clearTagReadsButton ----
+		clearTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.clearTagReadsButton.text"));
+		clearTagReadsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clearTagReadsButtonActionPerformed(e);
+			}
+		});
+		add(clearTagReadsButton, CC.xywh(13, 7, 3, 1));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
 	private JLabel label1;
-	private JTextField readerAddressTextField;
-	private JButton connectButton;
+	private JTextField apiKeyTextField;
 	private JButton removeReaderButton;
+	private JLabel eventTitleLabel;
+	private JButton connectButton;
 	private JLabel label2;
-	private JLabel label4;
+	private JLabel lastRequestLabel;
 	private JLabel label3;
-	private JLabel label6;
+	private JLabel lastDownloadLabel;
+	private JButton rewindTagReadsButton;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
+	private JButton clearTagReadsButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
@@ -171,14 +239,17 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
-		logger.debug("Notified tag reads " + chipReadList.size());
-		for (RawChipRead rawChipRead : chipReadList) {
-			logger.debug("TAG READ " + rawChipRead.getRfidString());
+		lastRequestLabel.setText(dateFormat.format(new Date()));
+		if (chipReadList.size() > 0) {
+			lastDownloadLabel.setText(dateFormat.format(new Date()));
+			logger.debug("Notified tag reads " + chipReadList.size());
+			for (RawChipRead rawChipRead : chipReadList) {
+				logger.debug("TAG READ " + rawChipRead.getRfidString());
+			}
+			tagReadListener.notifyTagReads(chipReadList);
+			tagCount = tagCount + chipReadList.size();
+			tagsReadLabel.setText(tagCount.toString());
 		}
-		tagReadListener.notifyTagReads(chipReadList);
-		tagCount = tagCount + chipReadList.size();
-		tagsReadLabel.setText(tagCount.toString());
 	}
 
 	@Override

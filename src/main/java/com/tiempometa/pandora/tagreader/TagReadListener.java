@@ -15,7 +15,4 @@ import com.tiempometa.webservice.model.RawChipRead;
 public interface TagReadListener {
 
 	void notifyTagReads(List<RawChipRead> chipReadList);
-	
-	
-
 }

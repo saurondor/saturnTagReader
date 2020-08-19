@@ -57,7 +57,11 @@ public class TagReadTableModel extends AbstractTableModel {
 		case 0:
 			return tagRead.getTag();
 		case 1:
-			return DateTimeFormatter.ISO_LOCAL_TIME.format(tagRead.getTime());
+			if (tagRead.getTime() == null) {
+				return "ND";
+			} else {
+				return DateTimeFormatter.ISO_LOCAL_TIME.format(tagRead.getTime());
+			}
 		case 2:
 			return tagRead.getCheckPoint();
 		case 3:

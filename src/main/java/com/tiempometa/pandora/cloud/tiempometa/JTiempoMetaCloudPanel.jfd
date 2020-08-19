@@ -8,28 +8,42 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 63dlu, labelcompgap, 51dlu, labelcompgap, 15dlu, labelcompgap, 57dlu, labelcompgap, 22dlu"
-			"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, default"
+			"$columnSpecs": "5dlu, labelcompgap, default, labelcompgap, 57dlu, labelcompgap, 15dlu, labelcompgap, 78dlu, labelcompgap, 51dlu, labelcompgap, 57dlu, labelcompgap, 22dlu"
+			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
 			"border": new javax.swing.border.TitledBorder( "i18nKey=JIpicoReaderPanel.this.border" )
 			"inheritsPopupMenu": true
-			"maximumSize": new java.awt.Dimension( 550, 120 )
-			"minimumSize": new java.awt.Dimension( 550, 120 )
-			"preferredSize": new java.awt.Dimension( 550, 120 )
+			"maximumSize": new java.awt.Dimension( 550, 130 )
+			"minimumSize": new java.awt.Dimension( 550, 130 )
+			"preferredSize": new java.awt.Dimension( 550, 130 )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": new FormMessage( null, "JIpicoReaderPanel.label1.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
-				"gridY": 3
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "readerAddressTextField"
+				name: "apiKeyTextField"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
+				"gridWidth": 9
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "removeReaderButton"
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 15
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "eventTitleLabel"
+				"text": new FormMessage( null, "JIpicoReaderPanel.eventTitleLabel.text" )
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
 				"gridY": 3
-				"gridWidth": 8
+				"gridWidth": 9
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "connectButton"
@@ -37,16 +51,9 @@ new FormModel {
 				"background": new java.awt.Color( 255, 0, 0, 255 )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "connectButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
+				"gridX": 13
 				"gridY": 3
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "removeReaderButton"
-				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/x-remove.png" )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "removeReaderButtonActionPerformed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 17
-				"gridY": 3
+				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
@@ -56,8 +63,9 @@ new FormModel {
 				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label4"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label4.text" )
+				name: "lastRequestLabel"
+				"text": new FormMessage( null, "JIpicoReaderPanel.lastRequestLabel.text" )
+				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 5
@@ -70,29 +78,48 @@ new FormModel {
 				"gridY": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label6"
-				"text": new FormMessage( null, "JIpicoReaderPanel.label6.text" )
+				name: "lastDownloadLabel"
+				"text": new FormMessage( null, "JIpicoReaderPanel.lastDownloadLabel.text" )
+				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 11
 				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "rewindTagReadsButton"
+				"text": new FormMessage( null, "JIpicoReaderPanel.rewindTagReadsButton.text" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "rewindTagReadsButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 13
+				"gridY": 5
+				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label5"
 				"text": new FormMessage( null, "JIpicoReaderPanel.label5.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 3
+				"gridX": 9
 				"gridY": 7
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "tagsReadLabel"
 				"text": new FormMessage( null, "JIpicoReaderPanel.tagsReadLabel.text" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 5
+				"gridX": 11
 				"gridY": 7
 			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "clearTagReadsButton"
+				"text": new FormMessage( null, "JIpicoReaderPanel.clearTagReadsButton.text" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearTagReadsButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 13
+				"gridY": 7
+				"gridWidth": 3
+			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 550, 120 )
+			"location": new java.awt.Point( 0, 5 )
+			"size": new java.awt.Dimension( 550, 130 )
 		} )
 	}
 }
