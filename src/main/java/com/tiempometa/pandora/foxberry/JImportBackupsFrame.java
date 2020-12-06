@@ -2,17 +2,17 @@
  * Created by JFormDesigner on Sat Feb 22 15:32:31 CST 2020
  */
 
-package com.tiempometa.pandora.tagreader;
+package com.tiempometa.pandora.foxberry;
 
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-import com.tiempometa.pandora.foxberry.FoxberryBackupImporter;
 import com.tiempometa.pandora.ipicoreader.*;
 import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
+import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
 
 /**

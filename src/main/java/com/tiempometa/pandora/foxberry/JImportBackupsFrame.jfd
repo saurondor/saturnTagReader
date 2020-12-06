@@ -12,7 +12,7 @@ new FormModel {
 			"title": new FormMessage( null, "JImportBackupsFrame.this.title" )
 			"$sizePolicy": 1
 			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png" )
-			add( new FormComponent( "com.tiempometa.pandora.tagreader.JImportBackupPanel" ) {
+			add( new FormComponent( "com.tiempometa.pandora.foxberry.JImportBackupPanel" ) {
 				name: "importPanel"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"

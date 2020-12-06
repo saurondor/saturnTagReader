@@ -21,6 +21,7 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewConfig;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
 import com.tiempometa.pandora.foxberry.FoxberryBackupImporter;
+import com.tiempometa.pandora.foxberry.JImportBackupsFrame;
 import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
