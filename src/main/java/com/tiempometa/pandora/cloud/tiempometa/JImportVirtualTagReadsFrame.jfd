@@ -1,0 +1,24 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.tagreader"
+	"i18n.bundleName": "tagreader"
+	"i18n.keyPrefix": "JImportVirtualTagReadsFrame"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": new FormMessage( null, "JImportVirtualTagReadsFrame.this.title" )
+			"$sizePolicy": 1
+			add( new FormComponent( "com.tiempometa.pandora.cloud.tiempometa.JImportVirtualTagReadsPanel" ) {
+				name: "importPanel"
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 565, 310 )
+		} )
+	}
+}

@@ -11,6 +11,8 @@ import java.util.List;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
+ * Interface for classes implementing the file import functionality.
+ * 
  * @author gtasi
  *
  */
