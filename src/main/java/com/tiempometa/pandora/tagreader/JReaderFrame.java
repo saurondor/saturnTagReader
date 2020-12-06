@@ -324,6 +324,14 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		readerListPanel.addTiempoMetaCloud();
 	}
 
+	private void importVirtualTagReadsMenuItemActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void importTestimonialMenuItemActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -351,6 +359,8 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		addFoxberryUSBReaderMenuItem = new JMenuItem();
 		importFoxberryBackupMenuItem = new JMenuItem();
 		tiempoMetaCloudMenuItem = new JMenuItem();
+		importVirtualTagReadsMenuItem = new JMenuItem();
+		importTestimonialMenuItem = new JMenuItem();
 		menu8 = new JMenu();
 		addUltraReaderMenuItem = new JMenuItem();
 		importUltraBackupMenuItem = new JMenuItem();
@@ -562,6 +572,27 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 						}
 					});
 					menu7.add(tiempoMetaCloudMenuItem);
+					menu7.addSeparator();
+
+					//---- importVirtualTagReadsMenuItem ----
+					importVirtualTagReadsMenuItem.setText(bundle.getString("JIpicoReaderFrame.importVirtualTagReadsMenuItem.text"));
+					importVirtualTagReadsMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							importVirtualTagReadsMenuItemActionPerformed(e);
+						}
+					});
+					menu7.add(importVirtualTagReadsMenuItem);
+
+					//---- importTestimonialMenuItem ----
+					importTestimonialMenuItem.setText(bundle.getString("JIpicoReaderFrame.importTestimonialMenuItem.text"));
+					importTestimonialMenuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							importTestimonialMenuItemActionPerformed(e);
+						}
+					});
+					menu7.add(importTestimonialMenuItem);
 				}
 				menu2.add(menu7);
 
@@ -651,6 +682,8 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	private JMenuItem addFoxberryUSBReaderMenuItem;
 	private JMenuItem importFoxberryBackupMenuItem;
 	private JMenuItem tiempoMetaCloudMenuItem;
+	private JMenuItem importVirtualTagReadsMenuItem;
+	private JMenuItem importTestimonialMenuItem;
 	private JMenu menu8;
 	private JMenuItem addUltraReaderMenuItem;
 	private JMenuItem importUltraBackupMenuItem;
