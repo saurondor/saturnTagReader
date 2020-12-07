@@ -5,6 +5,7 @@ package com.tiempometa.pandora.cloud.tiempometa;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import com.tiempometa.data.ExcelImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
+import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -43,6 +45,7 @@ public class VirtualTagBackupImporter extends ExcelImporter implements BackupImp
 	 */
 	@Override
 	public List<RawChipRead> getChipReads() {
+		selectSheet(0);
 		List<Object> list = importData(colMap);
 		List<RawChipRead> rawReadList = new ArrayList<RawChipRead>(list.size());
 		for (Object rawChipRead : list) {
@@ -101,12 +104,13 @@ public class VirtualTagBackupImporter extends ExcelImporter implements BackupImp
 //			e.printStackTrace();
 		}
 		try {
-			chipRead.setDistance(Double.valueOf(cell[6].getContents()));
+			chipRead.setDistance(Double.valueOf(cell[6].getContents()) / 1000d);
 		} catch (NumberFormatException e) {
 //			e.printStackTrace();
 		}
 		chipRead.setMobileApp(cell[9].getContents());
 		chipRead.setDevice(cell[8].getContents());
+		chipRead.setTime(Instant.ofEpochMilli(chipRead.getTimeMillis()).atZone(Context.getZoneId()).toLocalDateTime());
 		return chipRead;
 	}
 

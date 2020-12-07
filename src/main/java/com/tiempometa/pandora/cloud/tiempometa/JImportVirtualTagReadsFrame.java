@@ -25,6 +25,7 @@ public class JImportVirtualTagReadsFrame extends JFrame {
 		super();
 		this.importer = importer;
 		initComponents();
+		importPanel.setImporter(importer);
 	}
 
 //	public JImportVirtualTagReadsFrame() {

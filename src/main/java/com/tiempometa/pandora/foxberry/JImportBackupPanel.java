@@ -64,17 +64,18 @@ public class JImportBackupPanel extends JPanel {
 
 	private void fileOpenButtonActionPerformed(ActionEvent e) {
 		final JFileChooser fc = new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter("CSV/TXT/LOG (.csv, .txt, .log)", "csv", "txt", "log"));
+		fc.setFileFilter(
+				new FileNameExtensionFilter("CSV/TXT/LOG (.csv, .txt, .log, .xls)", "csv", "txt", "log", "xls"));
 		try {
 			fc.setCurrentDirectory(Context.getWorkingDirectory());
 			int returnVal = fc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				dataFile = fc.getSelectedFile();
 				fileLabel.setText(dataFile.getName());
+				importButton.setEnabled(false);
 				try {
 					loadDataFile();
 					Context.saveWorkingDirectory(dataFile.getPath());
-					importButton.setEnabled(false);
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(this, "Error cargando los datos " + e1.getMessage(),
 							"Error de importación", JOptionPane.ERROR_MESSAGE);
@@ -88,14 +89,28 @@ public class JImportBackupPanel extends JPanel {
 
 	private void loadDataFile() throws IOException {
 		importer.load(dataFile);
+		List<RawChipRead> chipReads;
 		if (importer instanceof MacshaCloudBackupImporter) {
 			// convert bib to rfid
-			List<RawChipRead> chipReads = Context.getResultsWebservice()
-					.populateRfidByChipNumber(importer.getChipReads());
-			tableModel.setChipReads(chipReads);
+			chipReads = Context.getResultsWebservice().populateRfidByChipNumber(importer.getChipReads());
 		} else {
-			tableModel.setChipReads(importer.getChipReads());
+			chipReads = importer.getChipReads();
 		}
+		boolean missingCheckpoint = false;
+		for (RawChipRead rawChipRead : chipReads) {
+			if (rawChipRead.getCheckPoint() == null) {
+				logger.debug("Chip read missing checkpoint " + rawChipRead);
+				missingCheckpoint = true;
+			}
+		}
+		applyCheckPointButton.setEnabled(true);
+		if (missingCheckpoint) {
+			importButton.setEnabled(false);
+		} else {
+			importButton.setEnabled(true);
+		}
+		tableModel.setChipReads(chipReads);
+//		importButton.setEnabled(true);
 		tableModel.fireTableDataChanged();
 		loadCheckPoints();
 	}
@@ -104,7 +119,9 @@ public class JImportBackupPanel extends JPanel {
 		List<RawChipRead> chipReads = tableModel.getChipReads();
 		for (RawChipRead rawChipRead : chipReads) {
 			rawChipRead.setCheckPoint((String) checkPointComboBox.getSelectedItem());
-			rawChipRead.setReadType(CookedChipRead.TYPE_BACKUP);
+			if (rawChipRead.getReadType() == null) {
+				rawChipRead.setReadType(CookedChipRead.TYPE_BACKUP);
+			}
 		}
 		tableModel.fireTableDataChanged();
 		importButton.setEnabled(true);
@@ -129,17 +146,16 @@ public class JImportBackupPanel extends JPanel {
 		applyCheckPointButton = new JButton();
 		importButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"8dlu, $lcgap, 334dlu",
-			"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
+		// ======== this ========
+		setLayout(new FormLayout("8dlu, $lcgap, 334dlu",
+				"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JImportBackupPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 		add(fileLabel, CC.xy(3, 5));
 
-		//---- fileOpenButton ----
+		// ---- fileOpenButton ----
 		fileOpenButton.setText(bundle.getString("JImportBackupPanel.fileOpenButton.text"));
 		fileOpenButton.addActionListener(new ActionListener() {
 			@Override
@@ -149,18 +165,19 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(fileOpenButton, CC.xy(3, 7));
 
-		//======== scrollPane1 ========
+		// ======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadsTable);
 		}
 		add(scrollPane1, CC.xy(3, 9));
 
-		//---- checkPointComboBox ----
+		// ---- checkPointComboBox ----
 		checkPointComboBox.setEnabled(false);
 		add(checkPointComboBox, CC.xy(3, 11));
 
-		//---- applyCheckPointButton ----
+		// ---- applyCheckPointButton ----
 		applyCheckPointButton.setText(bundle.getString("JImportBackupPanel.applyCheckPointButton.text"));
+		applyCheckPointButton.setEnabled(false);
 		applyCheckPointButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -169,9 +186,8 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(applyCheckPointButton, CC.xy(3, 13));
 
-		//---- importButton ----
+		// ---- importButton ----
 		importButton.setText(bundle.getString("JImportBackupPanel.importButton.text"));
-		importButton.setEnabled(false);
 		importButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

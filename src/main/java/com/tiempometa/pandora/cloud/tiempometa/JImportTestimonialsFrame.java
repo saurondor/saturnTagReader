@@ -15,12 +15,17 @@ import com.tiempometa.pandora.tagreader.BackupImporter;
  */
 public class JImportTestimonialsFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7264147361475383568L;
 	BackupImporter importer;
 
 	public JImportTestimonialsFrame(BackupImporter importer) throws HeadlessException {
 		super();
 		this.importer = importer;
 		initComponents();
+		importPanel.setImporter(importer);
 	}
 
 //	public JImportTestimonialsFrame() {

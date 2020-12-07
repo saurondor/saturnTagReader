@@ -48,6 +48,7 @@ public class TestimonialBackupImporter extends ExcelImporter implements BackupIm
 	 */
 	@Override
 	public List<RawChipRead> getChipReads() {
+		selectSheet(0);
 		List<Object> list = importData(colMap);
 		List<RawChipRead> rawReadList = new ArrayList<RawChipRead>(list.size());
 		for (Object rawChipRead : list) {

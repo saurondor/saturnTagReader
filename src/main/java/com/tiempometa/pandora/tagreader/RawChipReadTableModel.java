@@ -8,8 +8,9 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.tiempometa.Utils;
+import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
-
 
 /**
  * @author gtasi
@@ -21,7 +22,7 @@ public class RawChipReadTableModel extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = -8579865802486643525L;
-	private static final String[] HEADERS = { "Tag", "Hora", "punto" };
+	private static final String[] HEADERS = { "Tag", "Hora/Tiempo", "Distancia", "Punto" };
 	private List<RawChipRead> chipReads = new ArrayList<RawChipRead>();
 
 	/*
@@ -56,8 +57,21 @@ public class RawChipReadTableModel extends AbstractTableModel {
 		case 0:
 			return chipRead.getRfidString();
 		case 1:
-			return chipRead.getTime().toString();
+			if (chipRead.getReadType() == CookedChipRead.TYPE_MANUAL_TESTIMONIAL
+					|| chipRead.getReadType() == CookedChipRead.TYPE_TESTIMONIAL) {
+				if (chipRead.getRunTime() == null) {
+					return "ND";
+				}
+				return Utils.millisToTime(chipRead.getRunTime() * 1000, 0);
+			} else {
+				if (chipRead.getTime() == null) {
+					return "ND";
+				}
+				return chipRead.getTime().toString();
+			}
 		case 2:
+			return chipRead.getDistance();
+		case 3:
 			return chipRead.getCheckPoint();
 		default:
 			return null;
