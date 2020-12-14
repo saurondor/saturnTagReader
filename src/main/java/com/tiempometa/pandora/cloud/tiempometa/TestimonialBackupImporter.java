@@ -51,8 +51,13 @@ public class TestimonialBackupImporter extends ExcelImporter implements BackupIm
 		selectSheet(0);
 		List<Object> list = importData(colMap);
 		List<RawChipRead> rawReadList = new ArrayList<RawChipRead>(list.size());
+		for (int i = 0; i < list.size(); i++) {
+			RawChipRead chipRead = (RawChipRead) list.get(i);
+			chipRead.setLoadName(String.valueOf(i));
+			rawReadList.add(chipRead);
+			
+		}
 		for (Object rawChipRead : list) {
-			rawReadList.add((RawChipRead) rawChipRead);
 		}
 		return rawReadList;
 	}
