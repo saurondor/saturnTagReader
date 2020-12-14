@@ -15,6 +15,7 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": new FormMessage( null, "JImportBackupPanel.label1.text" )
+				"font": new java.awt.Font( "Tahoma", 1, 12 )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
 				"gridY": 3
@@ -45,6 +46,9 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "checkPointComboBox"
 				"enabled": false
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
 				"gridY": 11
@@ -53,6 +57,9 @@ new FormModel {
 				name: "applyCheckPointButton"
 				"text": new FormMessage( null, "JImportBackupPanel.applyCheckPointButton.text" )
 				"enabled": false
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "applyCheckPointButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
@@ -61,6 +68,9 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "importButton"
 				"text": new FormMessage( null, "JImportBackupPanel.importButton.text" )
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importButtonActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3

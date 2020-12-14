@@ -4,12 +4,15 @@
 
 package com.tiempometa.pandora.foxberry;
 
+import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -40,7 +43,7 @@ public class JImportBackupPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -7408634299336269973L;
 	private static final Logger logger = Logger.getLogger(JImportBackupPanel.class);
-	private RawChipReadTableModel tableModel = new RawChipReadTableModel();
+	protected RawChipReadTableModel tableModel = new RawChipReadTableModel();
 	private File dataFile;
 
 	public JImportBackupPanel() {
@@ -64,8 +67,7 @@ public class JImportBackupPanel extends JPanel {
 
 	private void fileOpenButtonActionPerformed(ActionEvent e) {
 		final JFileChooser fc = new JFileChooser();
-		fc.setFileFilter(
-				new FileNameExtensionFilter("CSV/TXT/LOG (.csv, .txt, .log, .xls)", "csv", "txt", "log", "xls"));
+		setFileFormat(fc);
 		try {
 			fc.setCurrentDirectory(Context.getWorkingDirectory());
 			int returnVal = fc.showOpenDialog(this);
@@ -87,7 +89,14 @@ public class JImportBackupPanel extends JPanel {
 		}
 	}
 
-	private void loadDataFile() throws IOException {
+	/**
+	 * @param fc
+	 */
+	protected void setFileFormat(final JFileChooser fc) {
+		fc.setFileFilter(new FileNameExtensionFilter("CSV/TXT/LOG (.csv, .txt, .log)", "csv", "txt", "log"));
+	}
+
+	protected void loadDataFile() throws IOException {
 		importer.load(dataFile);
 		List<RawChipRead> chipReads;
 		if (importer instanceof MacshaCloudBackupImporter) {
@@ -146,16 +155,18 @@ public class JImportBackupPanel extends JPanel {
 		applyCheckPointButton = new JButton();
 		importButton = new JButton();
 
-		// ======== this ========
-		setLayout(new FormLayout("8dlu, $lcgap, 334dlu",
-				"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
+		//======== this ========
+		setLayout(new FormLayout(
+			"8dlu, $lcgap, 334dlu",
+			"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
 
-		// ---- label1 ----
+		//---- label1 ----
 		label1.setText(bundle.getString("JImportBackupPanel.label1.text"));
+		label1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		add(label1, CC.xy(3, 3));
 		add(fileLabel, CC.xy(3, 5));
 
-		// ---- fileOpenButton ----
+		//---- fileOpenButton ----
 		fileOpenButton.setText(bundle.getString("JImportBackupPanel.fileOpenButton.text"));
 		fileOpenButton.addActionListener(new ActionListener() {
 			@Override
@@ -165,17 +176,17 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(fileOpenButton, CC.xy(3, 7));
 
-		// ======== scrollPane1 ========
+		//======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadsTable);
 		}
 		add(scrollPane1, CC.xy(3, 9));
 
-		// ---- checkPointComboBox ----
+		//---- checkPointComboBox ----
 		checkPointComboBox.setEnabled(false);
 		add(checkPointComboBox, CC.xy(3, 11));
 
-		// ---- applyCheckPointButton ----
+		//---- applyCheckPointButton ----
 		applyCheckPointButton.setText(bundle.getString("JImportBackupPanel.applyCheckPointButton.text"));
 		applyCheckPointButton.setEnabled(false);
 		applyCheckPointButton.addActionListener(new ActionListener() {
@@ -186,7 +197,7 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(applyCheckPointButton, CC.xy(3, 13));
 
-		// ---- importButton ----
+		//---- importButton ----
 		importButton.setText(bundle.getString("JImportBackupPanel.importButton.text"));
 		importButton.addActionListener(new ActionListener() {
 			@Override
@@ -204,9 +215,9 @@ public class JImportBackupPanel extends JPanel {
 	private JButton fileOpenButton;
 	private JScrollPane scrollPane1;
 	private JTable tagReadsTable;
-	private JComboBox checkPointComboBox;
-	private JButton applyCheckPointButton;
-	private JButton importButton;
+	protected JComboBox checkPointComboBox;
+	protected JButton applyCheckPointButton;
+	protected JButton importButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public void setImporter(BackupImporter importer) {
