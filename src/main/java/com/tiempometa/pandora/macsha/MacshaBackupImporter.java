@@ -38,7 +38,9 @@ public class MacshaBackupImporter implements BackupImporter {
 		String dataLine;
 		while ((dataLine = br.readLine()) != null) {
 			MacshaTagRead tagRead = MacshaTagRead.parseString(dataLine, Context.getZoneId());
-			chipReads.add(tagRead.toRawChipRead());
+			if (tagRead != null) {
+				chipReads.add(tagRead.toRawChipRead());
+			}
 		}
 		br.close();
 	}
