@@ -6,9 +6,18 @@ package com.tiempometa.pandora.timingsense;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.csv.CSVRecord;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.tiempometa.api.model.EventRegistration;
+import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
@@ -37,6 +46,7 @@ public class TimingsenseTagRead {
 	public static final int MOMENT_COLUMN = 1;
 	public static final int TIMINGPOINT_COLUMN = 2;
 	public static final int TYPE_COLUMN = 3;
+	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
 
 	private Integer Chip;
 	private String Moment;
@@ -85,6 +95,33 @@ public class TimingsenseTagRead {
 		return chipRead;
 	}
 
+	/**
+	 * Converts Moment to timeMillis and time
+	 */
+	public void populateTimeFields() {
+		LocalDateTime localDateTime = LocalDateTime.parse(Moment.substring(0, 26),
+				DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		this.setTime(localDateTime);
+		this.setTimeMillis(localDateTime.atZone((Context.getZoneId())).toInstant().toEpochMilli());
+	}
+
+	/**
+	 * Converts a JSON text to a list of TimingsenseTagRead
+	 * 
+	 * @param json
+	 * @return
+	 */
+	public static List<TimingsenseTagRead> parseJson(String json) {
+		List<TimingsenseTagRead> readings = new ArrayList<TimingsenseTagRead>();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		readings = (List<TimingsenseTagRead>) gson.fromJson(json, new TypeToken<List<TimingsenseTagRead>>() {
+		}.getType());
+		for (TimingsenseTagRead timingsenseTagRead : readings) {
+			timingsenseTagRead.populateTimeFields();
+		}
+		return readings;
+	}
+
 	public static TimingsenseTagRead parseRecord(CSVRecord record, ZoneId zoneId) {
 		TimingsenseTagRead tagRead = new TimingsenseTagRead();
 		try {
@@ -100,7 +137,7 @@ public class TimingsenseTagRead {
 			tagRead.setType(Integer.valueOf(record.get(TYPE_COLUMN)));
 		}
 		Instant instant = Instant.parse(tagRead.getMoment());
-		
+
 		tagRead.setTimeMillis(instant.toEpochMilli());
 		tagRead.setTime(instant.atZone(zoneId).toLocalDateTime());
 		return tagRead;
@@ -120,5 +157,24 @@ public class TimingsenseTagRead {
 
 	public void setTime(LocalDateTime time) {
 		this.time = time;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TimingsenseTagRead [Chip=");
+		builder.append(Chip);
+		builder.append(", Moment=");
+		builder.append(Moment);
+		builder.append(", TimingPoint=");
+		builder.append(TimingPoint);
+		builder.append(", timeMillis=");
+		builder.append(timeMillis);
+		builder.append(", time=");
+		builder.append(time);
+		builder.append(", Type=");
+		builder.append(Type);
+		builder.append("]");
+		return builder.toString();
 	}
 }

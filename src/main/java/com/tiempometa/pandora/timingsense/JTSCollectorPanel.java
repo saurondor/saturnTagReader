@@ -76,8 +76,13 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 
 	private void connectButtonActionPerformed(ActionEvent e) {
 		if (reader.isConnected()) {
-			reader.disconnect();
-			setDisconnected();
+			try {
+				reader.disconnect();
+				setDisconnected();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
