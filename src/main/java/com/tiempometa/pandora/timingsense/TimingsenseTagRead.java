@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.timinsense;
+package com.tiempometa.pandora.timingsense;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

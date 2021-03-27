@@ -29,7 +29,7 @@ import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.RawChipReadTableModel;
-import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
+import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
 import com.tiempometa.timing.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 

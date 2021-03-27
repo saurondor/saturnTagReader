@@ -16,7 +16,7 @@ import com.tiempometa.pandora.ipicoreader.usb.JIpicoUsbReaderPanel;
 import com.tiempometa.pandora.macsha.JMacshaOcelotPanel;
 import com.tiempometa.pandora.macsha.JMacshaReaderPanel;
 import com.tiempometa.pandora.rfidtiming.JUltraReaderPanel;
-import com.tiempometa.pandora.timinsense.JTSCollectorPanel;
+import com.tiempometa.pandora.timingsense.JTSCollectorPanel;
 
 import org.apache.log4j.Logger;
 

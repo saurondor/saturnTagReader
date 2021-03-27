@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tiempometa.pandora.timinsense;
+package com.tiempometa.pandora.timingsense;
 
 import java.io.IOException;
 import java.net.UnknownHostException;

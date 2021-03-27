@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Sat Feb 22 14:40:34 CST 2020
  */
 
-package com.tiempometa.pandora.timinsense;
+package com.tiempometa.pandora.timingsense;
 
 import java.awt.*;
 import java.awt.event.*;

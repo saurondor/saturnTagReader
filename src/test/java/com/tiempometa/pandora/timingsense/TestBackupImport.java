@@ -17,7 +17,7 @@ import org.junit.Test;
 import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.tagreader.Context;
-import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
+import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**

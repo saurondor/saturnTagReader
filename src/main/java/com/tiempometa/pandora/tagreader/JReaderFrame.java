@@ -31,7 +31,7 @@ import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
-import com.tiempometa.pandora.timinsense.TimingsenseBackupImporter;
+import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
 import com.tiempometa.webservice.RegistrationWebservice;
 import com.tiempometa.webservice.ResultsWebservice;
 import com.tiempometa.webservice.model.Bib;
