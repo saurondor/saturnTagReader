@@ -13,6 +13,7 @@ new FormModel {
 		} ) {
 			name: "this"
 			"title": new FormMessage( null, "JSocketMonitor.this.title" )
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png" )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
 				add( new FormComponent( "javax.swing.JTextPane" ) {

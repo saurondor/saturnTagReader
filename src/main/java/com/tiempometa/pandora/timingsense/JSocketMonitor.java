@@ -25,7 +25,11 @@ public class JSocketMonitor extends JFrame implements SocketMonitor {
 	}
 
 	private void clearLogButtonActionPerformed(ActionEvent e) {
-		textPane1.setText("");
+		int response = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas borrar la bitácora de datos?",
+				"Borrar bitácora del monitor", JOptionPane.YES_NO_OPTION);
+		if (response == JOptionPane.YES_OPTION) {
+			textPane1.setText("");
+		}
 	}
 
 	private void initComponents() {
@@ -36,17 +40,19 @@ public class JSocketMonitor extends JFrame implements SocketMonitor {
 		textPane1 = new JTextPane();
 		clearLogButton = new JButton();
 
-		//======== this ========
+		// ======== this ========
 		setTitle(bundle.getString("JSocketMonitor.this.title"));
+		setIconImage(new ImageIcon(
+				getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png"))
+						.getImage());
 		Container contentPane = getContentPane();
-		contentPane.setLayout(new FormLayout(
-			"default, $lcgap, 586dlu",
-			"default, $lgap, 22dlu, $lgap, 120dlu, $lgap, default"));
+		contentPane.setLayout(
+				new FormLayout("default, $lcgap, 586dlu", "default, $lgap, 22dlu, $lgap, 120dlu, $lgap, default"));
 
-		//======== scrollPane1 ========
+		// ======== scrollPane1 ========
 		{
 
-			//---- textPane1 ----
+			// ---- textPane1 ----
 			textPane1.setBackground(Color.black);
 			textPane1.setForeground(Color.white);
 			textPane1.setText(bundle.getString("JSocketMonitor.textPane1.text"));
@@ -54,7 +60,7 @@ public class JSocketMonitor extends JFrame implements SocketMonitor {
 		}
 		contentPane.add(scrollPane1, CC.xywh(3, 3, 1, 3));
 
-		//---- clearLogButton ----
+		// ---- clearLogButton ----
 		clearLogButton.setText(bundle.getString("JSocketMonitor.clearLogButton.text"));
 		clearLogButton.addActionListener(new ActionListener() {
 			@Override
