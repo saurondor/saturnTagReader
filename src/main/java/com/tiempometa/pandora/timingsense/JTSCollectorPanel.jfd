@@ -2,7 +2,7 @@ JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
-	"i18n.bundlePackage": "com.tiempometa.pandora.timinsense"
+	"i18n.bundlePackage": "com.tiempometa.pandora.timingsense"
 	"i18n.bundleName": "tscollector"
 	"i18n.keyPrefix": "JIpicoReaderPanel"
 	contentType: "form/swing"

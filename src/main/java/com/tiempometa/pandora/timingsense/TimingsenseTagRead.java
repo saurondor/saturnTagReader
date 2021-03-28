@@ -91,6 +91,7 @@ public class TimingsenseTagRead {
 		RawChipRead chipRead = new RawChipRead();
 		chipRead.setRfidString(Chip.toString());
 		chipRead.setTimeMillis(timeMillis);
+		chipRead.setCheckPoint(TimingPoint);
 		chipRead.setTime(time);
 		return chipRead;
 	}
@@ -118,6 +119,14 @@ public class TimingsenseTagRead {
 		}.getType());
 		for (TimingsenseTagRead timingsenseTagRead : readings) {
 			timingsenseTagRead.populateTimeFields();
+		}
+		return readings;
+	}
+
+	public static List<RawChipRead> toRawChipReads(List<TimingsenseTagRead> tagReads) {
+		List<RawChipRead> readings = new ArrayList<RawChipRead>();
+		for (TimingsenseTagRead timingsenseTagRead : tagReads) {
+			readings.add(timingsenseTagRead.toRawChipRead());
 		}
 		return readings;
 	}

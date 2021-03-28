@@ -40,9 +40,9 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 	private static final Logger logger = Logger.getLogger(JTSCollectorPanel.class);
 	private JReaderListPanel listPanel;
 	private TSCollectorClient reader = new TSCollectorClient();
-	private String checkPoint1 = null;
+//	private String checkPoint1 = null;
 	private TagReadListener tagReadListener;
-	private Integer tagCount;
+	private Integer tagCount = 0;
 //
 //	public void setTerminal(String terminal) {
 //		terminalTextField.setText(terminal);
@@ -51,8 +51,9 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 	public JTSCollectorPanel(JReaderListPanel listPanel) {
 		initComponents();
 		this.listPanel = listPanel;
-		reader.setCommandResponseHandler(this);
-		reader.registerTagReadListener(this);
+//		reader.setCommandResponseHandler(this);
+//		reader.registerTagReadListener(this);
+		reader.setTagReadListener(this);
 //		loadCheckPoints();
 	}
 
@@ -88,16 +89,16 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 //				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
 //						"Error de configuración", JOptionPane.ERROR_MESSAGE);
 //			} else {
-				reader.setHostname(readerAddressTextField.getText());
-				try {
-					reader.connect();
-					Thread thread = new Thread(reader);
-					thread.start();
-					setConnected();
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
-							JOptionPane.ERROR_MESSAGE);
-				}
+			reader.setHostname(readerAddressTextField.getText());
+			try {
+				reader.connect();
+				Thread thread = new Thread(reader);
+				thread.start();
+				setConnected();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+						JOptionPane.ERROR_MESSAGE);
+			}
 //			}
 		}
 	}
@@ -141,7 +142,7 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.timinsense.tscollector");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.timingsense.tscollector");
 		label1 = new JLabel();
 		readerAddressTextField = new JTextField();
 		connectButton = new JButton();
@@ -149,25 +150,25 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
 
-		//======== this ========
+		// ======== this ========
 		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
 		setInheritsPopupMenu(true);
 		setMaximumSize(new Dimension(550, 120));
 		setMinimumSize(new Dimension(550, 120));
 		setPreferredSize(new Dimension(550, 120));
 		setLayout(new FormLayout(
-			"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, 52dlu, $lcgap, 41dlu, $lcgap, 22dlu",
-			"5dlu, $lgap, default, $lgap, 17dlu, $lgap, default"));
+				"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, 52dlu, $lcgap, 41dlu, $lcgap, 22dlu",
+				"5dlu, $lgap, default, $lgap, 17dlu, $lgap, default"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 
-		//---- readerAddressTextField ----
+		// ---- readerAddressTextField ----
 		readerAddressTextField.setText(bundle.getString("JIpicoReaderPanel.readerAddressTextField.text"));
 		add(readerAddressTextField, CC.xywh(5, 3, 5, 1));
 
-		//---- connectButton ----
+		// ---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -178,8 +179,9 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(connectButton, CC.xy(11, 3));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+		// ---- removeReaderButton ----
+		removeReaderButton
+				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -188,11 +190,11 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(removeReaderButton, CC.xy(17, 3));
 
-		//---- label5 ----
+		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
 		add(label5, CC.xy(15, 7));
 
-		//---- tagsReadLabel ----
+		// ---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
 		add(tagsReadLabel, CC.xy(17, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
@@ -214,6 +216,9 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
+		if (chipReadList == null) {
+			return;
+		}
 		// TODO Auto-generated method stub
 		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {

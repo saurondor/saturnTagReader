@@ -1,0 +1,42 @@
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.8.0_192" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.tiempometa.pandora.timingsense"
+	"i18n.bundleName": "tscollector"
+	"i18n.keyPrefix": "JSocketMonitor"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "default, labelcompgap, 215dlu"
+			"$rowSpecs": "default, linegap, 22dlu, linegap, 120dlu, linegap, default"
+		} ) {
+			name: "this"
+			"title": new FormMessage( null, "JSocketMonitor.this.title" )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTextPane" ) {
+					name: "textPane1"
+					"background": sfield java.awt.Color black
+					"foreground": sfield java.awt.Color white
+					"text": new FormMessage( null, "JSocketMonitor.textPane1.text" )
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 3
+				"gridHeight": 3
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "clearLogButton"
+				"text": new FormMessage( null, "JSocketMonitor.clearLogButton.text" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearLogButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 450, 370 )
+		} )
+	}
+}

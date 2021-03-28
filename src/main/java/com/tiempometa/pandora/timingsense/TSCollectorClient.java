@@ -8,11 +8,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.tiempometa.pandora.tagreader.TagReadListener;
 
 /**
  * @author gtasi
@@ -24,6 +26,7 @@ public class TSCollectorClient implements Runnable {
 	private int port = 10200; // use default port
 	private String hostname = "";
 	private Socket readerSocket = null;
+	private TagReadListener tagReadListener;
 	private InputStream dataInputStream = null;
 	private OutputStream dataOutputStream = null;
 	private boolean doReadings = true; // flag indicating continue reading tags
@@ -62,7 +65,10 @@ public class TSCollectorClient implements Runnable {
 						logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
 						buffer.append(dataString);
 						try {
-							parser.parse(buffer.toString());
+							String json = buffer.toString();
+							parser.parse(json);
+							List<TimingsenseTagRead> tagReads = TimingsenseTagRead.parseJson(json);
+							tagReadListener.notifyTagReads(TimingsenseTagRead.toRawChipReads(tagReads));
 							buffer = new StringBuffer();
 							logger.info("*** VALID JSON");
 						} catch (JsonParseException e) {
@@ -100,15 +106,15 @@ public class TSCollectorClient implements Runnable {
 //		disconnect();
 	}
 
-	public void setCommandResponseHandler(JTSCollectorPanel jUltraReaderPanel) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void registerTagReadListener(JTSCollectorPanel jUltraReaderPanel) {
-		// TODO Auto-generated method stub
-
-	}
+//	public void setCommandResponseHandler(JTSCollectorPanel jUltraReaderPanel) {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	public void registerTagReadListener(JTSCollectorPanel jUltraReaderPanel) {
+//		tagReadListener
+//
+//	}
 
 	public boolean isConnected() {
 		if ((dataInputStream == null) || (dataOutputStream == null)) {
@@ -143,6 +149,14 @@ public class TSCollectorClient implements Runnable {
 		logger.info("Opening socket");
 		openSocket();
 		logger.info("Notify successful connect");
+	}
+
+	public TagReadListener getTagReadListener() {
+		return tagReadListener;
+	}
+
+	public void setTagReadListener(TagReadListener tagReadListener) {
+		this.tagReadListener = tagReadListener;
 	}
 
 }

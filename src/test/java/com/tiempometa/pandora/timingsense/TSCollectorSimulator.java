@@ -81,7 +81,7 @@ public class TSCollectorSimulator implements Runnable {
 				outputStream = clientSocket.getOutputStream();
 				for (String line : historyLog) {
 					logger.info("Writing log line " + line);
-					outputStream.write(line.substring(0, 100).getBytes());
+					outputStream.write(line.substring(0, 20).getBytes());
 					outputStream.flush();
 					try {
 						Thread.sleep(1200);
@@ -89,11 +89,11 @@ public class TSCollectorSimulator implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					outputStream.write(line.substring(100).getBytes());
+					outputStream.write(line.substring(20).getBytes());
 					outputStream.write("\r\n".getBytes());
 					outputStream.flush();
 					try {
-						Thread.sleep(20);
+						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
