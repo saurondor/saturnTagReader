@@ -152,6 +152,7 @@ public class TSCollectorClient implements Runnable {
 //		this.hostname = hostName;
 //		this.port = port;
 		logger.info("Opening socket");
+		doReadings = true;
 		openSocket();
 		logger.info("Notify successful connect");
 	}
