@@ -14,17 +14,23 @@ import com.jgoodies.forms.layout.*;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JSocketMonitor extends JFrame {
+public class JSocketMonitor extends JFrame implements SocketMonitor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7273455332917507342L;
+
 	public JSocketMonitor() {
 		initComponents();
 	}
 
 	private void clearLogButtonActionPerformed(ActionEvent e) {
-		// TODO add your code here
+		textPane1.setText("");
 	}
 
 	private void initComponents() {
-		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+		// JFormDesigner - Component initialization - DO NOT MODIFY
+		// //GEN-BEGIN:initComponents
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.timingsense.tscollector");
 		scrollPane1 = new JScrollPane();
 		textPane1 = new JTextPane();
@@ -34,7 +40,7 @@ public class JSocketMonitor extends JFrame {
 		setTitle(bundle.getString("JSocketMonitor.this.title"));
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FormLayout(
-			"default, $lcgap, 215dlu",
+			"default, $lcgap, 586dlu",
 			"default, $lgap, 22dlu, $lgap, 120dlu, $lgap, default"));
 
 		//======== scrollPane1 ========
@@ -59,12 +65,37 @@ public class JSocketMonitor extends JFrame {
 		contentPane.add(clearLogButton, CC.xy(3, 7));
 		pack();
 		setLocationRelativeTo(getOwner());
-		// JFormDesigner - End of component initialization  //GEN-END:initComponents
+		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
-	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
 	private JScrollPane scrollPane1;
 	private JTextPane textPane1;
 	private JButton clearLogButton;
-	// JFormDesigner - End of variables declaration  //GEN-END:variables
+	// JFormDesigner - End of variables declaration //GEN-END:variables
+
+	@Override
+	public void appendText(String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				textPane1.setText(textPane1.getText() + text);
+
+			}
+		});
+
+	}
+
+	@Override
+	public void setText(String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				textPane1.setText(text);
+
+			}
+		});
+	}
 }

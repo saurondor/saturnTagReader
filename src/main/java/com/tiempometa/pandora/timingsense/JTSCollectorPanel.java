@@ -43,6 +43,7 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 //	private String checkPoint1 = null;
 	private TagReadListener tagReadListener;
 	private Integer tagCount = 0;
+	private JSocketMonitor socketMonitor = new JSocketMonitor();
 //
 //	public void setTerminal(String terminal) {
 //		terminalTextField.setText(terminal);
@@ -54,6 +55,7 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 //		reader.setCommandResponseHandler(this);
 //		reader.registerTagReadListener(this);
 		reader.setTagReadListener(this);
+		reader.setSocketMonitor(socketMonitor);
 //		loadCheckPoints();
 	}
 
@@ -139,6 +141,14 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		// TODO add your code here
 	}
 
+	private void socketMonitorButtonActionPerformed(ActionEvent e) {
+		if (socketMonitor.isVisible()) {
+			socketMonitor.setVisible(false);
+		} else {
+			socketMonitor.setVisible(true);
+		}
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
@@ -146,7 +156,10 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		label1 = new JLabel();
 		readerAddressTextField = new JTextField();
 		connectButton = new JButton();
+		socketMonitorButton = new JButton();
 		removeReaderButton = new JButton();
+		label2 = new JLabel();
+		readerPortTextField = new JTextField();
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
 
@@ -158,7 +171,7 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		setPreferredSize(new Dimension(550, 120));
 		setLayout(new FormLayout(
 				"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, 52dlu, $lcgap, 41dlu, $lcgap, 22dlu",
-				"5dlu, $lgap, default, $lgap, 17dlu, $lgap, default"));
+				"5dlu, 2*($lgap, 17dlu), $lgap, default"));
 
 		// ---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
@@ -179,6 +192,16 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(connectButton, CC.xy(11, 3));
 
+		// ---- socketMonitorButton ----
+		socketMonitorButton.setText(bundle.getString("JIpicoReaderPanel.socketMonitorButton.text"));
+		socketMonitorButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				socketMonitorButtonActionPerformed(e);
+			}
+		});
+		add(socketMonitorButton, CC.xywh(13, 3, 3, 1));
+
 		// ---- removeReaderButton ----
 		removeReaderButton
 				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
@@ -189,6 +212,14 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 			}
 		});
 		add(removeReaderButton, CC.xy(17, 3));
+
+		// ---- label2 ----
+		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
+		add(label2, CC.xy(3, 5));
+
+		// ---- readerPortTextField ----
+		readerPortTextField.setText(bundle.getString("JIpicoReaderPanel.readerPortTextField.text"));
+		add(readerPortTextField, CC.xywh(5, 5, 5, 1));
 
 		// ---- label5 ----
 		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
@@ -204,7 +235,10 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 	private JLabel label1;
 	private JTextField readerAddressTextField;
 	private JButton connectButton;
+	private JButton socketMonitorButton;
 	private JButton removeReaderButton;
+	private JLabel label2;
+	private JTextField readerPortTextField;
 	private JLabel label5;
 	private JLabel tagsReadLabel;
 	// JFormDesigner - End of variables declaration //GEN-END:variables

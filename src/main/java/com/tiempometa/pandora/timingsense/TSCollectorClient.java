@@ -32,6 +32,7 @@ public class TSCollectorClient implements Runnable {
 	private boolean doReadings = true; // flag indicating continue reading tags
 	private StringBuffer buffer = new StringBuffer();
 	JsonParser parser = new JsonParser();
+	private SocketMonitor socketMonitor;
 
 	/*
 	 * (non-Javadoc)
@@ -64,6 +65,9 @@ public class TSCollectorClient implements Runnable {
 //						if (logger.isDebugEnabled()) {
 						logger.debug("PARSE>\n" + dataString + "\nLEN:" + dataString.length());
 						buffer.append(dataString);
+						if (socketMonitor != null) {
+							socketMonitor.appendText(dataString);
+						}
 						try {
 							String json = buffer.toString();
 							parser.parse(json);
@@ -71,6 +75,7 @@ public class TSCollectorClient implements Runnable {
 							tagReadListener.notifyTagReads(TimingsenseTagRead.toRawChipReads(tagReads));
 							buffer = new StringBuffer();
 							logger.info("*** VALID JSON");
+							socketMonitor.appendText("\n\rVALID PAYLOAD, parsing...\n\r");
 						} catch (JsonParseException e) {
 							logger.warn("Invalid JSON");
 //							e.printStackTrace();
@@ -157,6 +162,14 @@ public class TSCollectorClient implements Runnable {
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
 		this.tagReadListener = tagReadListener;
+	}
+
+	public SocketMonitor getSocketMonitor() {
+		return socketMonitor;
+	}
+
+	public void setSocketMonitor(SocketMonitor socketMonitor) {
+		this.socketMonitor = socketMonitor;
 	}
 
 }
