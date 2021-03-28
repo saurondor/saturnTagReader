@@ -75,7 +75,7 @@ public class TSCollectorClient implements Runnable {
 							tagReadListener.notifyTagReads(TimingsenseTagRead.toRawChipReads(tagReads));
 							buffer = new StringBuffer();
 							logger.info("*** VALID JSON");
-							socketMonitor.appendText("\n\rVALID PAYLOAD, parsing...\n\r");
+							socketMonitor.appendText("\nVALID PAYLOAD, parsing...\n");
 						} catch (JsonParseException e) {
 							logger.warn("Invalid JSON");
 //							e.printStackTrace();
@@ -171,6 +171,14 @@ public class TSCollectorClient implements Runnable {
 
 	public void setSocketMonitor(SocketMonitor socketMonitor) {
 		this.socketMonitor = socketMonitor;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }

@@ -93,6 +93,13 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 //			} else {
 			reader.setHostname(readerAddressTextField.getText());
 			try {
+				reader.setPort(Integer.valueOf(readerPortTextField.getText()));
+			} catch (NumberFormatException e2) {
+				JOptionPane.showMessageDialog(this, "El valor de puerto debe ser númerico. Usando valor default 10200",
+						"Error de puerto", JOptionPane.ERROR_MESSAGE);
+				reader.setPort(10200);
+			}
+			try {
 				reader.connect();
 				Thread thread = new Thread(reader);
 				thread.start();
