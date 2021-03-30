@@ -47,8 +47,8 @@ public class TestBackupImport {
 		String cwd = System.getProperty("user.dir");
 		logger.info("Current working directory : " + cwd);
 		BackupImporter importer = new TimingsenseBackupImporter();
-		String fileName = cwd + "/src/test/resources/backups/timingsense/backup.csv";
-		Context.setZoneId(ZoneId.of("GMT-5"));
+		String fileName = cwd + "/src/test/resources/backups/timingsense/backup_ts2_2.csv";
+		Context.setZoneId(ZoneId.of("GMT-4"));
 		try {
 			importer.load(fileName);
 			List<RawChipRead> readList = importer.getChipReads();

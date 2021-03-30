@@ -42,7 +42,10 @@ public class TimingsenseBackupImporter implements BackupImporter {
 		BufferedReader br = new BufferedReader(new FileReader(dataFile));
 		chipReads = new ArrayList<RawChipRead>();
 		Reader in = new FileReader(dataFile);
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+//		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+		Iterable<CSVRecord> records = CSVFormat.newFormat(',').parse(in);
+//		;
+//		CSVFormat.DEFAULT.withDelimiter("\"".charAt(0)).withQuote(null);
 		for (CSVRecord record : records) {
 			TimingsenseTagRead tagRead = TimingsenseTagRead.parseRecord(record, Context.getZoneId());
 			chipReads.add(tagRead.toRawChipRead());

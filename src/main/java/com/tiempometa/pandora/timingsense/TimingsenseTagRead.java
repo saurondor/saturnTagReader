@@ -46,7 +46,7 @@ public class TimingsenseTagRead {
 	public static final int MOMENT_COLUMN = 1;
 	public static final int TIMINGPOINT_COLUMN = 2;
 	public static final int TYPE_COLUMN = 3;
-	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+	private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSS");
 
 	private Integer Chip;
 	private String Moment;
@@ -145,10 +145,14 @@ public class TimingsenseTagRead {
 		} catch (NumberFormatException e) {
 			tagRead.setType(Integer.valueOf(record.get(TYPE_COLUMN)));
 		}
-		Instant instant = Instant.parse(tagRead.getMoment());
 
-		tagRead.setTimeMillis(instant.toEpochMilli());
-		tagRead.setTime(instant.atZone(zoneId).toLocalDateTime());
+		LocalDateTime time = LocalDateTime.parse(tagRead.getMoment(), dateTimeFormatter);
+//		Instant instant = Instant.from(dateTimeFormatter.parse(tagRead.getMoment()));
+
+//		Instant instant = Instant.parse(tagRead.getMoment());
+
+		tagRead.setTimeMillis(time.atZone(zoneId).toInstant().toEpochMilli());
+		tagRead.setTime(time);
 		return tagRead;
 	}
 
