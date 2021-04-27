@@ -170,25 +170,25 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		label5 = new JLabel();
 		tagsReadLabel = new JLabel();
 
-		// ======== this ========
+		//======== this ========
 		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
 		setInheritsPopupMenu(true);
 		setMaximumSize(new Dimension(550, 120));
 		setMinimumSize(new Dimension(550, 120));
 		setPreferredSize(new Dimension(550, 120));
 		setLayout(new FormLayout(
-				"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, 52dlu, $lcgap, 41dlu, $lcgap, 22dlu",
-				"5dlu, 2*($lgap, 17dlu), $lgap, default"));
+			"5dlu, $lcgap, default, $lcgap, 57dlu, 2*($lcgap, 15dlu), $lcgap, 84dlu, $lcgap, 52dlu, $lcgap, 41dlu, $lcgap, 22dlu",
+			"5dlu, 2*($lgap, 17dlu), $lgap, default"));
 
-		// ---- label1 ----
+		//---- label1 ----
 		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
 		add(label1, CC.xy(3, 3));
 
-		// ---- readerAddressTextField ----
+		//---- readerAddressTextField ----
 		readerAddressTextField.setText(bundle.getString("JIpicoReaderPanel.readerAddressTextField.text"));
 		add(readerAddressTextField, CC.xywh(5, 3, 5, 1));
 
-		// ---- connectButton ----
+		//---- connectButton ----
 		connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
 		connectButton.setBackground(Color.red);
 		connectButton.addActionListener(new ActionListener() {
@@ -199,7 +199,7 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(connectButton, CC.xy(11, 3));
 
-		// ---- socketMonitorButton ----
+		//---- socketMonitorButton ----
 		socketMonitorButton.setText(bundle.getString("JIpicoReaderPanel.socketMonitorButton.text"));
 		socketMonitorButton.addActionListener(new ActionListener() {
 			@Override
@@ -209,9 +209,8 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(socketMonitorButton, CC.xywh(13, 3, 3, 1));
 
-		// ---- removeReaderButton ----
-		removeReaderButton
-				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+		//---- removeReaderButton ----
+		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
 		removeReaderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -220,19 +219,19 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 		});
 		add(removeReaderButton, CC.xy(17, 3));
 
-		// ---- label2 ----
+		//---- label2 ----
 		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
 		add(label2, CC.xy(3, 5));
 
-		// ---- readerPortTextField ----
+		//---- readerPortTextField ----
 		readerPortTextField.setText(bundle.getString("JIpicoReaderPanel.readerPortTextField.text"));
 		add(readerPortTextField, CC.xywh(5, 5, 5, 1));
 
-		// ---- label5 ----
+		//---- label5 ----
 		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
 		add(label5, CC.xy(15, 7));
 
-		// ---- tagsReadLabel ----
+		//---- tagsReadLabel ----
 		tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
 		add(tagsReadLabel, CC.xy(17, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
