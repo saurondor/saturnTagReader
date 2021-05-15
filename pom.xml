@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>com.tiempometa.timing</groupId>
 			<artifactId>model</artifactId>
-			<version>4.5.2-BETA</version>
+			<version>4.5.3-BETA</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

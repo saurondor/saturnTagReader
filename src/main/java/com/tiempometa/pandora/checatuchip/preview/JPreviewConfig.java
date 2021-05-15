@@ -1,7 +1,26 @@
 /*
- * Created by JFormDesigner on Tue May 28 09:12:44 EDT 2019
+ * Copyright (c) 2019 Gerardo Esteban Tasistro Giubetic
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
  */
-
 package com.tiempometa.pandora.checatuchip.preview;
 
 import java.awt.*;
@@ -224,174 +243,118 @@ public class JPreviewConfig extends JDialog {
 		okButton = new JButton();
 		cancelButton = new JButton();
 
-		//======== this ========
+		// ======== this ========
 		setTitle(bundle.getString("JPreviewConfig.this.title"));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setModal(true);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-		//======== dialogPane ========
+		// ======== dialogPane ========
 		{
 			dialogPane.setBorder(Borders.DIALOG_BORDER);
 			dialogPane.setLayout(new BorderLayout());
 
-			//======== contentPanel ========
+			// ======== contentPanel ========
 			{
-				contentPanel.setLayout(new FormLayout(
-					"2*(default, $lcgap), default",
-					"13*(default, $lgap), default"));
+				contentPanel.setLayout(new FormLayout("2*(default, $lcgap), default", "13*(default, $lgap), default"));
 
-				//---- label1 ----
+				// ---- label1 ----
 				label1.setText(bundle.getString("JPreviewConfig.label1.text"));
 				contentPanel.add(label1, CC.xy(1, 3));
 
-				//---- firstNamePositionComboBox ----
-				firstNamePositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- firstNamePositionComboBox ----
+				firstNamePositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(firstNamePositionComboBox, CC.xywh(3, 3, 3, 1));
 
-				//---- label2 ----
+				// ---- label2 ----
 				label2.setText(bundle.getString("JPreviewConfig.label2.text"));
 				contentPanel.add(label2, CC.xy(1, 5));
 
-				//---- birthdatePositionComboBox ----
-				birthdatePositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- birthdatePositionComboBox ----
+				birthdatePositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(birthdatePositionComboBox, CC.xywh(3, 5, 3, 1));
 
-				//---- label3 ----
+				// ---- label3 ----
 				label3.setText(bundle.getString("JPreviewConfig.label3.text"));
 				contentPanel.add(label3, CC.xy(1, 7));
 
-				//---- agePositionComboBox ----
-				agePositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- agePositionComboBox ----
+				agePositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(agePositionComboBox, CC.xywh(3, 7, 3, 1));
 
-				//---- label6 ----
+				// ---- label6 ----
 				label6.setText(bundle.getString("JPreviewConfig.label6.text"));
 				contentPanel.add(label6, CC.xy(1, 9));
 
-				//---- genderPositionComboBox ----
-				genderPositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- genderPositionComboBox ----
+				genderPositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(genderPositionComboBox, CC.xywh(3, 9, 3, 1));
 
-				//---- label4 ----
+				// ---- label4 ----
 				label4.setText(bundle.getString("JPreviewConfig.label4.text"));
 				contentPanel.add(label4, CC.xy(1, 11));
 
-				//---- categoryPositionComboBox ----
-				categoryPositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- categoryPositionComboBox ----
+				categoryPositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(categoryPositionComboBox, CC.xywh(3, 11, 3, 1));
 
-				//---- label5 ----
+				// ---- label5 ----
 				label5.setText(bundle.getString("JPreviewConfig.label5.text"));
 				contentPanel.add(label5, CC.xy(1, 13));
 
-				//---- subeventPositionComboBox ----
-				subeventPositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- subeventPositionComboBox ----
+				subeventPositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(subeventPositionComboBox, CC.xywh(3, 13, 3, 1));
 
-				//---- label7 ----
+				// ---- label7 ----
 				label7.setText(bundle.getString("JPreviewConfig.label7.text"));
 				contentPanel.add(label7, CC.xy(1, 15));
 
-				//---- labelColorPositionComboBox ----
-				labelColorPositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- labelColorPositionComboBox ----
+				labelColorPositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(labelColorPositionComboBox, CC.xywh(3, 15, 3, 1));
 
-				//---- label8 ----
+				// ---- label8 ----
 				label8.setText(bundle.getString("JPreviewConfig.label8.text"));
 				contentPanel.add(label8, CC.xy(1, 17));
 
-				//---- teamPositionComboBox ----
-				teamPositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- teamPositionComboBox ----
+				teamPositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(teamPositionComboBox, CC.xywh(3, 17, 3, 1));
 
-				//---- label9 ----
+				// ---- label9 ----
 				label9.setText(bundle.getString("JPreviewConfig.label9.text"));
 				contentPanel.add(label9, CC.xy(1, 19));
 
-				//---- procedencePositionComboBox ----
-				procedencePositionComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-					"No mostrar",
-					"En posici\u00f3n 1",
-					"En posici\u00f3n 2",
-					"En posici\u00f3n 3",
-					"En posici\u00f3n 4",
-					"En posici\u00f3n 5",
-					"En posici\u00f3n 6"
-				}));
+				// ---- procedencePositionComboBox ----
+				procedencePositionComboBox.setModel(new DefaultComboBoxModel<>(
+						new String[] { "No mostrar", "En posici\u00f3n 1", "En posici\u00f3n 2", "En posici\u00f3n 3",
+								"En posici\u00f3n 4", "En posici\u00f3n 5", "En posici\u00f3n 6" }));
 				contentPanel.add(procedencePositionComboBox, CC.xywh(3, 19, 3, 1));
 
-				//---- label12 ----
+				// ---- label12 ----
 				label12.setText(bundle.getString("JPreviewConfig.label12.text"));
 				contentPanel.add(label12, CC.xy(1, 21));
 				contentPanel.add(topBannerTextField, CC.xy(3, 21));
 
-				//---- topBannerSelectButton ----
+				// ---- topBannerSelectButton ----
 				topBannerSelectButton.setText(bundle.getString("JPreviewConfig.topBannerSelectButton.text"));
 				topBannerSelectButton.addActionListener(new ActionListener() {
 					@Override
@@ -401,12 +364,12 @@ public class JPreviewConfig extends JDialog {
 				});
 				contentPanel.add(topBannerSelectButton, CC.xy(5, 21));
 
-				//---- label13 ----
+				// ---- label13 ----
 				label13.setText(bundle.getString("JPreviewConfig.label13.text"));
 				contentPanel.add(label13, CC.xy(1, 23));
 				contentPanel.add(leftBannerTextField, CC.xy(3, 23));
 
-				//---- leftBannerSelectButton ----
+				// ---- leftBannerSelectButton ----
 				leftBannerSelectButton.setText(bundle.getString("JPreviewConfig.leftBannerSelectButton.text"));
 				leftBannerSelectButton.addActionListener(new ActionListener() {
 					@Override
@@ -416,12 +379,12 @@ public class JPreviewConfig extends JDialog {
 				});
 				contentPanel.add(leftBannerSelectButton, CC.xy(5, 23));
 
-				//---- label14 ----
+				// ---- label14 ----
 				label14.setText(bundle.getString("JPreviewConfig.label14.text"));
 				contentPanel.add(label14, CC.xy(1, 25));
 				contentPanel.add(rightBannerTextField, CC.xy(3, 25));
 
-				//---- rightBannerSelectButton ----
+				// ---- rightBannerSelectButton ----
 				rightBannerSelectButton.setText(bundle.getString("JPreviewConfig.rightBannerSelectButton.text"));
 				rightBannerSelectButton.addActionListener(new ActionListener() {
 					@Override
@@ -431,12 +394,12 @@ public class JPreviewConfig extends JDialog {
 				});
 				contentPanel.add(rightBannerSelectButton, CC.xy(5, 25));
 
-				//---- label15 ----
+				// ---- label15 ----
 				label15.setText(bundle.getString("JPreviewConfig.label15.text"));
 				contentPanel.add(label15, CC.xy(1, 27));
 				contentPanel.add(bottomBannerTextField, CC.xy(3, 27));
 
-				//---- bottomBannerSelectButton ----
+				// ---- bottomBannerSelectButton ----
 				bottomBannerSelectButton.setText(bundle.getString("JPreviewConfig.bottomBannerSelectButton.text"));
 				bottomBannerSelectButton.addActionListener(new ActionListener() {
 					@Override
@@ -446,13 +409,13 @@ public class JPreviewConfig extends JDialog {
 				});
 				contentPanel.add(bottomBannerSelectButton, CC.xy(5, 27));
 
-				//---- label10 ----
+				// ---- label10 ----
 				label10.setText(bundle.getString("JPreviewConfig.label10.text"));
 				label10.setFont(new Font("Tahoma", Font.BOLD, 12));
 				label10.setHorizontalAlignment(SwingConstants.CENTER);
 				contentPanel.add(label10, CC.xy(1, 1));
 
-				//---- label11 ----
+				// ---- label11 ----
 				label11.setText(bundle.getString("JPreviewConfig.label11.text"));
 				label11.setFont(new Font("Tahoma", Font.BOLD, 12));
 				label11.setHorizontalAlignment(SwingConstants.CENTER);
@@ -460,14 +423,12 @@ public class JPreviewConfig extends JDialog {
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
-			//======== buttonBar ========
+			// ======== buttonBar ========
 			{
 				buttonBar.setBorder(Borders.BUTTON_BAR_GAP_BORDER);
-				buttonBar.setLayout(new FormLayout(
-					"$glue, $button, $rgap, $button",
-					"pref"));
+				buttonBar.setLayout(new FormLayout("$glue, $button, $rgap, $button", "pref"));
 
-				//---- okButton ----
+				// ---- okButton ----
 				okButton.setText("OK");
 				okButton.addActionListener(new ActionListener() {
 					@Override
@@ -477,7 +438,7 @@ public class JPreviewConfig extends JDialog {
 				});
 				buttonBar.add(okButton, CC.xy(2, 1));
 
-				//---- cancelButton ----
+				// ---- cancelButton ----
 				cancelButton.setText("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					@Override
