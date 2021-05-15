@@ -26,7 +26,7 @@ package com.tiempometa.pandora.tagreader;
 import javax.swing.JPanel;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class JReaderPanel extends JPanel {

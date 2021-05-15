@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class SetTimeCommand extends MacshaCommand {

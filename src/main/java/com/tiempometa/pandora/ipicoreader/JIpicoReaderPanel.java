@@ -26,7 +26,7 @@ package com.tiempometa.pandora.ipicoreader;
 import javax.swing.JPanel;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class JIpicoReaderPanel extends JPanel {

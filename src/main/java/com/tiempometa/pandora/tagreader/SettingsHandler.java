@@ -32,7 +32,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class SettingsHandler {

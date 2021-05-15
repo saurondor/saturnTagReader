@@ -28,7 +28,7 @@ import java.io.IOException;
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public interface CommandResponseHandler {

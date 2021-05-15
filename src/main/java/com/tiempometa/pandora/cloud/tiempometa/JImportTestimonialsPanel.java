@@ -33,7 +33,7 @@ import com.tiempometa.pandora.foxberry.JImportBackupPanel;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class JImportTestimonialsPanel extends JImportBackupPanel {

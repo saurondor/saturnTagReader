@@ -31,7 +31,7 @@ import java.time.format.DateTimeParseException;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class MacshaTagRead {

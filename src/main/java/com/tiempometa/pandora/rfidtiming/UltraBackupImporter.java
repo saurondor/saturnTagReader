@@ -31,7 +31,7 @@ import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class UltraBackupImporter implements BackupImporter {

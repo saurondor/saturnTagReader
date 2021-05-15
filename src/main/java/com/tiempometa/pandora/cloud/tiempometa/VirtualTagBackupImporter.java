@@ -42,7 +42,7 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class VirtualTagBackupImporter extends ExcelImporter implements BackupImporter {

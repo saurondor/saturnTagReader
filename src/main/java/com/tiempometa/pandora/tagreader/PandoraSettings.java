@@ -24,7 +24,7 @@
 package com.tiempometa.pandora.tagreader;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class PandoraSettings {

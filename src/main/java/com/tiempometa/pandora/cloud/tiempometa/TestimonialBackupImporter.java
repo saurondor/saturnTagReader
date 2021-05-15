@@ -44,7 +44,7 @@ import jxl.read.biff.BiffException;
  * Implements loading information from web based XLS representing the
  * testimonials uploaded by the virtual timing app.
  * 
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class TestimonialBackupImporter extends ExcelImporter implements BackupImporter {

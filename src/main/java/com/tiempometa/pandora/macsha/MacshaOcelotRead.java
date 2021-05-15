@@ -32,7 +32,7 @@ import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class MacshaOcelotRead {

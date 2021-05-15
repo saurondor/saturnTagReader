@@ -25,7 +25,7 @@ package com.tiempometa.pandora.ipicoreader;
 
 /**
  * Configuration of a particular data load.  Indicates location at which the file-data was adquired.
- * @author Gerardo Tasistro gtasistro@deuxbits.com
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class DataLoadProperties {

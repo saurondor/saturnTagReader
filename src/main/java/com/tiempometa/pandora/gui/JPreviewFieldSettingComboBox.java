@@ -30,8 +30,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 /**
- * @author gtasi
- * @param <E>
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class JPreviewFieldSettingComboBox extends JComboBox<String> {

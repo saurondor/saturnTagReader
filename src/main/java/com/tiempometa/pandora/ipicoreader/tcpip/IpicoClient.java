@@ -40,7 +40,7 @@ import com.tiempometa.pandora.tagreader.TagReadListener;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class IpicoClient implements Runnable {

@@ -42,7 +42,7 @@ import com.tiempometa.webservice.RegistrationWebservice;
 import com.tiempometa.webservice.ResultsWebservice;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class Context extends com.tiempometa.timing.Context {

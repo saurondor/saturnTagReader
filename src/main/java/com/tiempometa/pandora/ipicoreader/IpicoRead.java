@@ -34,7 +34,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * Raw Chip read data structure to represent each individual time data.
  * 
- * @author Gerardo Tasistro gtasistro@deuxbits.com
+ * @author Gerardo Esteban Tasistro Giubetic
  * 
  */
 public class IpicoRead {

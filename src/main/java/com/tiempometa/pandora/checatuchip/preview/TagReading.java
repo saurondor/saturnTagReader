@@ -30,8 +30,7 @@ import java.util.Date;
 import org.apache.commons.codec.binary.Hex;
 
 /**
- * @author Gerardo Tasistro gtasistro@tiempometa.com Copyright 2015 Gerardo
- *         Tasistro Licensed under the Mozilla Public License, v. 2.0
+ * @author Gerardo Esteban Tasistro Giubetic
  * 
  */
 public class TagReading {

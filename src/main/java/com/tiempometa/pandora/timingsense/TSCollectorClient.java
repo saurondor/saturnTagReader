@@ -37,7 +37,7 @@ import com.google.gson.JsonParser;
 import com.tiempometa.pandora.tagreader.TagReadListener;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class TSCollectorClient implements Runnable {

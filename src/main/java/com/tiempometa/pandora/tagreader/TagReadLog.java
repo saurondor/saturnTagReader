@@ -29,7 +29,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class TagReadLog {

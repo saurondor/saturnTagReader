@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- * @author Gerardo Tasistro gtasistro@deuxbits.com
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class RegistrationReadParser implements ReadParser {

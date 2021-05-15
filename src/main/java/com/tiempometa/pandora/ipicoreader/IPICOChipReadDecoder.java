@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
 /**
  * Handles the decoding of each chip read line.
  * 
- * @author Gerardo Tasistro gtasistro@deuxbits.com
+ * @author Gerardo Esteban Tasistro Giubetic
  * 
  */
 public class IPICOChipReadDecoder implements ChipReadDecoder {

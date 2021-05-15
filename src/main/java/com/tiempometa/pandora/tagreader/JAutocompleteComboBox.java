@@ -38,7 +38,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class JAutocompleteComboBox extends JComboBox<String> {

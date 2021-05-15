@@ -24,7 +24,7 @@
 package com.tiempometa.pandora.ipicoreader;
 
 /**
- * @author Gerardo Tasistro gtasistro@deuxbits.com
+ * @author Gerardo Esteban Tasistro Giubetic
  * 
  */
 public interface ReadParser {

@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class InsertMarkerCommand extends IpicoCommand {

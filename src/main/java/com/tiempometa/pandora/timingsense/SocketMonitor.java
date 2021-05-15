@@ -24,7 +24,7 @@
 package com.tiempometa.pandora.timingsense;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public interface SocketMonitor {

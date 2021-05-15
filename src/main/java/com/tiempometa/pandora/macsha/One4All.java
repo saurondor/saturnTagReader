@@ -59,7 +59,7 @@ import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class One4All implements Runnable {

@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Defines interface that decoders must implement to process a plain text datafeed through a TCP/IP port
  * 
- * @author Gerardo Tasistro
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public interface ChipReadDecoder {

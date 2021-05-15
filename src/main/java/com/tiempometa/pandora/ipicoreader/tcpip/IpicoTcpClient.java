@@ -39,7 +39,7 @@ import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class IpicoTcpClient implements Runnable, TelnetNotificationHandler {

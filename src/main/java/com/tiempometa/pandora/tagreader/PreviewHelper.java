@@ -36,7 +36,7 @@ import com.tiempometa.webservice.model.Registration;
 
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class PreviewHelper {

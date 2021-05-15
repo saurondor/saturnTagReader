@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class UltraClient implements Runnable {

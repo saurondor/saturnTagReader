@@ -32,7 +32,7 @@ import javax.swing.table.AbstractTableModel;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class TagReadTableModel extends AbstractTableModel {

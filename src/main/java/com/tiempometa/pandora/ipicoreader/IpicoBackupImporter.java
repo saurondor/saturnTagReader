@@ -35,7 +35,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 import com.tiempometa.pandora.tagreader.Context;
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class IpicoBackupImporter implements BackupImporter {

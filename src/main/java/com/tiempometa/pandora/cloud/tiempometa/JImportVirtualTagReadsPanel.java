@@ -31,8 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.tiempometa.pandora.foxberry.JImportBackupPanel;
 
 /**
- * @author gtasi
- *
+ * @author Gerardo Esteban Tasistro Giubetic
  */
 public class JImportVirtualTagReadsPanel extends JImportBackupPanel {
 

@@ -29,7 +29,7 @@ import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 
 
 /**
- * @author gtasi
+ * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public interface CommandResponseHandler {
