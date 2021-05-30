@@ -201,6 +201,7 @@ public class JPreviewConfig extends JDialog {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
