@@ -175,6 +175,7 @@ public class ChipReaderIPICO {
 					}
 				}
 			} while (dataLine != null);
+			bReader.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
