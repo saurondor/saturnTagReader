@@ -158,9 +158,9 @@ public class JTSCollectorPanel extends JReaderPanel implements CommandResponseHa
 //		applyCheckpointButton.setBackground(Color.RED);
 //	}
 
-	private void multipointComboBoxItemStateChanged(ItemEvent e) {
-		// TODO add your code here
-	}
+//	private void multipointComboBoxItemStateChanged(ItemEvent e) {
+//		// TODO add your code here
+//	}
 
 	private void socketMonitorButtonActionPerformed(ActionEvent e) {
 		if (socketMonitor.isVisible()) {
