@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

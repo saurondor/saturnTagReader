@@ -23,12 +23,10 @@
  */
 package com.tiempometa.pandora.timingsense;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.csv.CSVRecord;
@@ -36,7 +34,6 @@ import org.apache.commons.csv.CSVRecord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.tiempometa.api.model.EventRegistration;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.RawChipRead;
 

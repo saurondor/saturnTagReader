@@ -3,8 +3,6 @@
  */
 package com.tiempometa.pandora.foxberry;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.List;

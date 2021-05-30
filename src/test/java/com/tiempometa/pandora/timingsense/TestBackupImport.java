@@ -3,8 +3,6 @@
  */
 package com.tiempometa.pandora.timingsense;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.List;
@@ -14,7 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;

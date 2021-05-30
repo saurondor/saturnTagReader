@@ -3,8 +3,6 @@
  */
 package com.tiempometa.pandora.macsha;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -29,7 +29,6 @@ import javax.swing.*;
 
 import org.apache.log4j.Logger;
 
-import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.Registration;

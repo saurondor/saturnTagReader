@@ -25,8 +25,6 @@ package com.tiempometa.pandora.tagreader;
 
 import java.awt.Frame;
 
-import javax.swing.JFrame;
-
 import org.apache.log4j.Logger;
 
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;

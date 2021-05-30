@@ -27,12 +27,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-import com.tiempometa.pandora.ipicoreader.*;
-import com.tiempometa.pandora.macsha.MacshaBackupImporter;
-import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
-import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
-import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

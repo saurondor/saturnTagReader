@@ -28,9 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -55,7 +53,6 @@ import com.tiempometa.pandora.macsha.commands.one4all.StartCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.TagReadListener;
-import com.tiempometa.timing.model.dao.RawChipReadDao;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**

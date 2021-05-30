@@ -34,7 +34,6 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import com.tiempometa.pandora.ipicoreader.IpicoRead;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.RawChipRead;

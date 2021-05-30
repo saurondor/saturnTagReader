@@ -27,8 +27,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.codec.binary.Hex;
-
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  * 

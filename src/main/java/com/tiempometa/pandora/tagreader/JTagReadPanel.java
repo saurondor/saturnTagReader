@@ -28,7 +28,6 @@ import java.util.*;
 import javax.swing.*;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

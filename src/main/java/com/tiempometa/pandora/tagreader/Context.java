@@ -25,16 +25,11 @@ package com.tiempometa.pandora.tagreader;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;

@@ -35,7 +35,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 
 import com.tiempometa.api.DataRequestException;
-import com.tiempometa.api.DataUploadException;
 import com.tiempometa.api.TiempoMetaClient;
 import com.tiempometa.api.TiempoMetaClientImpl;
 import com.tiempometa.api.model.Event;

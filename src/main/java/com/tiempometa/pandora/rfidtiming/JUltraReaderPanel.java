@@ -32,16 +32,12 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import org.apache.commons.net.telnet.InvalidTelnetOptionException;
 import org.apache.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
-import com.tiempometa.pandora.ipicoreader.commands.GetTimeCommand;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
-import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;

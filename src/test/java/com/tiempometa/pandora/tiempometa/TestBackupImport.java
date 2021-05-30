@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import com.tiempometa.pandora.cloud.tiempometa.TestimonialBackupImporter;
 import com.tiempometa.pandora.cloud.tiempometa.VirtualTagBackupImporter;
-import com.tiempometa.pandora.tagreader.BackupImporter;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 

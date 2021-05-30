@@ -26,7 +26,6 @@ package com.tiempometa.pandora.ipicoreader.tcpip;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.telnet.EchoOptionHandler;

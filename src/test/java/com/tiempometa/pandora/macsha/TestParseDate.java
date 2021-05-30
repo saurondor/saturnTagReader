@@ -3,8 +3,6 @@
  */
 package com.tiempometa.pandora.macsha;
 
-import static org.junit.Assert.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

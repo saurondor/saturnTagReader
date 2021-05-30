@@ -26,7 +26,6 @@ package com.tiempometa.pandora.ipicoreader.commands;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic

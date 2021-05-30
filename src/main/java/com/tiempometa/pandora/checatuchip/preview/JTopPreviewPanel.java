@@ -24,7 +24,6 @@
 package com.tiempometa.pandora.checatuchip.preview;
 
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;

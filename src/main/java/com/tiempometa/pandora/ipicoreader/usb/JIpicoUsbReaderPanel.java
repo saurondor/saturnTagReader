@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.JIpicoReaderPanel;
 import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;

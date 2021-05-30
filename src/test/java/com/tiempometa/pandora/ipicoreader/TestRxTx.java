@@ -5,7 +5,6 @@ package com.tiempometa.pandora.ipicoreader;
 
 import static org.junit.Assert.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;

@@ -25,9 +25,7 @@ package com.tiempometa.pandora.foxberry;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -40,7 +38,6 @@ import org.apache.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.ipicoreader.IpicoBackupImporter;
-import com.tiempometa.pandora.ipicoreader.IpicoRead;
 import com.tiempometa.pandora.macsha.MacshaBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;

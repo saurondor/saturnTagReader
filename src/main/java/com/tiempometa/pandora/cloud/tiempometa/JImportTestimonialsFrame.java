@@ -26,7 +26,6 @@ package com.tiempometa.pandora.cloud.tiempometa;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.BackupImporter;
 
 /**
