@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tiempometa.pandora</groupId>
 	<artifactId>tagreader</artifactId>
-	<version>4.5.3-BETA-SNAPSHOT-3</version>
+	<version>4.5.4-BETA</version>
 	<name>Tag Reader</name>
 	<description>Elite, Lite and USB reader interface</description>
 
