@@ -185,8 +185,7 @@ public class IpicoRead {
 		}
 		IpicoRead reading = new IpicoRead();
 		if (line.length() >= FRAME_LRC_END) {
-			if ((line.length() >= FRAME_SEEN_END) && (line.substring(0, 2).equals(DATA_LINE_HEADER))) {
-
+			if (line.substring(0, 2).equals(DATA_LINE_HEADER)) {
 				String crc = crc(line.substring(IpicoRead.FRAME_PAYLOAD_START, IpicoRead.FRAME_PAYLOAD_END));
 				String checkSum = line.substring(FRAME_LRC_START, FRAME_LRC_END);
 				if (!crc.equals(checkSum)) {
@@ -204,11 +203,13 @@ public class IpicoRead {
 				int millis = Integer.parseInt(line.substring(FRAME_MILLIS_START, FRAME_MILLIS_END), 16) * 10;
 				Date chipDate = new Date(100 + year, month - 1, day, hour, minute, second);
 				chipDate.setTime(chipDate.getTime() + millis);
-				if (line.substring(36, 38).equals(FIRST_SEEN_TAIL)) {
-					reading.setSeenStatus(FIRST_SEEN);
-				}
-				if (line.substring(36, 38).equals(LAST_SEEN_TAIL)) {
-					reading.setSeenStatus(LAST_SEEN);
+				if (line.length() >= FRAME_SEEN_END) {
+					if (line.substring(36, 38).equals(FIRST_SEEN_TAIL)) {
+						reading.setSeenStatus(FIRST_SEEN);
+					}
+					if (line.substring(36, 38).equals(LAST_SEEN_TAIL)) {
+						reading.setSeenStatus(LAST_SEEN);
+					}
 				}
 				reading.setClockTime(chipDate);
 				reading.setRunTime(chipDate.getTime());

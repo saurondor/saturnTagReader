@@ -41,7 +41,7 @@ public class TestBackupImport {
 	}
 
 	@Test
-	public void testBackupImporter() {
+	public void testFsLsBackupImporter() {
 		String cwd = System.getProperty("user.dir");
 		logger.info("Current working directory : " + cwd);
 		BackupImporter importer = new IpicoBackupImporter();
@@ -54,9 +54,41 @@ public class TestBackupImport {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testLiteBackupImporter() {
+		String cwd = System.getProperty("user.dir");
+		logger.info("Current working directory : " + cwd);
+		BackupImporter importer = new IpicoBackupImporter();
+		String fileName = cwd + "/src/test/resources/backups/ipico/TAGDATA.TXT";
+		try {
+			importer.load(fileName);
+			List<RawChipRead> readList = importer.getChipReads();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	@Test
-	public void testParseLine() {
+	public void testParseLiteLine() {
+		String line = "aa00058001e5c13c01001408181308524e15";
+		logger.info(line);
+		IpicoRead read = IpicoRead.parse(line);
+		assertNotNull(read);
+		String crc = IpicoRead.crc(line.substring(IpicoRead.FRAME_PAYLOAD_START, IpicoRead.FRAME_PAYLOAD_END));
+		logger.info(crc);
+		logger.info(read);
+		assertEquals("0100", read.getAntenna());
+		assertEquals("Mon Aug 18 13:08:52 CDT 2014", read.getClockTime().toString());
+		assertEquals("00", read.getReader());
+		assertEquals("058001e5c13c", read.getRfid());
+		assertEquals(Long.valueOf(1408385332780l), read.getRunTime());
+	}
+	
+	@Test
+	public void testParseFsLsLine() {
 
 		String line = "aa0105800312d92501011810131148093183FS";
 		logger.info(line);

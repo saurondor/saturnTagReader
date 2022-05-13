@@ -58,7 +58,9 @@ public class IpicoBackupImporter implements BackupImporter {
 		String dataLine;
 		while ((dataLine = br.readLine()) != null) {
 			IpicoRead tagRead = IpicoRead.parseString(dataLine, Context.getZoneId());
-			chipReads.add(tagRead.toRawChipRead());
+			if (tagRead != null) {
+				chipReads.add(tagRead.toRawChipRead());
+			}
 		}
 		br.close();
 	}

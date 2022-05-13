@@ -43,6 +43,8 @@ public class MacshaTagRead {
 	private Long timeMillis;
 	private String antenna;
 	private static DateTimeFormatter version4DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	private static DateTimeFormatter version4FSDateTimeFormatter = DateTimeFormatter
+			.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
 	private static DateTimeFormatter version3DateTimeFormatter = DateTimeFormatter.ofPattern("uuuuMMdd HHmmssSSS");
 	// 20200313141812293
 
@@ -82,14 +84,26 @@ public class MacshaTagRead {
 		data = data.replaceAll("\r", "");
 		MacshaTagRead reading = new MacshaTagRead();
 		String[] fields = data.split(";");
-		String epc = fields[1] + fields[2];
-		try {
-			reading.setTime(LocalDateTime.parse(fields[3] + " " + fields[4], version4DateTimeFormatter));
-			reading.setTimeMillis(Long.valueOf(reading.getTime().atZone(zoneId).toInstant().toEpochMilli()));
-			reading.setRfidString(epc);
-		} catch (DateTimeParseException e) {
-			e.printStackTrace();
-			return null;
+		if (fields.length == 6) {
+			String epc = fields[0];
+			try {
+				reading.setTime(LocalDateTime.parse(fields[1] + " " + fields[2], version4FSDateTimeFormatter));
+				reading.setTimeMillis(Long.valueOf(reading.getTime().atZone(zoneId).toInstant().toEpochMilli()));
+				reading.setRfidString(epc);
+			} catch (DateTimeParseException e) {
+				e.printStackTrace();
+				return null;
+			}
+		} else {
+			String epc = fields[1] + fields[2];
+			try {
+				reading.setTime(LocalDateTime.parse(fields[3] + " " + fields[4], version4DateTimeFormatter));
+				reading.setTimeMillis(Long.valueOf(reading.getTime().atZone(zoneId).toInstant().toEpochMilli()));
+				reading.setRfidString(epc);
+			} catch (DateTimeParseException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return reading;
 	}
