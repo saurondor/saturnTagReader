@@ -153,7 +153,11 @@ public class JImportBackupPanel extends JPanel {
 	}
 
 	private void importButtonActionPerformed(ActionEvent e) {
-		Context.getResultsWebservice().batchSaveRawReads(tableModel.getChipReads());
+		int listSize = tableModel.getChipReads().size();
+		for (int i = 0; i < listSize; i += 2000) {
+			List<RawChipRead> readings = tableModel.getChipReads().subList(i, Math.min(listSize, i + 2000));
+			Context.getResultsWebservice().batchSaveRawReads(readings);
+		}
 		JOptionPane.showMessageDialog(this, "Se guardaron " + tableModel.getChipReads().size() + " lecturas",
 				"Importación exitosa", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -171,18 +175,17 @@ public class JImportBackupPanel extends JPanel {
 		applyCheckPointButton = new JButton();
 		importButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"8dlu, $lcgap, 334dlu",
-			"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
+		// ======== this ========
+		setLayout(new FormLayout("8dlu, $lcgap, 334dlu",
+				"8dlu, $lgap, default, $lgap, 12dlu, $lgap, default, $lgap, 58dlu, $lgap, 15dlu, 2*($lgap, default)"));
 
-		//---- label1 ----
+		// ---- label1 ----
 		label1.setText(bundle.getString("JImportBackupPanel.label1.text"));
 		label1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		add(label1, CC.xy(3, 3));
 		add(fileLabel, CC.xy(3, 5));
 
-		//---- fileOpenButton ----
+		// ---- fileOpenButton ----
 		fileOpenButton.setText(bundle.getString("JImportBackupPanel.fileOpenButton.text"));
 		fileOpenButton.addActionListener(new ActionListener() {
 			@Override
@@ -192,17 +195,17 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(fileOpenButton, CC.xy(3, 7));
 
-		//======== scrollPane1 ========
+		// ======== scrollPane1 ========
 		{
 			scrollPane1.setViewportView(tagReadsTable);
 		}
 		add(scrollPane1, CC.xy(3, 9));
 
-		//---- checkPointComboBox ----
+		// ---- checkPointComboBox ----
 		checkPointComboBox.setEnabled(false);
 		add(checkPointComboBox, CC.xy(3, 11));
 
-		//---- applyCheckPointButton ----
+		// ---- applyCheckPointButton ----
 		applyCheckPointButton.setText(bundle.getString("JImportBackupPanel.applyCheckPointButton.text"));
 		applyCheckPointButton.setEnabled(false);
 		applyCheckPointButton.addActionListener(new ActionListener() {
@@ -213,7 +216,7 @@ public class JImportBackupPanel extends JPanel {
 		});
 		add(applyCheckPointButton, CC.xy(3, 13));
 
-		//---- importButton ----
+		// ---- importButton ----
 		importButton.setText(bundle.getString("JImportBackupPanel.importButton.text"));
 		importButton.addActionListener(new ActionListener() {
 			@Override
