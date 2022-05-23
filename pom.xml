@@ -157,7 +157,7 @@
 		<dependency>
 			<groupId>com.tiempometa.timing</groupId>
 			<artifactId>webservice</artifactId>
-			<version>4.5.2</version>
+			<version>4.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.tiempometa.api</groupId>
