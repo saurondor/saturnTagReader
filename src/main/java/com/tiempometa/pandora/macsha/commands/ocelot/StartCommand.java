@@ -26,7 +26,8 @@ package com.tiempometa.pandora.macsha.commands.ocelot;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
@@ -36,7 +37,7 @@ import com.tiempometa.pandora.macsha.commands.MacshaCommand;
  */
 public class StartCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(StartCommand.class);
+	private static final Logger logger = LogManager.getLogger(StartCommand.class);
 
 //	Para dar comienzo con la lectura de chips, debemos enviar la siguiente cadena:
 //		> “Start:”

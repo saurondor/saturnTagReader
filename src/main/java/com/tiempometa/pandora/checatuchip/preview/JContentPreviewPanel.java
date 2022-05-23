@@ -28,7 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -45,7 +46,7 @@ public class JContentPreviewPanel extends JPanel {
 	/**
 	 * 
 	 */
-	private static final Logger logger = Logger.getLogger(JContentPreviewPanel.class);
+	private static final Logger logger = LogManager.getLogger(JContentPreviewPanel.class);
 	private static final long serialVersionUID = 5064577426057648244L;
 	public static final Integer FIELD_NAME = 1;
 	public static final Integer FIELD_SUBEVENT = 2;

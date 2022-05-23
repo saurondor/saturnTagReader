@@ -36,7 +36,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -57,7 +58,7 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 	 * 
 	 */
 	private static final long serialVersionUID = -1089096348083032269L;
-	private static final Logger logger = Logger.getLogger(JIpicoUsbReaderPanel.class);
+	private static final Logger logger = LogManager.getLogger(JIpicoUsbReaderPanel.class);
 
 	public static final int MODE_CHECA_TU_CHIP = 0;
 	public static final int MODE_CHECA_TU_RESULTADO = 1;

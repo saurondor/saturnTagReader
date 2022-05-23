@@ -28,7 +28,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
@@ -38,7 +39,7 @@ import com.tiempometa.pandora.macsha.commands.MacshaCommand;
  */
 public class SetTimeCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(SetTimeCommand.class);
+	private static final Logger logger = LogManager.getLogger(SetTimeCommand.class);
 	
 	// Con el fin de configurar la fecha y hora interna del sistema, el host envía
 	// SETTIME;yyyy-MM-dd;HH:mm:ss<CrLf>. Esta operación puede ser realizada

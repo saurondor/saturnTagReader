@@ -33,7 +33,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -58,7 +59,7 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -7408634299336269973L;
-	private static final Logger logger = Logger.getLogger(JImportBackupPanel.class);
+	private static final Logger logger = LogManager.getLogger(JImportBackupPanel.class);
 	protected RawChipReadTableModel tableModel = new RawChipReadTableModel();
 	private File dataFile;
 

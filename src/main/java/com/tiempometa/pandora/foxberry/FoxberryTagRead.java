@@ -28,7 +28,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -38,7 +39,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  */
 public class FoxberryTagRead {
 
-	private static final Logger logger = Logger.getLogger(FoxberryTagRead.class);
+	private static final Logger logger = LogManager.getLogger(FoxberryTagRead.class);
 
 	// reader_2,4,BF65451ABE0F622D4A180ED3,1467464368979179,-63,,
 	public static final int READER_COLUMN = 0;

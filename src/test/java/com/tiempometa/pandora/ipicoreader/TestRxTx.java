@@ -7,7 +7,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ import com.tiempometa.pandora.tagreader.SerialReader;
  *
  */
 public class TestRxTx {
-	private static final Logger logger = Logger.getLogger(TestRxTx.class);
+	private static final Logger logger = LogManager.getLogger(TestRxTx.class);
 
 	/**
 	 * @throws java.lang.Exception

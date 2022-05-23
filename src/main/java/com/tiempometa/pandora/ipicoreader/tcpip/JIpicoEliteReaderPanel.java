@@ -33,7 +33,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -54,7 +55,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 	 * 
 	 */
 	private static final long serialVersionUID = -1234969021040337654L;
-	private static final Logger logger = Logger.getLogger(JIpicoEliteReaderPanel.class);
+	private static final Logger logger = LogManager.getLogger(JIpicoEliteReaderPanel.class);
 	private JReaderListPanel listPanel;
 	private IpicoClient reader = new IpicoClient();
 	private String checkPoint1 = null;

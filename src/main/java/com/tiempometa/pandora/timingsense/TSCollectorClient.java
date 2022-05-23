@@ -30,7 +30,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -41,7 +42,7 @@ import com.tiempometa.pandora.tagreader.TagReadListener;
  *
  */
 public class TSCollectorClient implements Runnable {
-	private static final Logger logger = Logger.getLogger(TSCollectorClient.class);
+	private static final Logger logger = LogManager.getLogger(TSCollectorClient.class);
 
 	private int port = 10200; // use default port
 	private String hostname = "";

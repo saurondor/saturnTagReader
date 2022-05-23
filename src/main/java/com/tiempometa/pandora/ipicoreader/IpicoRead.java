@@ -26,7 +26,8 @@ package com.tiempometa.pandora.ipicoreader;
 import java.time.ZoneId;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.Utils;
 import com.tiempometa.webservice.model.RawChipRead;
@@ -39,7 +40,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  */
 public class IpicoRead {
 
-	private static final Logger logger = Logger.getLogger(IpicoRead.class);
+	private static final Logger logger = LogManager.getLogger(IpicoRead.class);
 	public static final int FRAME_PAYLOAD_START = 0;
 	public static final int FRAME_PAYLOAD_END = 36;
 	public static final int FRAME_HEADER_START = 0;

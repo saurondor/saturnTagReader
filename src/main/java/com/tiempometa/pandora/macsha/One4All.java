@@ -31,7 +31,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.ClearFilesCommand;
@@ -81,7 +82,7 @@ public class One4All implements Runnable {
 	public static final String COMMAND_CLEARFILES = "CLEARFILES";
 	private static final String COMMAND_HELLO = "HELLO";
 
-	private static final Logger logger = Logger.getLogger(One4All.class);
+	private static final Logger logger = LogManager.getLogger(One4All.class);
 
 	private int port = 10002; // use default port
 	private String hostname = "";

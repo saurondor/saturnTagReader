@@ -32,7 +32,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.api.DataRequestException;
 import com.tiempometa.api.TiempoMetaClient;
@@ -48,7 +49,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  *
  */
 public class TiempoMetaCloudClient implements Runnable {
-	private static final Logger logger = Logger.getLogger(TiempoMetaCloudClient.class);
+	private static final Logger logger = LogManager.getLogger(TiempoMetaCloudClient.class);
 	private TagReadListener tagReadListener;
 	private boolean connected = false;
 

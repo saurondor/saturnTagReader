@@ -27,7 +27,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.Utils;
 import com.tiempometa.pandora.ipicoreader.ReadListener;
@@ -40,7 +41,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  *
  */
 public class IpicoUsbReader implements Runnable, ReadListener {
-	private static final Logger logger = Logger.getLogger(IpicoUsbReader.class);
+	private static final Logger logger = LogManager.getLogger(IpicoUsbReader.class);
 	TagReadListener tagReadListener;
 	private SerialReader serialReader = new SerialReader(this);
 //	private String checkPointOne;

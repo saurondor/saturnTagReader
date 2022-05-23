@@ -13,14 +13,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author gtasi
  *
  */
 public class EliteSimulator implements Runnable {
-	private static final Logger logger = Logger.getLogger(EliteSimulator.class);
+	private static final Logger logger = LogManager.getLogger(EliteSimulator.class);
 	private ServerSocket serverSocket;
 	private int port = 10200; // use default port
 	private Socket clientSocket = null;

@@ -34,7 +34,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -63,7 +64,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	 * 
 	 */
 	private static final long serialVersionUID = -2774027271874159969L;
-	private static final Logger logger = Logger.getLogger(JMacshaOcelotPanel.class);
+	private static final Logger logger = LogManager.getLogger(JMacshaOcelotPanel.class);
 
 	private JReaderListPanel listPanel;
 	private TagReadListener tagReadListener;

@@ -34,7 +34,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import org.apache.http.client.ClientProtocolException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -54,7 +55,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	 * 
 	 */
 	private static final long serialVersionUID = -1234969021040337654L;
-	private static final Logger logger = Logger.getLogger(JTiempoMetaCloudPanel.class);
+	private static final Logger logger = LogManager.getLogger(JTiempoMetaCloudPanel.class);
 	private JReaderListPanel listPanel;
 	private TiempoMetaCloudClient reader = new TiempoMetaCloudClient();
 	private TagReadListener tagReadListener;

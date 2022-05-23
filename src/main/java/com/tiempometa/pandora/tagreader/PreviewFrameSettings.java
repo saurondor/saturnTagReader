@@ -25,7 +25,8 @@ package com.tiempometa.pandora.tagreader;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
  */
 public class PreviewFrameSettings {
 
-	private static final Logger logger = Logger.getLogger(PreviewFrameSettings.class);
+	private static final Logger logger = LogManager.getLogger(PreviewFrameSettings.class);
 	public static final String FIELD_NAME_LOCATION = "previewFrameFieldNameLocation";
 	public static final String FIELD_SUBEVENT_LOCATION = "previewFrameFieldSubeventLocation";
 	public static final String FIELD_CATEGORY_LOCATION = "previewFrameFieldCategoryLocation";

@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import com.tiempometa.pandora.ipicoreader.tcpip.IpicoTcpClient;
  *
  */
 public class TestTcpIp {
-	private static final Logger logger = Logger.getLogger(TestTcpIp.class);
+	private static final Logger logger = LogManager.getLogger(TestTcpIp.class);
 	EliteSimulator simulator = new EliteSimulator();
 
 	/**

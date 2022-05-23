@@ -26,7 +26,8 @@ package com.tiempometa.pandora.macsha.commands.one4all;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 
@@ -36,7 +37,7 @@ import com.tiempometa.pandora.macsha.commands.MacshaCommand;
  */
 public class ReadBatteryCommand extends MacshaCommand {
 
-	private static final Logger logger = Logger.getLogger(ReadBatteryCommand.class);
+	private static final Logger logger = LogManager.getLogger(ReadBatteryCommand.class);
 
 	// Con el fin de recibir el estado de la batería interna, el host envía
 	// READBATTERY;<CrLf>.

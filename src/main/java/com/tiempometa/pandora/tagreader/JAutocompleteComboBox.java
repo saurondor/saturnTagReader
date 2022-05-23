@@ -35,7 +35,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -47,7 +48,7 @@ public class JAutocompleteComboBox extends JComboBox<String> {
 	 * 
 	 */
 	private static final long serialVersionUID = -3417787122957006433L;
-	private static final Logger logger = Logger.getLogger(JAutocompleteComboBox.class);
+	private static final Logger logger = LogManager.getLogger(JAutocompleteComboBox.class);
 
 	private String[] options = new String[0];
 	private DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(options);

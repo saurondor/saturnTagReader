@@ -13,7 +13,8 @@ import java.util.List;
 
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.checatuchip.preview.JPreviewConfig;
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
@@ -40,7 +41,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	 * 
 	 */
 	private static final long serialVersionUID = -5737894657705021013L;
-	private static final Logger logger = Logger.getLogger(JReaderFrame.class);
+	private static final Logger logger = LogManager.getLogger(JReaderFrame.class);
 	static JSplashScreen splash = new JSplashScreen();
 	private String eventTitle;
 	JPreviewFrame previewFrame = new JPreviewFrame();

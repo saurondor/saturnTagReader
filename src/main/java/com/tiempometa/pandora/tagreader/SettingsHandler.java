@@ -29,7 +29,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
 public class SettingsHandler {
 
 	public static final String PANDORA_SERVER_PROPERTIES = "/tagreader.properties";
-	private Logger logger = Logger.getLogger(SettingsHandler.class);
+	private Logger logger = LogManager.getLogger(SettingsHandler.class);
 	private Properties properties = new Properties();
 	private String propertiesPath = System.getProperty("user.home") + "/.tiempometa";
 

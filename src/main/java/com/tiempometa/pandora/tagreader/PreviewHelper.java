@@ -25,7 +25,8 @@ package com.tiempometa.pandora.tagreader;
 
 import java.awt.Frame;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.checatuchip.preview.JPreviewFrame;
 import com.tiempometa.pandora.checatuchip.preview.TagReading;
@@ -39,7 +40,7 @@ import com.tiempometa.webservice.model.Registration;
  */
 public class PreviewHelper {
 
-	private static final Logger logger = Logger.getLogger(PreviewHelper.class);
+	private static final Logger logger = LogManager.getLogger(PreviewHelper.class);
 	JPreviewFrame frame = new JPreviewFrame();
 	private boolean maximized = false;
 	private boolean visible = false;

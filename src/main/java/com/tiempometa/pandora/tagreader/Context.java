@@ -29,7 +29,8 @@ import java.time.ZoneId;
 import java.util.List;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
@@ -42,7 +43,7 @@ import com.tiempometa.webservice.ResultsWebservice;
  */
 public class Context extends com.tiempometa.timing.Context {
 //	private static ApplicationContext ctx = null;
-	private static final Logger logger = Logger.getLogger(Context.class);
+	private static final Logger logger = LogManager.getLogger(Context.class);
 	public static PreviewHelper previewHelper = new PreviewHelper();
 	public static SettingsHandler settings = null;
 	private static JPandoraApplication application;

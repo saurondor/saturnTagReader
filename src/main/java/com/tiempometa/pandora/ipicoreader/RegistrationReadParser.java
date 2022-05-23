@@ -26,14 +26,15 @@ package com.tiempometa.pandora.ipicoreader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  *
  */
 public class RegistrationReadParser implements ReadParser {
-	private static final Logger log = Logger.getLogger(RegistrationReadParser.class);
+	private static final Logger log = LogManager.getLogger(RegistrationReadParser.class);
 	private StringBuffer dataBuffer = new StringBuffer();
 	private ChipReaderIPICO chipReader = new ChipReaderIPICO();
 	private List<ReadListener> readListeners = new ArrayList<ReadListener>();

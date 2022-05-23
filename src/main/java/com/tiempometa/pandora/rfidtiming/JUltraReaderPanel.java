@@ -32,7 +32,8 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -52,7 +53,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 	 * 
 	 */
 	private static final long serialVersionUID = -1234969021040337654L;
-	private static final Logger logger = Logger.getLogger(JUltraReaderPanel.class);
+	private static final Logger logger = LogManager.getLogger(JUltraReaderPanel.class);
 	private JReaderListPanel listPanel;
 	private UltraClient reader = new UltraClient();
 	private String checkPoint1 = null;

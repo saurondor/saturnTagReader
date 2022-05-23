@@ -32,7 +32,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.macsha.commands.MacshaCommand;
 import com.tiempometa.pandora.macsha.commands.one4all.StartCommand;
@@ -47,7 +48,7 @@ import com.tiempometa.webservice.model.RawChipRead;
  */
 public class Ocelot implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(Ocelot.class);
+	private static final Logger logger = LogManager.getLogger(Ocelot.class);
 	public static final String COMMAND_START = "Start";
 	public static final String COMMAND_STOP = "Stop";
 	public static final String COMMAND_CONNECTED = "CONECTADO";

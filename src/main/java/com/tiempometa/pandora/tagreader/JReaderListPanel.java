@@ -35,14 +35,15 @@ import com.tiempometa.pandora.macsha.JMacshaReaderPanel;
 import com.tiempometa.pandora.rfidtiming.JUltraReaderPanel;
 import com.tiempometa.pandora.timingsense.JTSCollectorPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
 public class JReaderListPanel extends JPanel {
 
-	private static final Logger logger = Logger.getLogger(JReaderListPanel.class);
+	private static final Logger logger = LogManager.getLogger(JReaderListPanel.class);
 
 	/**
 	 * 
