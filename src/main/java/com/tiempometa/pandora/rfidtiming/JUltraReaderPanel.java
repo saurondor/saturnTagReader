@@ -98,7 +98,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+						"Error de configuraciï¿½n", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -107,7 +107,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiï¿½n",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -379,5 +379,22 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Ultra";
 	}
 }

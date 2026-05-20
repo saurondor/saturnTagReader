@@ -20,14 +20,21 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.tiempometa.pandora.ipicoreader.tcpip;
-
-import com.tiempometa.pandora.tagreader.AbstractTcpReaderClient;
+package com.tiempometa.pandora.tagreader;
 
 /**
- * TCP client for IPICO Elite readers. Protocol logic is in AbstractTcpReaderClient.
+ * Common contract for all hardware reader panels.
  *
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class IpicoClient extends AbstractTcpReaderClient {
+public interface IReader {
+
+    void setTagReadListener(TagReadListener tagReadListener);
+
+    boolean isConnected();
+
+    /** Disconnects the reader. Implementations must not propagate checked exceptions. */
+    void disconnect();
+
+    String getLabel();
 }

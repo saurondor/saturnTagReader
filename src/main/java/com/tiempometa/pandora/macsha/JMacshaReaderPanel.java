@@ -107,7 +107,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 				startReadingButton.setEnabled(false);
 				setTimeButton.setEnabled(false);
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexión",
+				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexiï¿½n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
@@ -124,7 +124,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 				startReadingButton.setEnabled(true);
 				setTimeButton.setEnabled(true);
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiï¿½n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -396,7 +396,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	public void handleCommandResponse(MacshaCommand command) {
 		logger.info("Handling command " + command.getClass().getCanonicalName());
 		if (command instanceof SetTimeCommand) {
-			JOptionPane.showMessageDialog(this, "Se fijó la hora del reader");
+			JOptionPane.showMessageDialog(this, "Se fijï¿½ la hora del reader");
 		}
 		if (command instanceof ReadBatteryCommand) {
 			ReadBatteryCommand batteryCommand = (ReadBatteryCommand) command;
@@ -425,8 +425,8 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyCommException(IOException e) {
-		JOptionPane.showMessageDialog(this, "Se ha perdido la conexión al reader. " + e.getMessage(),
-				"Error de conexión", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se ha perdido la conexiï¿½n al reader. " + e.getMessage(),
+				"Error de conexiï¿½n", JOptionPane.ERROR_MESSAGE);
 		shutdownReader();
 	}
 
@@ -445,7 +445,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexión", JOptionPane.ERROR_MESSAGE);
+					"Error de conexiï¿½n", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -477,6 +477,27 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void notifyTimeout() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			try {
+				reader.disconnect();
+			} catch (IOException e) {
+				logger.warn("Error disconnecting One4All: " + e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Macsha One4All";
 	}
 }

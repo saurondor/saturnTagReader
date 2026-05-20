@@ -29,11 +29,8 @@ import javax.swing.JPanel;
  * @author Gerardo Esteban Tasistro Giubetic
  *
  */
-public class JReaderPanel extends JPanel {
+public abstract class JReaderPanel extends JPanel implements IReader {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7712864250989494970L;
 
 }

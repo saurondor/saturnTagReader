@@ -120,19 +120,19 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			try {
 				disconnectReader();
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexión",
+				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexiï¿½n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
 			try {
 				if (checkPoint == null) {
 					JOptionPane.showMessageDialog(this, "Se debe seleccionar un punto antes de conectar",
-							"Error de configuración", JOptionPane.WARNING_MESSAGE);
+							"Error de configuraciï¿½n", JOptionPane.WARNING_MESSAGE);
 				} else {
 					connectReader();
 				}
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiï¿½n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -409,8 +409,8 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyCommException(IOException e) {
-		JOptionPane.showMessageDialog(this, "Se ha perdido la conexión al reader. " + e.getMessage(),
-				"Error de conexión", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se ha perdido la conexiï¿½n al reader. " + e.getMessage(),
+				"Error de conexiï¿½n", JOptionPane.ERROR_MESSAGE);
 		shutdownReader();
 	}
 
@@ -426,7 +426,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexión", JOptionPane.ERROR_MESSAGE);
+					"Error de conexiï¿½n", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -522,5 +522,26 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		InputStream mp3Stream = this.getClass().getResourceAsStream("/keepalive.mp3");
 		Player player = new Player(mp3Stream);
 		player.play();
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			try {
+				reader.disconnect();
+			} catch (IOException e) {
+				logger.warn("Error disconnecting Ocelot: " + e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Macsha Ocelot";
 	}
 }

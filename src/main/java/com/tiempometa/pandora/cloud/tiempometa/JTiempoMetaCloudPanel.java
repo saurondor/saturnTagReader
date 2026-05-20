@@ -61,6 +61,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	private TagReadListener tagReadListener;
 	private Integer tagCount = 0;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private boolean connected = false;
 
 	public JTiempoMetaCloudPanel(JReaderListPanel listPanel) {
 		initComponents();
@@ -74,23 +75,24 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 				eventTitleLabel.setText(reader.getEvent().getTitle());
 				Thread thread = new Thread(reader);
 				thread.start();
+				connected = true;
 			} else {
 				eventTitleLabel.setText("Error conectando");
 			}
 		} catch (ClientProtocolException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciï¿½n",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciï¿½n",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (DataRequestException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciï¿½n",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -101,7 +103,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 
 	private void rewindTagReadsButtonActionPerformed(ActionEvent e) {
 		int response = JOptionPane.showConfirmDialog(this,
-				"Esta acción descargará todas las lecturas nuevamente. ¿Deseas continuar?", "Rebobinar lecturas",
+				"Esta acciï¿½n descargarï¿½ todas las lecturas nuevamente. ï¿½Deseas continuar?", "Rebobinar lecturas",
 				JOptionPane.YES_NO_OPTION);
 		if (response == JOptionPane.YES_OPTION) {
 			reader.rewindAll();
@@ -111,14 +113,14 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	private void clearTagReadsButtonActionPerformed(ActionEvent e) {
 		String confirmation = UUID.randomUUID().toString().substring(9, 13);
 		String response = JOptionPane.showInputDialog(this,
-				"Esto borrará todas las lecturas en la nube. Esta operación no se puede deshacer.\n"
+				"Esto borrarï¿½ todas las lecturas en la nube. Esta operaciï¿½n no se puede deshacer.\n"
 						+ "Para continuar por favor digita los siguientes caracteres para confirmar:" + confirmation,
 				null);
 		if ((response != null) && (response.equals(confirmation))) {
 			reader.clearTags();
 			JOptionPane.showMessageDialog(this, "Se borraron todos los tags.");
 		} else {
-			JOptionPane.showMessageDialog(this, "Operación cancelada.");
+			JOptionPane.showMessageDialog(this, "Operaciï¿½n cancelada.");
 		}
 	}
 
@@ -288,5 +290,21 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return connected;
+	}
+
+	@Override
+	public void disconnect() {
+		reader.disconnect();
+		connected = false;
+	}
+
+	@Override
+	public String getLabel() {
+		return "TiempoMeta Cloud";
 	}
 }

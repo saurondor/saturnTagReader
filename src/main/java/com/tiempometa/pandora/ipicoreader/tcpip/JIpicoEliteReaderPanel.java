@@ -104,7 +104,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+						"Error de configuraciï¿½n", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -113,7 +113,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiï¿½n",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -153,7 +153,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 //			client.sendCommand(new GetTimeCommand());
 			client.sendCommand(new SetTimeCommand());
 //			client.sendCommand(new GetTimeCommand());
-			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Se fijï¿½ la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
 		} catch (InvalidTelnetOptionException | IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -404,5 +404,22 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "IPICO Elite";
 	}
 }
