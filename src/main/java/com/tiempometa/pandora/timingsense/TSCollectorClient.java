@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -93,7 +94,10 @@ public class TSCollectorClient implements Runnable {
 							String json = buffer.toString();
 							parser.parse(json);
 							List<TimingsenseTagRead> tagReads = TimingsenseTagRead.parseJson(json);
-							tagReadListener.notifyTagReads(TimingsenseTagRead.toRawChipReads(tagReads));
+							List<RawChipRead> rawReads = TimingsenseTagRead.toRawChipReads(tagReads);
+							if (!rawReads.isEmpty() && tagReadListener != null) {
+								tagReadListener.notifyTagReads(rawReads);
+							}
 							buffer = new StringBuffer();
 							logger.info("*** VALID JSON");
 							socketMonitor.appendText("\nVALID PAYLOAD, parsing...\n");

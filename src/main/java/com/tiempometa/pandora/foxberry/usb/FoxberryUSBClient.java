@@ -162,7 +162,9 @@ public class FoxberryUSBClient implements Runnable {
 				readings.add(read.toRawChipRead());
 			}
 		}
-		tagReadListener.notifyTagReads(readings);
+		if (!readings.isEmpty() && tagReadListener != null) {
+			tagReadListener.notifyTagReads(readings);
+		}
 	}
 
 	private void saveChip(FoxberryRead read) {

@@ -69,6 +69,9 @@ public abstract class AbstractIpicoTcpClient extends AbstractTcpReaderClient {
                 }
             } catch (IOException e) {
                 logger.warn("Connection lost: " + e.getMessage());
+                if (commandResponseHandler != null) {
+                    commandResponseHandler.notifyCommException(e);
+                }
                 disconnect();
             }
             try {
@@ -124,7 +127,9 @@ public abstract class AbstractIpicoTcpClient extends AbstractTcpReaderClient {
                 readings.add(read.toRawChipRead());
             }
         }
-        tagReadListener.notifyTagReads(readings);
+        if (!readings.isEmpty() && tagReadListener != null) {
+            tagReadListener.notifyTagReads(readings);
+        }
     }
 
     public List<IpicoRead> getReadLog() {

@@ -131,7 +131,9 @@ public abstract class AbstractFoxberryTcpClient extends AbstractTcpReaderClient 
                 readings.add(read.toRawChipRead());
             }
         }
-        tagReadListener.notifyTagReads(readings);
+        if (!readings.isEmpty() && tagReadListener != null) {
+            tagReadListener.notifyTagReads(readings);
+        }
     }
 
     public List<FoxberryRead> getReadLog() {

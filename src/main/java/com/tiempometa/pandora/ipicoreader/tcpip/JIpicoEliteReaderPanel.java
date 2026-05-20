@@ -384,14 +384,13 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 
 	@Override
 	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
+		logger.debug("Command response received: " + command.getClass().getSimpleName());
 	}
 
 	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {

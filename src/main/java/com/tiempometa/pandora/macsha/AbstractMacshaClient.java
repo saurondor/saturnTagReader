@@ -102,7 +102,9 @@ public abstract class AbstractMacshaClient extends AbstractReadWriteTcpReaderCli
         for (MacshaTagRead macshaTagRead : readings) {
             chipReadList.add(macshaTagRead.toRawChipRead());
         }
-        tagReadListener.notifyTagReads(chipReadList);
+        if (!chipReadList.isEmpty() && tagReadListener != null) {
+            tagReadListener.notifyTagReads(chipReadList);
+        }
     }
 
     protected void handleCommandResponse(MacshaCommand command) {
