@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2019 Gerardo Esteban Tasistro Giubetic
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -19,7 +19,7 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  */
 package com.tiempometa.pandora.foxberry.usb;
 
@@ -27,15 +27,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tiempometa.pandora.ipicoreader.DataLoadProperties;
-import com.tiempometa.pandora.ipicoreader.IpicoRead;
+import com.tiempometa.pandora.foxberry.FoxberryCommandResponseHandler;
+import com.tiempometa.pandora.foxberry.tcpip.FoxberryRead;
 import com.tiempometa.pandora.tagreader.TagReadListener;
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -46,16 +45,15 @@ import com.tiempometa.webservice.model.RawChipRead;
 public class FoxberryUSBClient implements Runnable {
 	private static final Logger logger = LogManager.getLogger(FoxberryUSBClient.class);
 
-	private DataLoadProperties loadProperties = null;
-	SimpleDateFormat dFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private int port = 10200; // use default port
 	private String hostname = "";
 	private boolean connected = false;
 	private Socket readerSocket = null;
 	private InputStream inputStream = null;
-	private List<IpicoRead> readLog = new ArrayList<IpicoRead>();
+	private List<FoxberryRead> readLog = new ArrayList<FoxberryRead>();
 	StringBuffer streamBuffer = new StringBuffer();
 	TagReadListener tagReadListener;
+	private FoxberryCommandResponseHandler commandResponseHandler;
 	private String checkPointOne;
 	private String checkPointTwo;
 	private String terminal;
@@ -66,7 +64,7 @@ public class FoxberryUSBClient implements Runnable {
 
 	/**
 	 * Connects to the reader
-	 * 
+	 *
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
@@ -83,11 +81,18 @@ public class FoxberryUSBClient implements Runnable {
 	}
 
 	/**
-	 * Issues a disconnect signal to terminate connection to reader.
+	 * Issues a disconnect signal and closes the underlying socket.
 	 */
 	public void disconnect() {
 		synchronized (this) {
 			connected = false;
+		}
+		if (readerSocket != null && !readerSocket.isClosed()) {
+			try {
+				readerSocket.close();
+			} catch (IOException e) {
+				logger.warn("Error closing socket", e);
+			}
 		}
 	}
 
@@ -106,21 +111,14 @@ public class FoxberryUSBClient implements Runnable {
 					append(dataString);
 				}
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.error("IO error reading from reader", e1);
+				disconnect();
 			}
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		try {
-			readerSocket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -136,12 +134,12 @@ public class FoxberryUSBClient implements Runnable {
 		List<String> lines = new ArrayList();
 		dataRows = streamBuffer.toString().split("\\n");
 		for (int i = 0; i < dataRows.length; i++) {
-			if (dataRows[i].length() >= IpicoRead.FRAME_LRC_END) {
+			if (dataRows[i].length() >= FoxberryRead.FRAME_LRC_END) {
 				lines.add(dataRows[i]);
 			}
 		}
-		if ((dataRows[dataRows.length - 1].startsWith(IpicoRead.DATA_LINE_HEADER))
-				&& (dataRows[dataRows.length - 1].length() < IpicoRead.FRAME_SEEN_END)) {
+		if ((dataRows[dataRows.length - 1].startsWith(FoxberryRead.DATA_LINE_HEADER))
+				&& (dataRows[dataRows.length - 1].length() < FoxberryRead.FRAME_SEEN_END)) {
 			logger.debug("Keeping last line " + dataRows[dataRows.length - 1]);
 			streamBuffer = new StringBuffer(dataRows[dataRows.length - 1]);
 		} else {
@@ -151,12 +149,12 @@ public class FoxberryUSBClient implements Runnable {
 		List<RawChipRead> readings = new ArrayList<RawChipRead>();
 		for (String line : lines) {
 			logger.debug("Parsing string " + line);
-			IpicoRead read = IpicoRead.parse(line.replace("\r", ""));
-			read.setCheckPoint(checkPointOne);
-			read.setTerminal(terminal);
+			FoxberryRead read = FoxberryRead.parse(line.replace("\r", ""));
 			if (read == null) {
 				logger.error("Invalid data string :" + line + ", length:" + line.length());
 			} else {
+				read.setCheckPoint(checkPointOne);
+				read.setTerminal(terminal);
 				this.saveChip(read);
 				readings.add(read.toRawChipRead());
 			}
@@ -164,7 +162,7 @@ public class FoxberryUSBClient implements Runnable {
 		tagReadListener.notifyTagReads(readings);
 	}
 
-	private void saveChip(IpicoRead read) {
+	private void saveChip(FoxberryRead read) {
 		synchronized (this) {
 			readLog.add(read);
 		}
@@ -178,19 +176,18 @@ public class FoxberryUSBClient implements Runnable {
 		this.hostname = hostname;
 	}
 
-	public List<IpicoRead> getReadLog() {
+	public List<FoxberryRead> getReadLog() {
 		return readLog;
 	}
 
 	public void clearLog() {
 		synchronized (this) {
-			readLog = new ArrayList<IpicoRead>();
+			readLog = new ArrayList<FoxberryRead>();
 		}
 	}
 
-	public void setCommandResponseHandler(JFoxberryUsbReaderPanel jIpicoReaderPanel) {
-		// TODO Auto-generated method stub
-
+	public void setCommandResponseHandler(FoxberryCommandResponseHandler handler) {
+		this.commandResponseHandler = handler;
 	}
 
 	public boolean isConnected() {
@@ -231,7 +228,6 @@ public class FoxberryUSBClient implements Runnable {
 	}
 
 	public void connect(String selectedItem) {
-		// TODO Auto-generated method stub
-
+		// TODO: serial port connect not implemented
 	}
 }
