@@ -48,6 +48,7 @@ public class Context extends com.tiempometa.timing.Context {
 	public static SettingsHandler settings = null;
 	private static JPandoraApplication application;
 	private static RegistrationWebservice registrationWebservice;
+
 	private static ResultsWebservice resultsWebservice;
 	private static String serverAddress = null;
 //	private static ZoneId zoneId = null;
@@ -87,7 +88,7 @@ public class Context extends com.tiempometa.timing.Context {
 		logger.info("Results client created");
 	}
 
-	public static void setApplication(JReaderFrame app) {
+	public static void setApplication(JPandoraApplication app) {
 		application = app;
 	}
 

@@ -46,112 +46,16 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	private String eventTitle;
 	JPreviewFrame previewFrame = new JPreviewFrame();
 
-	/**
-	 * 
-	 */
-	private void initWebserviceClient() {
-		boolean retry = true;
-		do {
-			try {
-				Context.initWebserviceClients();
-				retry = false;
-			} catch (DateTimeException e) {
-				JOptionPane.showMessageDialog(this, "No se pudo establecer la zona horaria." + e.getMessage(),
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-				int response = JOptionPane.showConfirmDialog(this, "¿Deseas reintentar?",
-						"Error solicitando configuración", JOptionPane.YES_NO_OPTION);
-				if (response == JOptionPane.NO_OPTION) {
-					retry = false;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(this,
-						"No se pudo conectar a la base de datos.\nVerifica que el Saturno esté funcionando y disponible en la dirección :"
-								+ Context.getServerAddress() + "\nError:" + e.getMessage(),
-						"Error de conexión: ", JOptionPane.ERROR_MESSAGE);
-				int response = JOptionPane.showConfirmDialog(this, "¿Deseas cambiar la dirección IP?",
-						"Error conectando a Saturno", JOptionPane.YES_NO_OPTION);
-				if (response == JOptionPane.YES_OPTION) {
-					String ipAddress = JOptionPane.showInputDialog("Dirección IP", Context.getServerAddress());
-					if (ipAddress == null) {
-
-					} else {
-						try {
-							Context.setServerAddress(ipAddress);
-							logger.info("Updated server address to " + Context.getServerAddress());
-						} catch (IOException e1) {
-							JOptionPane.showMessageDialog(this,
-									"No se pudo guardar la configuración. " + e1.getMessage(), "Error de configuración",
-									JOptionPane.ERROR_MESSAGE);
-						}
-					}
-				} else {
-					response = JOptionPane.showConfirmDialog(this, "¿Deseas reintentar conectar con Saturno?",
-							"Error conectando a Saturno", JOptionPane.YES_NO_OPTION);
-					if (response == JOptionPane.NO_OPTION) {
-//						retry = false;
-						System.exit(ERROR);
-					}
-				}
-			}
-		} while (retry);
-	}
 
 	public JReaderFrame() {
 		splash.setVisible(true);
-		boolean connected = false;
-		do {
-			try {
-				showProgress("Cargando configuración", 20);
-				Context.setApplication(this);
-				Context.loadSettings();
-				Context.previewHelper.getSettings().loadSettings();
-//				Context.loadServerAddress();
-				showProgress("Probando conexión al servidor @" + Context.getServerAddress(), 40);
-				initWebserviceClient();
-				Context.getZoneId();
-				connected = true;
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "No se pudo cargar la configuración " + e.getMessage(),
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-				dispose();
-			} catch (Exception e) {
-				logger.info("Exception opening database and event " + e.getClass().getCanonicalName());
-				if (e instanceof org.springframework.dao.InvalidDataAccessResourceUsageException) {
-					handleInvalidDatabaseSchema();
-				} else {
-//					connected = handleMissingDatabase(connected, e);
-				}
-				e.printStackTrace();
-			} catch (ExceptionInInitializerError e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(this,
-						"No se pudo inicializar la aplicación. ¿Está corriendo la base de datos?",
-						"Error iniciando aplicación", JOptionPane.ERROR_MESSAGE);
-			} catch (NoClassDefFoundError e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(this,
-						"No se pudo inicializar la aplicación. Error inicializando application context. Error de sistema es: "
-								+ e.getMessage(),
-						"Error iniciando aplicación", JOptionPane.ERROR_MESSAGE);
-				this.dispose();
-				System.exit(1);
-			}
-
-		} while (!connected);
+		new ReaderStartupCoordinator(this, this, this::showProgress).connect();
 		showProgress("Iniciando componentes", 65);
 		initComponents();
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
 		readerListPanel.addIpicoEliteReader();
-	}
-
-	private void handleInvalidDatabaseSchema() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
