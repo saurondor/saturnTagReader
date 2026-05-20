@@ -94,14 +94,15 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	private void closeApplication(Window window) {
 		if (Context.isApplicationCloseable()) {
-			int response = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar la aplicación?",
+			int response = JOptionPane.showConfirmDialog(null, "ï¿½Seguro que desea cerrar la aplicaciï¿½n?",
 					"Confirmar Cierre", JOptionPane.WARNING_MESSAGE);
 			if (response == JOptionPane.OK_OPTION) {
+				readerListPanel.disconnectAll();
 				window.dispose();
 				System.exit(0);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "No se puede cerrar la aplicación en este momento.", "Cierre",
+			JOptionPane.showMessageDialog(null, "No se puede cerrar la aplicaciï¿½n en este momento.", "Cierre",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
@@ -124,7 +125,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	}
 
 	private void openEventMenuItemActionPerformed(ActionEvent e) {
-		String response = JOptionPane.showInputDialog("Dirección IP del servidor remoto o 127.0.0.1 para local",
+		String response = JOptionPane.showInputDialog("Direcciï¿½n IP del servidor remoto o 127.0.0.1 para local",
 				Context.getServerAddress());
 		if (response == null) {
 
@@ -133,8 +134,8 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				Context.setServerAddress(response);
 				logger.info("Updated server address to " + Context.getServerAddress());
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo guardar la configuración. " + e1.getMessage(),
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "No se pudo guardar la configuraciï¿½n. " + e1.getMessage(),
+						"Error de configuraciï¿½n", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
