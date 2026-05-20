@@ -414,8 +414,8 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 
 	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {

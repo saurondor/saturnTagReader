@@ -344,7 +344,6 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
 		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {
 			logger.debug("TAG READ " + rawChipRead.getRfidString());

@@ -165,6 +165,9 @@ public class One4All extends AbstractMacshaClient {
                         connect(getHostname());
                     } catch (IOException e2) {
                         e2.printStackTrace();
+                        if (commandResponseHandler != null) {
+                            commandResponseHandler.notifyCommException(e2);
+                        }
                     }
                 }
                 try {

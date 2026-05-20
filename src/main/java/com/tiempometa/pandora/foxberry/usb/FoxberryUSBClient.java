@@ -112,6 +112,9 @@ public class FoxberryUSBClient implements Runnable {
 				}
 			} catch (IOException e1) {
 				logger.error("IO error reading from reader", e1);
+				if (commandResponseHandler != null) {
+					commandResponseHandler.notifyCommException(e1);
+				}
 				disconnect();
 			}
 			try {

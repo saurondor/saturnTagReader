@@ -363,7 +363,6 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
 		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {
 			logger.debug("TAG READ " + rawChipRead.getRfidString());
@@ -375,8 +374,8 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 
 	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {

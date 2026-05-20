@@ -463,8 +463,8 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyTimeout() {
-		// TODO Auto-generated method stub
-
+		logger.warn("Reader keepalive timeout");
+		shutdownReader();
 	}
 
 	@Override
