@@ -40,8 +40,6 @@ import org.apache.logging.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.api.DataRequestException;
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
@@ -50,7 +48,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListener {
 	/**
 	 * 
 	 */
@@ -266,18 +264,6 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 			tagCount = tagCount + chipReadList.size();
 			tagsReadLabel.setText(tagCount.toString());
 		}
-	}
-
-	@Override
-	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public JReaderListPanel getListPanel() {

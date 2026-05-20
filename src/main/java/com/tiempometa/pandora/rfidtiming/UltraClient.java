@@ -26,6 +26,8 @@ package com.tiempometa.pandora.rfidtiming;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import com.tiempometa.pandora.tagreader.TagReadListener;
+
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  *
@@ -41,14 +43,8 @@ public class UltraClient implements Runnable {
 
 	}
 
-	public void setCommandResponseHandler(JUltraReaderPanel jUltraReaderPanel) {
+	public void registerTagReadListener(TagReadListener listener) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	public void registerTagReadListener(JUltraReaderPanel jUltraReaderPanel) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public boolean isConnected() {
