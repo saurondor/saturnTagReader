@@ -37,8 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
+import com.tiempometa.pandora.foxberry.FoxberryCommandResponseHandler;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
@@ -48,7 +47,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */
@@ -372,12 +371,6 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 		tagReadListener.notifyTagReads(chipReadList);
 		tagCount = tagCount + chipReadList.size();
 		tagsReadLabel.setText(tagCount.toString());
-	}
-
-	@Override
-	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

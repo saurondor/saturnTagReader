@@ -20,12 +20,36 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.tiempometa.pandora.ipicoreader.tcpip;
+package com.tiempometa.pandora.tagreader;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.UnknownHostException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * TCP client for IPICO Elite readers. Protocol logic is in AbstractIpicoTcpClient.
+ * Extends AbstractTcpReaderClient with bidirectional I/O (adds OutputStream).
+ * Base for all readers that send commands back to the device.
  *
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class IpicoClient extends AbstractIpicoTcpClient {
+public abstract class AbstractReadWriteTcpReaderClient extends AbstractTcpReaderClient {
+
+    private static final Logger logger = LogManager.getLogger(AbstractReadWriteTcpReaderClient.class);
+
+    protected OutputStream outputStream;
+
+    @Override
+    public void connect() throws UnknownHostException, IOException {
+        super.connect();
+        outputStream = readerSocket.getOutputStream();
+    }
+
+    @Override
+    public void disconnect() {
+        super.disconnect();
+        outputStream = null;
+    }
 }

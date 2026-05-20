@@ -100,16 +100,11 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 
 	private void connectButtonActionPerformed(ActionEvent e) {
 		if (reader.isConnected()) {
-			try {
-				reader.disconnect();
-				connectButton.setText("Conectar");
-				connectButton.setBackground(Color.RED);
-				startReadingButton.setEnabled(false);
-				setTimeButton.setEnabled(false);
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexi�n",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			reader.disconnect();
+			connectButton.setText("Conectar");
+			connectButton.setBackground(Color.RED);
+			startReadingButton.setEnabled(false);
+			setTimeButton.setEnabled(false);
 		} else {
 			try {
 				Thread workerThread = new Thread(reader);
@@ -431,23 +426,15 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private void shutdownReader() {
-		try {
-			reader.stop();
-			connectButton.setText("Conectar");
-			connectButton.setBackground(Color.RED);
-			batteryLabel.setEnabled(false);
-			acPowerRadioButton.setEnabled(false);
-			started = false;
-			startReadingButton.setText("Iniciar Lectura");
-			startReadingButton.setEnabled(false);
-			setTimeButton.setEnabled(false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexi�n", JOptionPane.ERROR_MESSAGE);
-		}
-
+		reader.stop();
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		batteryLabel.setEnabled(false);
+		acPowerRadioButton.setEnabled(false);
+		started = false;
+		startReadingButton.setText("Iniciar Lectura");
+		startReadingButton.setEnabled(false);
+		setTimeButton.setEnabled(false);
 	}
 
 	@Override
@@ -488,11 +475,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void disconnect() {
 		if (reader.isConnected()) {
-			try {
-				reader.disconnect();
-			} catch (IOException e) {
-				logger.warn("Error disconnecting One4All: " + e.getMessage());
-			}
+			reader.disconnect();
 		}
 	}
 

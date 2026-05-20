@@ -117,12 +117,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	private void doConnectButton() {
 		if (reader.isConnected()) {
-			try {
-				disconnectReader();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexi�n",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			disconnectReader();
 		} else {
 			try {
 				if (checkPoint == null) {
@@ -159,7 +154,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	/**
 	 * @throws IOException
 	 */
-	private void disconnectReader() throws IOException {
+	private void disconnectReader() {
 		reader.disconnect();
 		connectButton.setText("Conectar");
 		connectButton.setBackground(Color.RED);
@@ -415,21 +410,13 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private void shutdownReader() {
-		try {
-			reader.stop();
-			connectButton.setText("Conectar");
-			connectButton.setBackground(Color.RED);
-			started = false;
-			startReadingButton.setText("Iniciar Lectura");
-			startReadingButton.setEnabled(false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexi�n", JOptionPane.ERROR_MESSAGE);
-		}
+		reader.stop();
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		started = false;
+		startReadingButton.setText("Iniciar Lectura");
+		startReadingButton.setEnabled(false);
 	}
-
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
 		tagsRead = tagsRead + chipReadList.size();
@@ -463,11 +450,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			synchronized (this) {
 				retrying = true;
 			}
-			try {
-				disconnectReader();
-			} catch (IOException e1) {
-				logger.error("Unable to disconnect from reader on timeout. " + e1.getMessage());
-			}
+			disconnectReader();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -532,11 +515,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	@Override
 	public void disconnect() {
 		if (reader.isConnected()) {
-			try {
-				reader.disconnect();
-			} catch (IOException e) {
-				logger.warn("Error disconnecting Ocelot: " + e.getMessage());
-			}
+			reader.disconnect();
 		}
 	}
 

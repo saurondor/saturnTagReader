@@ -26,19 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.IpicoRead;
-import com.tiempometa.webservice.model.RawChipRead;
-
 /**
- * Shared TCP connection logic for Ipico-protocol readers (IPICO Elite, Foxberry TCP).
- * Both devices use the same wire format, so all parsing lives here.
+ * Pure TCP infrastructure base for all TCP-connected readers.
+ * Manages socket lifecycle only — no protocol logic.
  *
  * @author Gerardo Esteban Tasistro Giubetic
  */
@@ -46,28 +40,20 @@ public abstract class AbstractTcpReaderClient implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(AbstractTcpReaderClient.class);
 
-    private int port = 10200;
     private String hostname = "";
+    private int port = 10200;
     private boolean connected = false;
-    private Socket readerSocket = null;
-    private InputStream inputStream = null;
-    private List<IpicoRead> readLog = new ArrayList<>();
-    private StringBuffer streamBuffer = new StringBuffer();
-    private TagReadListener tagReadListener;
-    private String checkPointOne;
-    private String checkPointTwo;
-    private String terminal;
+
+    protected Socket readerSocket;
+    protected InputStream inputStream;
+    protected TagReadListener tagReadListener;
 
     public void registerTagReadListener(TagReadListener listener) {
         tagReadListener = listener;
     }
 
-    public void setCommandResponseHandler(CommandResponseHandler handler) {
-        // command response not yet implemented for TCP clients
-    }
-
     public void connect() throws UnknownHostException, IOException {
-        logger.debug("Connecting to reader at " + hostname + ":" + port);
+        logger.debug("Connecting to " + hostname + ":" + port);
         readerSocket = new Socket(hostname, port);
         inputStream = readerSocket.getInputStream();
         connected = true;
@@ -87,86 +73,8 @@ public abstract class AbstractTcpReaderClient implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        while (connected) {
-            try {
-                int dataInStream = inputStream.available();
-                if (dataInStream > 0) {
-                    byte[] b = new byte[dataInStream];
-                    inputStream.read(b);
-                    String dataString = new String(b);
-                    logger.debug("BUFFER DATA LEN:" + dataString.length() + ">\n" + dataString);
-                    append(dataString);
-                }
-            } catch (IOException e) {
-                logger.warn("Connection lost: " + e.getMessage());
-                synchronized (this) {
-                    connected = false;
-                }
-            }
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-        try {
-            if (readerSocket != null && !readerSocket.isClosed()) {
-                readerSocket.close();
-            }
-        } catch (IOException e) {
-            logger.warn("Error closing socket on exit: " + e.getMessage());
-        }
-    }
-
-    private void append(String dataString) {
-        streamBuffer.append(dataString);
-        if (streamBuffer.toString().contains("\n")) {
-            processBuffer();
-        }
-    }
-
-    private void processBuffer() {
-        List<String> lines = new ArrayList<>();
-        String[] dataRows = streamBuffer.toString().split("\\n");
-        for (String row : dataRows) {
-            if (row.length() >= IpicoRead.FRAME_LRC_END) {
-                lines.add(row);
-            }
-        }
-        if ((dataRows[dataRows.length - 1].startsWith(IpicoRead.DATA_LINE_HEADER))
-                && (dataRows[dataRows.length - 1].length() < IpicoRead.FRAME_SEEN_END)) {
-            logger.debug("Keeping last line " + dataRows[dataRows.length - 1]);
-            streamBuffer = new StringBuffer(dataRows[dataRows.length - 1]);
-        } else {
-            logger.debug("Dropping last line");
-            streamBuffer = new StringBuffer();
-        }
-        List<RawChipRead> readings = new ArrayList<>();
-        for (String line : lines) {
-            logger.debug("Parsing string " + line);
-            IpicoRead read = IpicoRead.parse(line.replace("\r", ""));
-            read.setCheckPoint(checkPointOne);
-            read.setTerminal(terminal);
-            if (read == null) {
-                logger.error("Invalid data string: " + line + ", length: " + line.length());
-            } else {
-                synchronized (this) {
-                    readLog.add(read);
-                }
-                readings.add(read.toRawChipRead());
-            }
-        }
-        tagReadListener.notifyTagReads(readings);
-    }
-
     public boolean isConnected() {
         return connected;
-    }
-
-    public void setConnected(boolean connected) {
-        this.connected = connected;
     }
 
     public String getHostname() {
@@ -177,35 +85,11 @@ public abstract class AbstractTcpReaderClient implements Runnable {
         this.hostname = hostname;
     }
 
-    public List<IpicoRead> getReadLog() {
-        return readLog;
+    public int getPort() {
+        return port;
     }
 
-    public synchronized void clearLog() {
-        readLog = new ArrayList<>();
-    }
-
-    public String getCheckPointOne() {
-        return checkPointOne;
-    }
-
-    public void setCheckPointOne(String checkPointOne) {
-        this.checkPointOne = checkPointOne;
-    }
-
-    public String getCheckPointTwo() {
-        return checkPointTwo;
-    }
-
-    public void setCheckPointTwo(String checkPointTwo) {
-        this.checkPointTwo = checkPointTwo;
-    }
-
-    public String getTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(String terminal) {
-        this.terminal = terminal;
+    public void setPort(int port) {
+        this.port = port;
     }
 }

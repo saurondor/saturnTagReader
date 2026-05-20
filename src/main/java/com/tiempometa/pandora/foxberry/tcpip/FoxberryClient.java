@@ -22,12 +22,10 @@
  */
 package com.tiempometa.pandora.foxberry.tcpip;
 
-import com.tiempometa.pandora.tagreader.AbstractTcpReaderClient;
-
 /**
- * TCP client for Foxberry readers. Protocol logic is in AbstractTcpReaderClient.
+ * TCP client for Foxberry readers. Protocol logic is in AbstractFoxberryTcpClient.
  *
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class FoxberryClient extends AbstractTcpReaderClient {
+public class FoxberryClient extends AbstractFoxberryTcpClient {
 }

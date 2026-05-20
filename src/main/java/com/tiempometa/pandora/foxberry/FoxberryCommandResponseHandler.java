@@ -20,12 +20,18 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.tiempometa.pandora.ipicoreader.tcpip;
+package com.tiempometa.pandora.foxberry;
+
+import java.io.IOException;
 
 /**
- * TCP client for IPICO Elite readers. Protocol logic is in AbstractIpicoTcpClient.
+ * Callback interface for Foxberry reader events.
+ * Kept in the foxberry package so future protocol changes (e.g. Octane/R700)
+ * do not pull in any ipicoreader dependency.
  *
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class IpicoClient extends AbstractIpicoTcpClient {
+public interface FoxberryCommandResponseHandler {
+
+    void notifyCommException(IOException e);
 }
