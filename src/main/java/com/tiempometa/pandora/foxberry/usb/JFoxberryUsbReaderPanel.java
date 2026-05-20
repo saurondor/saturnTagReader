@@ -407,7 +407,9 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 			}
 			logger.debug(rawChipRead);
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 		tagCount = tagCount + chipReadList.size();
 		tagsReadLabel.setText(tagCount.toString());
 	}

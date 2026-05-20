@@ -438,7 +438,9 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 				break;
 			}
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 	}
 
 	@Override

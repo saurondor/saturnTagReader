@@ -260,7 +260,9 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListen
 			for (RawChipRead rawChipRead : chipReadList) {
 				logger.debug("TAG READ " + rawChipRead.getRfidString());
 			}
-			tagReadListener.notifyTagReads(chipReadList);
+			if (tagReadListener != null) {
+				tagReadListener.notifyTagReads(chipReadList);
+			}
 			tagCount = tagCount + chipReadList.size();
 			tagsReadLabel.setText(tagCount.toString());
 		}

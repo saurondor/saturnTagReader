@@ -102,6 +102,11 @@ public class JReaderListPanel extends JPanel {
 
 	public void setTagReadListener(TagReadListener tagReadListener) {
 		this.tagReadListener = tagReadListener;
+		for (Component c : listPanel.getComponents()) {
+			if (c instanceof JReaderPanel) {
+				((JReaderPanel) c).setTagReadListener(tagReadListener);
+			}
+		}
 	}
 
 	public void addIpicoUsbReader() {

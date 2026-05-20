@@ -410,21 +410,22 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 			}
 			logger.debug(rawChipRead);
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 		tagCount = tagCount + chipReadList.size();
 		tagsReadLabel.setText(tagCount.toString());
 	}
 
 	@Override
 	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
+		logger.debug("Command response received: " + command.getClass().getSimpleName());
 	}
 
 	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {
