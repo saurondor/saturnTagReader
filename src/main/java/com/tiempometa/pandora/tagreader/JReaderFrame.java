@@ -243,253 +243,253 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
-		menuBar1 = new JMenuBar();
-		menu1 = new JMenu();
-		openEventMenuItem = new JMenuItem();
-		closeMenuItem = new JMenuItem();
-		menu2 = new JMenu();
-		menu4 = new JMenu();
-		addEliteReaderMenuItem = new JMenuItem();
-		addUsbReaderMenuItem = new JMenuItem();
-		importIpicoBackupMenuItem = new JMenuItem();
-		menu5 = new JMenu();
-		addOne4AllReaderMenuItem = new JMenuItem();
-		addOcelotReaderMenuItem = new JMenuItem();
-		importMacshaBackupMenuItem = new JMenuItem();
-		importMacshaOcelotBackupMenuItem = new JMenuItem();
-		importMacshaCloudBackupMenuItem = new JMenuItem();
-		menuTimingSense = new JMenu();
-		addTSCollectorMenuItem = new JMenuItem();
-		importTimingSenseBackupMenuItem = new JMenuItem();
-		menu7 = new JMenu();
-		addFoxberryReaderMenuItem = new JMenuItem();
-		addFoxberryUSBReaderMenuItem = new JMenuItem();
-		importFoxberryBackupMenuItem = new JMenuItem();
-		tiempoMetaCloudMenuItem = new JMenuItem();
-		importVirtualTagReadsMenuItem = new JMenuItem();
-		importTestimonialMenuItem = new JMenuItem();
-		menu8 = new JMenu();
-		addUltraReaderMenuItem = new JMenuItem();
-		importUltraBackupMenuItem = new JMenuItem();
-		menu3 = new JMenu();
-		checaTuChipConfigurationMenuItem = new JMenuItem();
-		showPreviewMenuItem = new JMenuItem();
-		readerListPanel = new JReaderListPanel();
-		tagReadPanel = new JTagReadPanel();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
+        menuBar1 = new JMenuBar();
+        menu1 = new JMenu();
+        openEventMenuItem = new JMenuItem();
+        closeMenuItem = new JMenuItem();
+        menu2 = new JMenu();
+        menu4 = new JMenu();
+        addEliteReaderMenuItem = new JMenuItem();
+        addUsbReaderMenuItem = new JMenuItem();
+        importIpicoBackupMenuItem = new JMenuItem();
+        menu5 = new JMenu();
+        addOne4AllReaderMenuItem = new JMenuItem();
+        addOcelotReaderMenuItem = new JMenuItem();
+        importMacshaBackupMenuItem = new JMenuItem();
+        importMacshaOcelotBackupMenuItem = new JMenuItem();
+        importMacshaCloudBackupMenuItem = new JMenuItem();
+        menuTimingSense = new JMenu();
+        addTSCollectorMenuItem = new JMenuItem();
+        importTimingSenseBackupMenuItem = new JMenuItem();
+        menu7 = new JMenu();
+        addFoxberryReaderMenuItem = new JMenuItem();
+        addFoxberryUSBReaderMenuItem = new JMenuItem();
+        importFoxberryBackupMenuItem = new JMenuItem();
+        tiempoMetaCloudMenuItem = new JMenuItem();
+        importVirtualTagReadsMenuItem = new JMenuItem();
+        importTestimonialMenuItem = new JMenuItem();
+        menu8 = new JMenu();
+        addUltraReaderMenuItem = new JMenuItem();
+        importUltraBackupMenuItem = new JMenuItem();
+        menu3 = new JMenu();
+        checaTuChipConfigurationMenuItem = new JMenuItem();
+        showPreviewMenuItem = new JMenuItem();
+        readerListPanel = new JReaderListPanel();
+        tagReadPanel = new JTagReadPanel();
 
-		//======== this ========
-		setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
-		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setResizable(false);
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
+        //======== this ========
+        setIconImage(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/tiempometa_icon_large_alpha.png")).getImage());
+        setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
+        var contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
 
-		//======== menuBar1 ========
-		{
+        //======== menuBar1 ========
+        {
 
-			//======== menu1 ========
-			{
-				menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
+            //======== menu1 ========
+            {
+                menu1.setText(bundle.getString("JIpicoReaderFrame.menu1.text"));
 
-				//---- openEventMenuItem ----
-				openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
-				openEventMenuItem.addActionListener(e -> openEventMenuItemActionPerformed(e));
-				menu1.add(openEventMenuItem);
+                //---- openEventMenuItem ----
+                openEventMenuItem.setText(bundle.getString("JIpicoReaderFrame.openEventMenuItem.text"));
+                openEventMenuItem.addActionListener(e -> openEventMenuItemActionPerformed(e));
+                menu1.add(openEventMenuItem);
 
-				//---- closeMenuItem ----
-				closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
-				closeMenuItem.addActionListener(e -> closeMenuItemActionPerformed(e));
-				menu1.add(closeMenuItem);
-			}
-			menuBar1.add(menu1);
+                //---- closeMenuItem ----
+                closeMenuItem.setText(bundle.getString("JIpicoReaderFrame.closeMenuItem.text"));
+                closeMenuItem.addActionListener(e -> closeMenuItemActionPerformed(e));
+                menu1.add(closeMenuItem);
+            }
+            menuBar1.add(menu1);
 
-			//======== menu2 ========
-			{
-				menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
+            //======== menu2 ========
+            {
+                menu2.setText(bundle.getString("JIpicoReaderFrame.menu2.text"));
 
-				//======== menu4 ========
-				{
-					menu4.setText(bundle.getString("JIpicoReaderFrame.menu4.text"));
+                //======== menu4 ========
+                {
+                    menu4.setText(bundle.getString("JIpicoReaderFrame.menu4.text"));
 
-					//---- addEliteReaderMenuItem ----
-					addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
-					addEliteReaderMenuItem.addActionListener(e -> addEliteReaderMenuItemActionPerformed(e));
-					menu4.add(addEliteReaderMenuItem);
+                    //---- addEliteReaderMenuItem ----
+                    addEliteReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addEliteReaderMenuItem.text"));
+                    addEliteReaderMenuItem.addActionListener(e -> addEliteReaderMenuItemActionPerformed(e));
+                    menu4.add(addEliteReaderMenuItem);
 
-					//---- addUsbReaderMenuItem ----
-					addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
-					addUsbReaderMenuItem.addActionListener(e -> addUsbReaderMenuItemActionPerformed(e));
-					menu4.add(addUsbReaderMenuItem);
+                    //---- addUsbReaderMenuItem ----
+                    addUsbReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUsbReaderMenuItem.text"));
+                    addUsbReaderMenuItem.addActionListener(e -> addUsbReaderMenuItemActionPerformed(e));
+                    menu4.add(addUsbReaderMenuItem);
 
-					//---- importIpicoBackupMenuItem ----
-					importIpicoBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importIpicoBackupMenuItem.text"));
-					importIpicoBackupMenuItem.addActionListener(e -> importIpicoBackupMenuItemActionPerformed(e));
-					menu4.add(importIpicoBackupMenuItem);
-				}
-				menu2.add(menu4);
+                    //---- importIpicoBackupMenuItem ----
+                    importIpicoBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importIpicoBackupMenuItem.text"));
+                    importIpicoBackupMenuItem.addActionListener(e -> importIpicoBackupMenuItemActionPerformed(e));
+                    menu4.add(importIpicoBackupMenuItem);
+                }
+                menu2.add(menu4);
 
-				//======== menu5 ========
-				{
-					menu5.setText(bundle.getString("JIpicoReaderFrame.menu5.text"));
+                //======== menu5 ========
+                {
+                    menu5.setText(bundle.getString("JIpicoReaderFrame.menu5.text"));
 
-					//---- addOne4AllReaderMenuItem ----
-					addOne4AllReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addOne4AllReaderMenuItem.text"));
-					addOne4AllReaderMenuItem.addActionListener(e -> addOne4AllReaderMenuItemActionPerformed(e));
-					menu5.add(addOne4AllReaderMenuItem);
+                    //---- addOne4AllReaderMenuItem ----
+                    addOne4AllReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addOne4AllReaderMenuItem.text"));
+                    addOne4AllReaderMenuItem.addActionListener(e -> addOne4AllReaderMenuItemActionPerformed(e));
+                    menu5.add(addOne4AllReaderMenuItem);
 
-					//---- addOcelotReaderMenuItem ----
-					addOcelotReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addOcelotReaderMenuItem.text"));
-					addOcelotReaderMenuItem.addActionListener(e -> addOcelotReaderMenuItemActionPerformed(e));
-					menu5.add(addOcelotReaderMenuItem);
+                    //---- addOcelotReaderMenuItem ----
+                    addOcelotReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addOcelotReaderMenuItem.text"));
+                    addOcelotReaderMenuItem.addActionListener(e -> addOcelotReaderMenuItemActionPerformed(e));
+                    menu5.add(addOcelotReaderMenuItem);
 
-					//---- importMacshaBackupMenuItem ----
-					importMacshaBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaBackupMenuItem.text"));
-					importMacshaBackupMenuItem.addActionListener(e -> importMacshaBackupMenuItemActionPerformed(e));
-					menu5.add(importMacshaBackupMenuItem);
+                    //---- importMacshaBackupMenuItem ----
+                    importMacshaBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaBackupMenuItem.text"));
+                    importMacshaBackupMenuItem.addActionListener(e -> importMacshaBackupMenuItemActionPerformed(e));
+                    menu5.add(importMacshaBackupMenuItem);
 
-					//---- importMacshaOcelotBackupMenuItem ----
-					importMacshaOcelotBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaOcelotBackupMenuItem.text"));
-					importMacshaOcelotBackupMenuItem.addActionListener(e -> importMacshaOcelotBackupMenuItemActionPerformed(e));
-					menu5.add(importMacshaOcelotBackupMenuItem);
+                    //---- importMacshaOcelotBackupMenuItem ----
+                    importMacshaOcelotBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaOcelotBackupMenuItem.text"));
+                    importMacshaOcelotBackupMenuItem.addActionListener(e -> importMacshaOcelotBackupMenuItemActionPerformed(e));
+                    menu5.add(importMacshaOcelotBackupMenuItem);
 
-					//---- importMacshaCloudBackupMenuItem ----
-					importMacshaCloudBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaCloudBackupMenuItem.text"));
-					importMacshaCloudBackupMenuItem.addActionListener(e -> importMacshaCloudBackupMenuItemActionPerformed(e));
-					menu5.add(importMacshaCloudBackupMenuItem);
-				}
-				menu2.add(menu5);
+                    //---- importMacshaCloudBackupMenuItem ----
+                    importMacshaCloudBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importMacshaCloudBackupMenuItem.text"));
+                    importMacshaCloudBackupMenuItem.addActionListener(e -> importMacshaCloudBackupMenuItemActionPerformed(e));
+                    menu5.add(importMacshaCloudBackupMenuItem);
+                }
+                menu2.add(menu5);
 
-				//======== menuTimingSense ========
-				{
-					menuTimingSense.setText(bundle.getString("JIpicoReaderFrame.menuTimingSense.text"));
+                //======== menuTimingSense ========
+                {
+                    menuTimingSense.setText(bundle.getString("JIpicoReaderFrame.menuTimingSense.text"));
 
-					//---- addTSCollectorMenuItem ----
-					addTSCollectorMenuItem.setText(bundle.getString("JIpicoReaderFrame.addTSCollectorMenuItem.text"));
-					addTSCollectorMenuItem.addActionListener(e -> addTSCollectorMenuItemActionPerformed(e));
-					menuTimingSense.add(addTSCollectorMenuItem);
+                    //---- addTSCollectorMenuItem ----
+                    addTSCollectorMenuItem.setText(bundle.getString("JIpicoReaderFrame.addTSCollectorMenuItem.text"));
+                    addTSCollectorMenuItem.addActionListener(e -> addTSCollectorMenuItemActionPerformed(e));
+                    menuTimingSense.add(addTSCollectorMenuItem);
 
-					//---- importTimingSenseBackupMenuItem ----
-					importTimingSenseBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importTimingSenseBackupMenuItem.text"));
-					importTimingSenseBackupMenuItem.addActionListener(e -> importTimingSenseBackupMenuItemActionPerformed(e));
-					menuTimingSense.add(importTimingSenseBackupMenuItem);
-				}
-				menu2.add(menuTimingSense);
+                    //---- importTimingSenseBackupMenuItem ----
+                    importTimingSenseBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importTimingSenseBackupMenuItem.text"));
+                    importTimingSenseBackupMenuItem.addActionListener(e -> importTimingSenseBackupMenuItemActionPerformed(e));
+                    menuTimingSense.add(importTimingSenseBackupMenuItem);
+                }
+                menu2.add(menuTimingSense);
 
-				//======== menu7 ========
-				{
-					menu7.setText(bundle.getString("JIpicoReaderFrame.menu7.text"));
+                //======== menu7 ========
+                {
+                    menu7.setText(bundle.getString("JIpicoReaderFrame.menu7.text"));
 
-					//---- addFoxberryReaderMenuItem ----
-					addFoxberryReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addFoxberryReaderMenuItem.text"));
-					addFoxberryReaderMenuItem.addActionListener(e -> addFoxberryReaderMenuItemActionPerformed(e));
-					menu7.add(addFoxberryReaderMenuItem);
+                    //---- addFoxberryReaderMenuItem ----
+                    addFoxberryReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addFoxberryReaderMenuItem.text"));
+                    addFoxberryReaderMenuItem.addActionListener(e -> addFoxberryReaderMenuItemActionPerformed(e));
+                    menu7.add(addFoxberryReaderMenuItem);
 
-					//---- addFoxberryUSBReaderMenuItem ----
-					addFoxberryUSBReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addFoxberryUSBReaderMenuItem.text"));
-					addFoxberryUSBReaderMenuItem.addActionListener(e -> addFoxberryUSBReaderMenuItemActionPerformed(e));
-					menu7.add(addFoxberryUSBReaderMenuItem);
+                    //---- addFoxberryUSBReaderMenuItem ----
+                    addFoxberryUSBReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addFoxberryUSBReaderMenuItem.text"));
+                    addFoxberryUSBReaderMenuItem.addActionListener(e -> addFoxberryUSBReaderMenuItemActionPerformed(e));
+                    menu7.add(addFoxberryUSBReaderMenuItem);
 
-					//---- importFoxberryBackupMenuItem ----
-					importFoxberryBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importFoxberryBackupMenuItem.text"));
-					importFoxberryBackupMenuItem.addActionListener(e -> importFoxberryBackupMenuItemActionPerformed(e));
-					menu7.add(importFoxberryBackupMenuItem);
+                    //---- importFoxberryBackupMenuItem ----
+                    importFoxberryBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importFoxberryBackupMenuItem.text"));
+                    importFoxberryBackupMenuItem.addActionListener(e -> importFoxberryBackupMenuItemActionPerformed(e));
+                    menu7.add(importFoxberryBackupMenuItem);
 
-					//---- tiempoMetaCloudMenuItem ----
-					tiempoMetaCloudMenuItem.setText(bundle.getString("JIpicoReaderFrame.tiempoMetaCloudMenuItem.text"));
-					tiempoMetaCloudMenuItem.addActionListener(e -> tiempoMetaCloudMenuItemActionPerformed(e));
-					menu7.add(tiempoMetaCloudMenuItem);
-					menu7.addSeparator();
+                    //---- tiempoMetaCloudMenuItem ----
+                    tiempoMetaCloudMenuItem.setText(bundle.getString("JIpicoReaderFrame.tiempoMetaCloudMenuItem.text"));
+                    tiempoMetaCloudMenuItem.addActionListener(e -> tiempoMetaCloudMenuItemActionPerformed(e));
+                    menu7.add(tiempoMetaCloudMenuItem);
+                    menu7.addSeparator();
 
-					//---- importVirtualTagReadsMenuItem ----
-					importVirtualTagReadsMenuItem.setText(bundle.getString("JIpicoReaderFrame.importVirtualTagReadsMenuItem.text"));
-					importVirtualTagReadsMenuItem.addActionListener(e -> importVirtualTagReadsMenuItemActionPerformed(e));
-					menu7.add(importVirtualTagReadsMenuItem);
+                    //---- importVirtualTagReadsMenuItem ----
+                    importVirtualTagReadsMenuItem.setText(bundle.getString("JIpicoReaderFrame.importVirtualTagReadsMenuItem.text"));
+                    importVirtualTagReadsMenuItem.addActionListener(e -> importVirtualTagReadsMenuItemActionPerformed(e));
+                    menu7.add(importVirtualTagReadsMenuItem);
 
-					//---- importTestimonialMenuItem ----
-					importTestimonialMenuItem.setText(bundle.getString("JIpicoReaderFrame.importTestimonialMenuItem.text"));
-					importTestimonialMenuItem.addActionListener(e -> importTestimonialMenuItemActionPerformed(e));
-					menu7.add(importTestimonialMenuItem);
-				}
-				menu2.add(menu7);
+                    //---- importTestimonialMenuItem ----
+                    importTestimonialMenuItem.setText(bundle.getString("JIpicoReaderFrame.importTestimonialMenuItem.text"));
+                    importTestimonialMenuItem.addActionListener(e -> importTestimonialMenuItemActionPerformed(e));
+                    menu7.add(importTestimonialMenuItem);
+                }
+                menu2.add(menu7);
 
-				//======== menu8 ========
-				{
-					menu8.setText(bundle.getString("JIpicoReaderFrame.menu8.text"));
+                //======== menu8 ========
+                {
+                    menu8.setText(bundle.getString("JIpicoReaderFrame.menu8.text"));
 
-					//---- addUltraReaderMenuItem ----
-					addUltraReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUltraReaderMenuItem.text"));
-					addUltraReaderMenuItem.addActionListener(e -> addUltraReaderMenuItemActionPerformed(e));
-					menu8.add(addUltraReaderMenuItem);
+                    //---- addUltraReaderMenuItem ----
+                    addUltraReaderMenuItem.setText(bundle.getString("JIpicoReaderFrame.addUltraReaderMenuItem.text"));
+                    addUltraReaderMenuItem.addActionListener(e -> addUltraReaderMenuItemActionPerformed(e));
+                    menu8.add(addUltraReaderMenuItem);
 
-					//---- importUltraBackupMenuItem ----
-					importUltraBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importUltraBackupMenuItem.text"));
-					importUltraBackupMenuItem.addActionListener(e -> importUltraBackupMenuItemActionPerformed(e));
-					menu8.add(importUltraBackupMenuItem);
-				}
-				menu2.add(menu8);
-			}
-			menuBar1.add(menu2);
+                    //---- importUltraBackupMenuItem ----
+                    importUltraBackupMenuItem.setText(bundle.getString("JIpicoReaderFrame.importUltraBackupMenuItem.text"));
+                    importUltraBackupMenuItem.addActionListener(e -> importUltraBackupMenuItemActionPerformed(e));
+                    menu8.add(importUltraBackupMenuItem);
+                }
+                menu2.add(menu8);
+            }
+            menuBar1.add(menu2);
 
-			//======== menu3 ========
-			{
-				menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
+            //======== menu3 ========
+            {
+                menu3.setText(bundle.getString("JIpicoReaderFrame.menu3.text"));
 
-				//---- checaTuChipConfigurationMenuItem ----
-				checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
-				checaTuChipConfigurationMenuItem.addActionListener(e -> checaTuChipConfigurationMenuItemActionPerformed(e));
-				menu3.add(checaTuChipConfigurationMenuItem);
+                //---- checaTuChipConfigurationMenuItem ----
+                checaTuChipConfigurationMenuItem.setText(bundle.getString("JIpicoReaderFrame.checaTuChipConfigurationMenuItem.text"));
+                checaTuChipConfigurationMenuItem.addActionListener(e -> checaTuChipConfigurationMenuItemActionPerformed(e));
+                menu3.add(checaTuChipConfigurationMenuItem);
 
-				//---- showPreviewMenuItem ----
-				showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
-				showPreviewMenuItem.addActionListener(e -> showPreviewMenuItemActionPerformed(e));
-				menu3.add(showPreviewMenuItem);
-			}
-			menuBar1.add(menu3);
-		}
-		setJMenuBar(menuBar1);
-		contentPane.add(readerListPanel, BorderLayout.CENTER);
-		contentPane.add(tagReadPanel, BorderLayout.EAST);
-		setSize(1215, 505);
-		setLocationRelativeTo(getOwner());
+                //---- showPreviewMenuItem ----
+                showPreviewMenuItem.setText(bundle.getString("JIpicoReaderFrame.showPreviewMenuItem.text"));
+                showPreviewMenuItem.addActionListener(e -> showPreviewMenuItemActionPerformed(e));
+                menu3.add(showPreviewMenuItem);
+            }
+            menuBar1.add(menu3);
+        }
+        setJMenuBar(menuBar1);
+        contentPane.add(readerListPanel, BorderLayout.CENTER);
+        contentPane.add(tagReadPanel, BorderLayout.EAST);
+        setSize(1215, 505);
+        setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JMenuBar menuBar1;
-	private JMenu menu1;
-	private JMenuItem openEventMenuItem;
-	private JMenuItem closeMenuItem;
-	private JMenu menu2;
-	private JMenu menu4;
-	private JMenuItem addEliteReaderMenuItem;
-	private JMenuItem addUsbReaderMenuItem;
-	private JMenuItem importIpicoBackupMenuItem;
-	private JMenu menu5;
-	private JMenuItem addOne4AllReaderMenuItem;
-	private JMenuItem addOcelotReaderMenuItem;
-	private JMenuItem importMacshaBackupMenuItem;
-	private JMenuItem importMacshaOcelotBackupMenuItem;
-	private JMenuItem importMacshaCloudBackupMenuItem;
-	private JMenu menuTimingSense;
-	private JMenuItem addTSCollectorMenuItem;
-	private JMenuItem importTimingSenseBackupMenuItem;
-	private JMenu menu7;
-	private JMenuItem addFoxberryReaderMenuItem;
-	private JMenuItem addFoxberryUSBReaderMenuItem;
-	private JMenuItem importFoxberryBackupMenuItem;
-	private JMenuItem tiempoMetaCloudMenuItem;
-	private JMenuItem importVirtualTagReadsMenuItem;
-	private JMenuItem importTestimonialMenuItem;
-	private JMenu menu8;
-	private JMenuItem addUltraReaderMenuItem;
-	private JMenuItem importUltraBackupMenuItem;
-	private JMenu menu3;
-	private JMenuItem checaTuChipConfigurationMenuItem;
-	private JMenuItem showPreviewMenuItem;
-	private JReaderListPanel readerListPanel;
-	private JTagReadPanel tagReadPanel;
+    private JMenuBar menuBar1;
+    private JMenu menu1;
+    private JMenuItem openEventMenuItem;
+    private JMenuItem closeMenuItem;
+    private JMenu menu2;
+    private JMenu menu4;
+    private JMenuItem addEliteReaderMenuItem;
+    private JMenuItem addUsbReaderMenuItem;
+    private JMenuItem importIpicoBackupMenuItem;
+    private JMenu menu5;
+    private JMenuItem addOne4AllReaderMenuItem;
+    private JMenuItem addOcelotReaderMenuItem;
+    private JMenuItem importMacshaBackupMenuItem;
+    private JMenuItem importMacshaOcelotBackupMenuItem;
+    private JMenuItem importMacshaCloudBackupMenuItem;
+    private JMenu menuTimingSense;
+    private JMenuItem addTSCollectorMenuItem;
+    private JMenuItem importTimingSenseBackupMenuItem;
+    private JMenu menu7;
+    private JMenuItem addFoxberryReaderMenuItem;
+    private JMenuItem addFoxberryUSBReaderMenuItem;
+    private JMenuItem importFoxberryBackupMenuItem;
+    private JMenuItem tiempoMetaCloudMenuItem;
+    private JMenuItem importVirtualTagReadsMenuItem;
+    private JMenuItem importTestimonialMenuItem;
+    private JMenu menu8;
+    private JMenuItem addUltraReaderMenuItem;
+    private JMenuItem importUltraBackupMenuItem;
+    private JMenu menu3;
+    private JMenuItem checaTuChipConfigurationMenuItem;
+    private JMenuItem showPreviewMenuItem;
+    private JReaderListPanel readerListPanel;
+    private JTagReadPanel tagReadPanel;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	@Override
