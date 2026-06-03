@@ -27,7 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.logging.log4j.LogManager;
@@ -68,26 +73,64 @@ public class Context extends com.tiempometa.timing.Context {
 		return new File(path);
 	}
 
-	public static void initWebserviceClients() {
+	/**
+	 * Connects to saturnPandora's SOAP webservices, validates event pairing, and
+	 * injects the X-Base-DB header on both proxies.
+	 *
+	 * @throws DbAuthorizationRequiredException if the local H2 has no base_db_name
+	 *         yet — caller must show the authorisation dialog and call
+	 *         {@link LocalDataContext#setBaseDbName(String)} on acceptance
+	 * @throws DbNameMismatchException if the local base_db_name does not match
+	 *         the database name reported by saturnPandora
+	 * @throws Exception on connectivity failures
+	 */
+	public static void initWebserviceClients()
+			throws DbAuthorizationRequiredException, DbNameMismatchException, Exception {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(RegistrationWebservice.class);
 		String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
-		logger.info("Connecting webservice to " + wsAddress);
+		logger.info("Connecting webservice to {}", wsAddress);
 		factory.setAddress(wsAddress);
 		registrationWebservice = (RegistrationWebservice) factory.create();
-		logger.info("Registration client created");
-		registrationWebservice.findByTag("TAG");
+		registrationWebservice.findByTag("TAG"); // connectivity probe
 		String zoneIdString = registrationWebservice.getZoneId();
-		logger.info("Setting zone id to " + zoneIdString);
+		logger.info("Setting zone id to {}", zoneIdString);
 		setZoneId(ZoneId.of(zoneIdString));
-		logger.info("Set timezone to " + zoneIdString);
+
 		factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(ResultsWebservice.class);
 		wsAddress = "http://" + serverAddress + ":9000/resultsClient";
-		logger.info("Connecting webservice to " + wsAddress);
+		logger.info("Connecting webservice to {}", wsAddress);
 		factory.setAddress(wsAddress);
 		resultsWebservice = (ResultsWebservice) factory.create();
-		logger.info("Results client created");
+		logger.info("Webservice clients created");
+
+		// Event pairing check — must happen before any data exchange
+		String pandoraDbName = registrationWebservice.getDatabaseName();
+		String localBaseDb   = LocalDataContext.getBaseDbName();
+		logger.info("Pandora db='{}', local base_db_name='{}'", pandoraDbName, localBaseDb);
+
+		if (localBaseDb == null) {
+			// Not paired yet — caller shows authorisation popup
+			throw new DbAuthorizationRequiredException(pandoraDbName);
+		}
+		if (!localBaseDb.equals(pandoraDbName)) {
+			// Paired to a different database — reject sync
+			throw new DbNameMismatchException(localBaseDb, pandoraDbName);
+		}
+
+		// Inject X-Base-DB on both proxies so every call carries the token
+		injectBaseDbHeader(registrationWebservice, localBaseDb);
+		injectBaseDbHeader(resultsWebservice, localBaseDb);
+		logger.info("Connected to Pandora db '{}', X-Base-DB header set", pandoraDbName);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void injectBaseDbHeader(Object proxy, String baseDbName) {
+		Map<String, List<String>> headers = new HashMap<>();
+		headers.put("X-Base-DB", Collections.singletonList(baseDbName));
+		((BindingProvider) proxy).getRequestContext()
+				.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
 	}
 
 	public static void setApplication(JPandoraApplication app) {

@@ -50,6 +50,8 @@ public class PandoraSettings {
 	
 	public static final String EVENT_PATH = "event_path";
 
+	public static final String LOCAL_DB_NAME = "local_db_name";
+
 	public static final String LOCAL_H2_PORT = "local_h2_port";
 	public static final int LOCAL_H2_PORT_DEFAULT = 9093;
 

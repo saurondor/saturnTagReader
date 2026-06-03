@@ -76,6 +76,7 @@ public class ReaderStartupCoordinator {
                     PandoraSettings.LOCAL_H2_PATH_DEFAULT);
             LocalDataContext.init(h2Port, h2Path);
             logger.info("Local H2 context started at {}.mv.db on port {}", h2Path, h2Port);
+            ensureLocalDbName();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(owner,
                     "No se pudo cargar la configuración: " + e.getMessage(),
@@ -83,6 +84,29 @@ public class ReaderStartupCoordinator {
             e.printStackTrace();
             owner.dispose();
             System.exit(1);
+        }
+    }
+
+    /**
+     * Prompts the operator for a local database name if one has not been set.
+     * This name is a human-readable label for this local H2 (e.g. the event name
+     * or checkpoint identifier). It is stored in tagreader.properties and displayed
+     * in the title bar. It is NOT the same as base_db_name (the MySQL auth token).
+     */
+    private void ensureLocalDbName() {
+        String name = Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null);
+        if (name != null && !name.isBlank()) return;
+        String input = JOptionPane.showInputDialog(owner,
+                "¿Nombre de este punto de lectura o evento?\n"
+                        + "(Ejemplo: 5K_Carrera_2026 o Checkpoint_Norte)",
+                "Configuración inicial", JOptionPane.QUESTION_MESSAGE);
+        if (input != null && !input.isBlank()) {
+            Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, input.trim());
+            try {
+                Context.flushSettings();
+            } catch (IOException e) {
+                logger.warn("Could not save local_db_name to settings: {}", e.getMessage());
+            }
         }
     }
 

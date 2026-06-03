@@ -191,10 +191,51 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		}
 		try {
 			Context.initWebserviceClients();
-			logger.info("Connected to Saturno at {}", Context.getServerAddress());
+			logger.info("Connected to Saturno db '{}' at {}",
+					LocalDataContext.getBaseDbName(), Context.getServerAddress());
 			JOptionPane.showMessageDialog(this,
 					"Conectado a Saturno en " + Context.getServerAddress(),
 					"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+		} catch (DbAuthorizationRequiredException ex) {
+			// First time connecting this local DB — ask operator to authorise pairing
+			int auth = JOptionPane.showConfirmDialog(this,
+					"Esta base de datos local no está conectada a ningún evento.\n"
+							+ "¿Deseas conectarla a la base de Saturno '"
+							+ ex.getPandoraDbName() + "'?",
+					"Autorizar conexión", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+			if (auth == JOptionPane.YES_OPTION) {
+				LocalDataContext.setBaseDbName(ex.getPandoraDbName());
+				// Also store as local_db_name if operator hasn't set one yet
+				if (Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null) == null) {
+					try {
+						Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, ex.getPandoraDbName());
+						Context.flushSettings();
+					} catch (IOException ignored) {}
+				}
+				// Retry now that pairing is set
+				try {
+					Context.initWebserviceClients();
+					JOptionPane.showMessageDialog(this,
+							"Conectado y autorizado a base '" + ex.getPandoraDbName() + "'.",
+							"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception retryEx) {
+					logger.error("Connect failed after authorisation", retryEx);
+					JOptionPane.showMessageDialog(this,
+							"Error al conectar tras autorización: " + retryEx.getMessage(),
+							"Error de conexión", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} catch (DbNameMismatchException ex) {
+			logger.warn("DB name mismatch: local='{}' pandora='{}'",
+					ex.getLocalBaseDbName(), ex.getPandoraDbName());
+			JOptionPane.showMessageDialog(this,
+					"Esta base de datos local está conectada a '" + ex.getLocalBaseDbName()
+							+ "',\npero Saturno tiene abierta la base '"
+							+ ex.getPandoraDbName() + "'.\n\n"
+							+ "Verifica que Saturno tiene el evento correcto abierto,\n"
+							+ "o crea una nueva base local para este evento.",
+					"Evento incorrecto", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception ex) {
 			logger.warn("Could not connect to Saturno: {}", ex.getMessage());
 			JOptionPane.showMessageDialog(this,
@@ -206,6 +247,23 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	private void closeMenuItemActionPerformed(ActionEvent e) {
 		closeApplication(this);
+	}
+
+	/** Wire this to a "Cambiar nombre de BD" menu item in JFormDesigner. */
+	private void changeLocalDbNameMenuItemActionPerformed(ActionEvent e) {
+		String current = Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, "");
+		String input = JOptionPane.showInputDialog(this,
+				"Nombre de este punto de lectura o evento:",
+				current);
+		if (input == null || input.isBlank()) return;
+		Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, input.trim());
+		try {
+			Context.flushSettings();
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(this,
+					"No se pudo guardar el nombre: " + ex.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void checaTuChipConfigurationMenuItemActionPerformed(ActionEvent e) {
