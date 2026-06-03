@@ -14,6 +14,28 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/*.png</exclude>
+					<exclude>**/*.jpg</exclude>
+					<exclude>**/*.gif</exclude>
+					<exclude>**/*.jasper</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.png</include>
+					<include>**/*.jpg</include>
+					<include>**/*.gif</include>
+					<include>**/*.jasper</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<!-- <plugin> -->
 			<!-- <groupId>org.apache.maven.plugins</groupId> -->
