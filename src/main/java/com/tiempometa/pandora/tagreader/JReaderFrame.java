@@ -193,6 +193,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			Context.initWebserviceClients();
 			logger.info("Connected to Saturno db '{}' at {}",
 					LocalDataContext.getBaseDbName(), Context.getServerAddress());
+			Context.downloadEventSnapshot();
 			JOptionPane.showMessageDialog(this,
 					"Conectado a Saturno en " + Context.getServerAddress(),
 					"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
@@ -216,6 +217,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				// Retry now that pairing is set
 				try {
 					Context.initWebserviceClients();
+					Context.downloadEventSnapshot();
 					JOptionPane.showMessageDialog(this,
 							"Conectado y autorizado a base '" + ex.getPandoraDbName() + "'.",
 							"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
