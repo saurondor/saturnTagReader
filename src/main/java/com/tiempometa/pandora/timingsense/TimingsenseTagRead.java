@@ -45,19 +45,19 @@ public class TimingsenseTagRead {
 	// [{lectura},{lectura}]
 	// {"Chip":2,"Moment":"2016-06-03T02:33:48.937842Z","TimingPoint":"a","Type":1}
 
-	// Chip: cÛdigo del chip que origina la lectura.
+	// Chip: c√≥digo del chip que origina la lectura.
 	// - Moment: objeto datetime, con el momento en
-	// el que se realizÛ la lectura del chip, en el huso
+	// el que se realiz√≥ la lectura del chip, en el huso
 	// horario del equipo que recibiera dicha lectura
-	// de chip. En la recuperaciÛn de lecturas
+	// de chip. En la recuperaci√≥n de lecturas
 	// almacenadas puede traer el offset que el
 	// cronometrador crea conveniente.
 	// - TimingPoint: nombre del TimingPoint en el
-	// que se originÛ la lectura del chip
-	// - Type: tipo de lectura. Puede ser ì1î (primera
-	// lectura tomada) o ì2î (lectura m·s potente).
-	// - Antenna: antena que ha leÌdo el chip.
-	// - Source: equipo que ha leÌdo el chip.
+	// que se origin√≥ la lectura del chip
+	// - Type: tipo de lectura. Puede ser ‚Äú1‚Äù (primera
+	// lectura tomada) o ‚Äú2‚Äù (lectura m√°s potente).
+	// - Antenna: antena que ha le√≠do el chip.
+	// - Source: equipo que ha le√≠do el chip.
 
 	public static final int CHIP_COLUMN = 0;
 	public static final int MOMENT_COLUMN = 1;

@@ -39,18 +39,18 @@ public class NewFileCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(NewFileCommand.class);
 
-	// Con el fin de crear un nuevo archivo sin parar el Start mode, el host envía
-	// NEWFILE<CrLf>. Esta operación puede ser realizada solamente en Start mode.
+	// Con el fin de crear un nuevo archivo sin parar el Start mode, el host envÃ­a
+	// NEWFILE<CrLf>. Esta operaciÃ³n puede ser realizada solamente en Start mode.
 	//
 	// El One4All responde:
 	// NEWFILE;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// En el éxito, la fecha y hora del nuevo archivo de sesión de cronometraje y el
-	// nombre del nuevo archivo de backup de la sesión con el siguiente formato:
+	// En el Ã©xito, la fecha y hora del nuevo archivo de sesiÃ³n de cronometraje y el
+	// nombre del nuevo archivo de backup de la sesiÃ³n con el siguiente formato:
 	// yyyyMMdd-HHmmss.csv
 	// STOPTMODE, si el sistema se encuentra en Stop mode.
-	// ERRFILE, ERR, si ocurre algún otro error durante el proceso.
+	// ERRFILE, ERR, si ocurre algÃºn otro error durante el proceso.
 	//
 	// Ejemplo:
 	// < NEWFILE<CrLf>

@@ -95,7 +95,7 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuraci�n", JOptionPane.ERROR_MESSAGE);
+						"Error de configuración", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -104,7 +104,7 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi�n",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

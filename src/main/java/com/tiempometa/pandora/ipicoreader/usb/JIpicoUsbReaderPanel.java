@@ -82,8 +82,8 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 			loadSerialPorts();
 		} catch (UnsatisfiedLinkError e) {
 			int response = JOptionPane.showConfirmDialog(this,
-					"El driver de puertos seriales no est� instalado.\n�Deseas instalar el driver ahora?",
-					"Error de configuraci�n", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					"El driver de puertos seriales no está instalado.\n¿Deseas instalar el driver ahora?",
+					"Error de configuración", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (response == JOptionPane.YES_OPTION) {
 				installDllFiles();
 			}
@@ -122,7 +122,7 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 					dllFileStream.close();
 					foStream.flush();
 					foStream.close();
-					JOptionPane.showMessageDialog(null, "El archivo se ha instalado con �xito.", "Instalaci�n dll",
+					JOptionPane.showMessageDialog(null, "El archivo se ha instalado con éxito.", "Instalación dll",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 				foStream = new FileOutputStream(driverFile);
@@ -141,11 +141,11 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 					foStream.flush();
 					foStream.close();
 					JOptionPane.showMessageDialog(null,
-							"El archivo se ha instalado con �xito.\n Si requiere instalar el driver del lector USB puede usar el archivo Ipico_USB_cdc.inf\n que se ha ubicado en el directorio donde est� este programa.",
-							"Instalaci�n driver", JOptionPane.INFORMATION_MESSAGE);
+							"El archivo se ha instalado con éxito.\n Si requiere instalar el driver del lector USB puede usar el archivo Ipico_USB_cdc.inf\n que se ha ubicado en el directorio donde está este programa.",
+							"Instalación driver", JOptionPane.INFORMATION_MESSAGE);
 				}
 				JOptionPane.showMessageDialog(this,
-						"Se ha completado la instalaci�n. Se debe reiniciar la aplicaci�n ahora.", "Instalaci�n",
+						"Se ha completado la instalación. Se debe reiniciar la aplicación ahora.", "Instalación",
 						JOptionPane.INFORMATION_MESSAGE);
 				System.exit(0);
 			} catch (FileNotFoundException e1) {
@@ -189,7 +189,7 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(this,
 							"No se pudo conectar " + e1.getMessage() + " - " + e1.getClass().getCanonicalName(),
-							"Error de conexi�n", JOptionPane.ERROR_MESSAGE);
+							"Error de conexión", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}

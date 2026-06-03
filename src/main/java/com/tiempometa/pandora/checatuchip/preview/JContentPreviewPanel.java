@@ -74,7 +74,7 @@ public class JContentPreviewPanel extends JPanel {
 	}
 
 	public void enableCategoryField() {
-		JFieldPanel panel = new JFieldPanel("Categoría");
+		JFieldPanel panel = new JFieldPanel("CategorÃ­a");
 		fieldsPanel.add(panel);
 		panelMap.put(FIELD_CATEGORY, panel);
 	}
@@ -86,7 +86,7 @@ public class JContentPreviewPanel extends JPanel {
 	}
 
 	public void enableGenderField() {
-		JFieldPanel panel = new JFieldPanel("Género");
+		JFieldPanel panel = new JFieldPanel("GÃ©nero");
 		fieldsPanel.add(panel);
 		panelMap.put(FIELD_GENDER, panel);
 	}
@@ -306,7 +306,7 @@ public class JContentPreviewPanel extends JPanel {
 
 		} else {
 			if (registration.getParticipants().get(0).getBib() == null) {
-				bibLabel.setText("-- Sin Número --");
+				bibLabel.setText("-- Sin NÃºmero --");
 			} else {
 				bibLabel.setText(registration.getParticipants().get(0).getBib().getBib());
 			}
@@ -398,7 +398,7 @@ public class JContentPreviewPanel extends JPanel {
 		} else {
 			logger.info("Participan is " + participantRegistration);
 			if (participantRegistration.getBib() == null) {
-				bibLabel.setText("-- Sin Número --");
+				bibLabel.setText("-- Sin NÃºmero --");
 			} else {
 				bibLabel.setText(participantRegistration.getBib());
 			}

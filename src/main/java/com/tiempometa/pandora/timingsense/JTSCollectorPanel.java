@@ -102,13 +102,13 @@ public class JTSCollectorPanel extends JReaderPanel implements TagReadListener {
 		} else {
 //			if (checkPoint1 == null) {
 //				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-//						"Error de configuraci�n", JOptionPane.ERROR_MESSAGE);
+//						"Error de configuración", JOptionPane.ERROR_MESSAGE);
 //			} else {
 			reader.setHostname(readerAddressTextField.getText());
 			try {
 				reader.setPort(Integer.valueOf(readerPortTextField.getText()));
 			} catch (NumberFormatException e2) {
-				JOptionPane.showMessageDialog(this, "El valor de puerto debe ser n�merico. Usando valor default 10200",
+				JOptionPane.showMessageDialog(this, "El valor de puerto debe ser numérico. Usando valor default 10200",
 						"Error de puerto", JOptionPane.ERROR_MESSAGE);
 				reader.setPort(10200);
 			}
@@ -118,7 +118,7 @@ public class JTSCollectorPanel extends JReaderPanel implements TagReadListener {
 				thread.start();
 				setConnected();
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi�n",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
 			}
 //			}

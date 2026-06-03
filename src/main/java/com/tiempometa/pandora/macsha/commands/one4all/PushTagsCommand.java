@@ -39,9 +39,9 @@ public class PushTagsCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(PushTagsCommand.class);
 
-	// Con el fin de habilitar/deshabilitar la transmisión en vivo de las pasadas al
-	// host, el host envía PUSHTAGS;<Status><CrLf>. Por defecto, el Push mode está
-	// deshabilitado. Las pasadas serán enviadas a la última conexión activa
+	// Con el fin de habilitar/deshabilitar la transmisiÃ³n en vivo de las pasadas al
+	// host, el host envÃ­a PUSHTAGS;<Status><CrLf>. Por defecto, el Push mode estÃ¡
+	// deshabilitado. Las pasadas serÃ¡n enviadas a la Ãºltima conexiÃ³n activa
 	// solamente.
 	//
 	// Donde <Status> es:
@@ -52,8 +52,8 @@ public class PushTagsCommand extends MacshaCommand {
 	// PUSHTAGS;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// true, false, en el éxito.
-	// ERR, si ocurrió algún error.
+	// true, false, en el Ã©xito.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < PUSHTAGS;true<CrLf>

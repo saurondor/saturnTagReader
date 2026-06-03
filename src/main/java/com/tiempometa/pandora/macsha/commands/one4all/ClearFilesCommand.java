@@ -40,15 +40,15 @@ public class ClearFilesCommand extends MacshaCommand {
 	private static final Logger logger = LogManager.getLogger(ClearFilesCommand.class);
 
 	// Para eliminar todos los archivos de backup disponibles en la memoria, el host
-	// envía CLEARFILES<CrLf>. Esta operación puede ser realizada solamente en Stop
+	// envÃ­a CLEARFILES<CrLf>. Esta operaciÃ³n puede ser realizada solamente en Stop
 	// mode.
 	//
 	// El One4All responde:
 	// CLEARFILES;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// OK, en el éxito.
-	// ERR, si ocurre algún error durante el proceso.
+	// OK, en el Ã©xito.
+	// ERR, si ocurre algÃºn error durante el proceso.
 	//
 	/*
 	 * (non-Javadoc)

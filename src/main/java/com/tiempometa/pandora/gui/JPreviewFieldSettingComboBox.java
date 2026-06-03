@@ -39,7 +39,7 @@ public class JPreviewFieldSettingComboBox extends JComboBox<String> {
 	 * 
 	 */
 	private static final long serialVersionUID = 281420026242170045L;
-	private static final String[] MODEL = new String[] { "No mostrar", "En posici髇 1", "En posici髇 2", "En posici髇 3", "En posici髇 4", "En posici髇 5", "En posici髇 6", "En posici髇 7", "En posici髇 8", "En posici髇 9" };
+	private static final String[] MODEL = new String[] { "No mostrar", "En posici贸n 1", "En posici贸n 2", "En posici贸n 3", "En posici贸n 4", "En posici贸n 5", "En posici贸n 6", "En posici贸n 7", "En posici贸n 8", "En posici贸n 9" };
 
 	public JPreviewFieldSettingComboBox() {
 		super();

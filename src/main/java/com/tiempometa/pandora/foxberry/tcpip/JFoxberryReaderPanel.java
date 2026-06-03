@@ -96,7 +96,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuraci�n", JOptionPane.ERROR_MESSAGE);
+						"Error de configuración", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -105,7 +105,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi�n",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -145,7 +145,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 ////			client.sendCommand(new GetTimeCommand());
 //			client.sendCommand(new SetTimeCommand());
 ////			client.sendCommand(new GetTimeCommand());
-//			JOptionPane.showMessageDialog(this, "Se fij� la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
+//			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
 //		} catch (InvalidTelnetOptionException | IOException e1) {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();

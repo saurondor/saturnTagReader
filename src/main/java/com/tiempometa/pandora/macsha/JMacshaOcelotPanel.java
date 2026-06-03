@@ -122,12 +122,12 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			try {
 				if (checkPoint == null) {
 					JOptionPane.showMessageDialog(this, "Se debe seleccionar un punto antes de conectar",
-							"Error de configuraci�n", JOptionPane.WARNING_MESSAGE);
+							"Error de configuración", JOptionPane.WARNING_MESSAGE);
 				} else {
 					connectReader();
 				}
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi�n",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -404,8 +404,8 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyCommException(IOException e) {
-		JOptionPane.showMessageDialog(this, "Se ha perdido la conexi�n al reader. " + e.getMessage(),
-				"Error de conexi�n", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se ha perdido la conexión al reader. " + e.getMessage(),
+				"Error de conexión", JOptionPane.ERROR_MESSAGE);
 		shutdownReader();
 	}
 

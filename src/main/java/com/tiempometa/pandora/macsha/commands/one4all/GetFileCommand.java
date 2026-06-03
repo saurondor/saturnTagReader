@@ -39,14 +39,14 @@ public class GetFileCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(GetFileCommand.class);
 
-	// Para obtener las pasadas específicas de un cierto archivo de backup, el host
-	// envía GETFILE;<FileName>;<StartPassing>;<EndPassing><CrLf>.
+	// Para obtener las pasadas especÃ­ficas de un cierto archivo de backup, el host
+	// envÃ­a GETFILE;<FileName>;<StartPassing>;<EndPassing><CrLf>.
 	//
 	// Donde:
 	// <FileName>, es el nombre del archivo de backup, con el formato
 	// yyyyMMdd-HHmmss.csv.
-	// <StartPassing>, es el número inicial de las pasadas a enviar.
-	// <EndPassing>, es el número final de las pasadas a enviar.
+	// <StartPassing>, es el nÃºmero inicial de las pasadas a enviar.
+	// <EndPassing>, es el nÃºmero final de las pasadas a enviar.
 	//
 	// Ejemplo:
 	// < GETFILE;20171222-093055.csv;15;17<CrLf>

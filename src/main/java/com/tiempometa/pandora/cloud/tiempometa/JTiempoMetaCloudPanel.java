@@ -80,17 +80,17 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListen
 		} catch (ClientProtocolException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaci�n",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaci�n",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (DataRequestException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaci�n",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -101,7 +101,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListen
 
 	private void rewindTagReadsButtonActionPerformed(ActionEvent e) {
 		int response = JOptionPane.showConfirmDialog(this,
-				"Esta acci�n descargar� todas las lecturas nuevamente. �Deseas continuar?", "Rebobinar lecturas",
+				"Esta acción descargará todas las lecturas nuevamente. ¿Deseas continuar?", "Rebobinar lecturas",
 				JOptionPane.YES_NO_OPTION);
 		if (response == JOptionPane.YES_OPTION) {
 			reader.rewindAll();
@@ -111,14 +111,14 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListen
 	private void clearTagReadsButtonActionPerformed(ActionEvent e) {
 		String confirmation = UUID.randomUUID().toString().substring(9, 13);
 		String response = JOptionPane.showInputDialog(this,
-				"Esto borrar� todas las lecturas en la nube. Esta operaci�n no se puede deshacer.\n"
+				"Esto borrará todas las lecturas en la nube. Esta operación no se puede deshacer.\n"
 						+ "Para continuar por favor digita los siguientes caracteres para confirmar:" + confirmation,
 				null);
 		if ((response != null) && (response.equals(confirmation))) {
 			reader.clearTags();
 			JOptionPane.showMessageDialog(this, "Se borraron todos los tags.");
 		} else {
-			JOptionPane.showMessageDialog(this, "Operaci�n cancelada.");
+			JOptionPane.showMessageDialog(this, "Operación cancelada.");
 		}
 	}
 

@@ -97,11 +97,11 @@ public class JImportBackupPanel extends JPanel {
 					Context.saveWorkingDirectory(dataFile.getPath());
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(this, "Error cargando los datos " + e1.getMessage(),
-							"Error de importación", JOptionPane.ERROR_MESSAGE);
+							"Error de importaciÃ³n", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		} catch (IOException e2) {
-			JOptionPane.showMessageDialog(this, "Error cargando los datos " + e2.getMessage(), "Error de importación",
+			JOptionPane.showMessageDialog(this, "Error cargando los datos " + e2.getMessage(), "Error de importaciÃ³n",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -160,7 +160,7 @@ public class JImportBackupPanel extends JPanel {
 			Context.getResultsWebservice().batchSaveRawReads(readings);
 		}
 		JOptionPane.showMessageDialog(this, "Se guardaron " + tableModel.getChipReads().size() + " lecturas",
-				"Importación exitosa", JOptionPane.INFORMATION_MESSAGE);
+				"ImportaciÃ³n exitosa", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void initComponents() {

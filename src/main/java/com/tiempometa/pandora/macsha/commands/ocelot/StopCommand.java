@@ -40,18 +40,18 @@ public class StopCommand extends MacshaCommand {
 	private static final Logger logger = LogManager.getLogger(StopCommand.class);
 
 //	Para dar comienzo con la lectura de chips, debemos enviar la siguiente cadena:
-//	> “Start:”
+//	> â€œStart:â€
 //	Posibles respuestas del One4All:
-//	> “MODO-REMOTE-OFF_[ID]”: El One4All no se encuentra en modo operación. No fue
+//	> â€œMODO-REMOTE-OFF_[ID]â€: El One4All no se encuentra en modo operaciÃ³n. No fue
 //	posible dar Start al sistema.
-//	> “OPERATION-MODE-STARTED_[ID]”: El One4All ya se encuentra en Start.
-//	> “START-OK_[ID]”: Start OK.
+//	> â€œOPERATION-MODE-STARTED_[ID]â€: El One4All ya se encuentra en Start.
+//	> â€œSTART-OK_[ID]â€: Start OK.
 //	Donde:
 //	[ID] = Se corresponde con el ID configurado en el sistema.
 //	Para dar fin a la lectura de chips, debemos enviar la siguiente cadena:
-//	> “Stop:”
+//	> â€œStop:â€
 //	Posibles respuestas del One4All:
-//	> “STOP-OK_[ID]”: Stop OK.
+//	> â€œSTOP-OK_[ID]â€: Stop OK.
 
 	/*
 	 * (non-Javadoc)

@@ -39,7 +39,7 @@ public class PingCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(PingCommand.class);
 
-	// Cuando el host envía PING<CrLf> al sistema, el One4All responde con
+	// Cuando el host envÃ­a PING<CrLf> al sistema, el One4All responde con
 	// PING;PONG<CrLf>.
 	//
 	// Ejemplo:

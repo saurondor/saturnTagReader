@@ -44,8 +44,8 @@ public class JSocketMonitor extends JFrame implements SocketMonitor {
 	}
 
 	private void clearLogButtonActionPerformed(ActionEvent e) {
-		int response = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas borrar la bitácora de datos?",
-				"Borrar bitácora del monitor", JOptionPane.YES_NO_OPTION);
+		int response = JOptionPane.showConfirmDialog(this, "Â¿Seguro que deseas borrar la bitÃ¡cora de datos?",
+				"Borrar bitÃ¡cora del monitor", JOptionPane.YES_NO_OPTION);
 		if (response == JOptionPane.YES_OPTION) {
 			textPane1.setText("");
 		}

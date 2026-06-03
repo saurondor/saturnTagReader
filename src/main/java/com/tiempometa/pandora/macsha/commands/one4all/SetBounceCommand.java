@@ -39,9 +39,9 @@ public class SetBounceCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(SetBounceCommand.class);
 
-	// Es el tiempo muerto de detección o por cuánto tiempo el sistema debe ignorar
-	// un chip después de una detección. Para establecer el tiempo de rebote o el
-	// tiempo muerto, el host envía SETBOUNCE;<Seconds><CrLf>. Por defecto, el
+	// Es el tiempo muerto de detecciÃ³n o por cuÃ¡nto tiempo el sistema debe ignorar
+	// un chip despuÃ©s de una detecciÃ³n. Para establecer el tiempo de rebote o el
+	// tiempo muerto, el host envÃ­a SETBOUNCE;<Seconds><CrLf>. Por defecto, el
 	// tiempo de rebote es de 5 segundos.
 	//
 	// Donde <Seconds> es desde 1 hasta 3600.
@@ -50,8 +50,8 @@ public class SetBounceCommand extends MacshaCommand {
 	// SETBOUNCE;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// 1 a 3600, en el éxito.
-	// ERR, si ocurrió algún error.
+	// 1 a 3600, en el Ã©xito.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < SETBOUNCE;60<CrLf>

@@ -40,16 +40,16 @@ public class ListFilesCommand extends MacshaCommand {
 	private static final Logger logger = LogManager.getLogger(ListFilesCommand.class);
 
 	// Para listar los archivos de backup CSV (pasadas) disponibles en el sistema,
-	// el host envía LISTFILES;<CrLf>.
+	// el host envÃ­a LISTFILES;<CrLf>.
 	//
 	// El One4All responde:
 	// LISTFILES;<FileList><CrLf>
 	//
 	// Donde <FileList> es:
-	// En el éxito, los nombres de los archivos de backup disponibles, con el
+	// En el Ã©xito, los nombres de los archivos de backup disponibles, con el
 	// siguiente formato: yyyyMMdd-HHmmss.csv
 	// NOFILES, si no hay archivos en la memoria.
-	// ERR, si ocurre algún error durante el proceso.
+	// ERR, si ocurre algÃºn error durante el proceso.
 	//
 	// Ejemplo:
 	// < LISTFILES<CrLf>

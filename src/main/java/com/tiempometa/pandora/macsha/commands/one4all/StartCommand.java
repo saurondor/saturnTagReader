@@ -40,18 +40,18 @@ public class StartCommand extends MacshaCommand {
 	private static final Logger logger = LogManager.getLogger(StartCommand.class);
 
 	// Start.
-	// Para comenzar la lectura de los chips, el host envía START<CrLf>
+	// Para comenzar la lectura de los chips, el host envÃ­a START<CrLf>
 	//
 	// El One4All responde:
 	// START;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// En el éxito, la fecha y hora del inicio de la sesión de cronometraje y el
-	// nombre del archivo de backup de la sesión con el siguiente formato:
+	// En el Ã©xito, la fecha y hora del inicio de la sesiÃ³n de cronometraje y el
+	// nombre del archivo de backup de la sesiÃ³n con el siguiente formato:
 	// yyyyMMdd-HHmmss.csv
 	// STARTMODE, si el sistema ya se encuentra en Start mode.
 	// ERRANTENNAS, si no hay antenas conectadas al sistema.
-	// ERRCONNECT, ERRSTART, ERR, si ocurre algún otro error durante el proceso de
+	// ERRCONNECT, ERRSTART, ERR, si ocurre algÃºn otro error durante el proceso de
 	// inicio.
 	//
 	// Ejemplo:
