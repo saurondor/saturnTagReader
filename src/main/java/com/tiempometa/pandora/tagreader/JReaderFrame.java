@@ -7,7 +7,6 @@ package com.tiempometa.pandora.tagreader;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.time.DateTimeException;
 import java.util.*;
 import java.util.List;
 
@@ -30,6 +29,7 @@ import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
+import com.tiempometa.timing.local.LocalDataContext;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -96,14 +96,65 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		if (Context.isApplicationCloseable()) {
 			int response = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar la aplicación?",
 					"Confirmar Cierre", JOptionPane.WARNING_MESSAGE);
-			if (response == JOptionPane.OK_OPTION) {
-				readerListPanel.disconnectAll();
-				window.dispose();
-				System.exit(0);
+			if (response != JOptionPane.OK_OPTION) return;
+
+			int unsynced = LocalDataContext.getUnsyncedReadCount();
+			if (unsynced > 0) {
+				if (Context.isWebserviceConnected()) {
+					int syncResponse = JOptionPane.showConfirmDialog(null,
+							"Hay " + unsynced + " lectura(s) sin sincronizar con Saturno.\n"
+									+ "¿Deseas sincronizar antes de cerrar?",
+							"Lecturas pendientes", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+					if (syncResponse == JOptionPane.CANCEL_OPTION) return;
+					if (syncResponse == JOptionPane.YES_OPTION) {
+						pushUnsyncedReads();
+					}
+				} else {
+					java.io.File csv = LocalDataContext.exportUnsyncedReadsToCsv();
+					if (csv != null) {
+						JOptionPane.showMessageDialog(null,
+								"No hay conexión con Saturno.\n"
+										+ unsynced + " lectura(s) exportadas a:\n" + csv.getAbsolutePath(),
+								"Lecturas exportadas", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"No hay conexión con Saturno y no se pudo exportar el CSV.\n"
+										+ "Revisa el archivo de base de datos antes de cerrar.",
+								"Advertencia", JOptionPane.WARNING_MESSAGE);
+					}
+				}
 			}
+
+			readerListPanel.disconnectAll();
+			LocalDataContext.close();
+			window.dispose();
+			System.exit(0);
 		} else {
 			JOptionPane.showMessageDialog(null, "No se puede cerrar la aplicación en este momento.", "Cierre",
 					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	private void pushUnsyncedReads() {
+		List<com.tiempometa.timing.model.RawChipRead> unsynced =
+				LocalDataContext.getRawChipReadDao().getUncookedReads();
+		if (unsynced.isEmpty()) return;
+		List<com.tiempometa.webservice.model.RawChipRead> wsReads = new ArrayList<>();
+		for (com.tiempometa.timing.model.RawChipRead r : unsynced) {
+			wsReads.add(fromLocalRead(r));
+		}
+		try {
+			Context.getResultsWebservice().saveRawChipReads(wsReads);
+			LocalDataContext.markReadsAsSynced(unsynced);
+			logger.info("Pushed {} unsynced reads to Saturno on close", unsynced.size());
+		} catch (Exception e) {
+			logger.error("Failed to push unsynced reads on close", e);
+			java.io.File csv = LocalDataContext.exportUnsyncedReadsToCsv();
+			String msg = "No se pudieron sincronizar las lecturas: " + e.getMessage();
+			if (csv != null) msg += "\nExportadas a: " + csv.getAbsolutePath();
+			JOptionPane.showMessageDialog(null, msg, "Error de sincronización",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -125,18 +176,31 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	}
 
 	private void openEventMenuItemActionPerformed(ActionEvent e) {
-		String response = JOptionPane.showInputDialog("Dirección IP del servidor remoto o 127.0.0.1 para local",
+		String ipAddress = JOptionPane.showInputDialog(
+				this,
+				"Dirección IP de Saturno (o 127.0.0.1 para local)",
 				Context.getServerAddress());
-		if (response == null) {
-
-		} else {
-			try {
-				Context.setServerAddress(response);
-				logger.info("Updated server address to " + Context.getServerAddress());
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo guardar la configuración. " + e1.getMessage(),
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
-			}
+		if (ipAddress == null) return;
+		try {
+			Context.setServerAddress(ipAddress);
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(this,
+					"No se pudo guardar la configuración: " + e1.getMessage(),
+					"Error de configuración", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		try {
+			Context.initWebserviceClients();
+			logger.info("Connected to Saturno at {}", Context.getServerAddress());
+			JOptionPane.showMessageDialog(this,
+					"Conectado a Saturno en " + Context.getServerAddress(),
+					"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception ex) {
+			logger.warn("Could not connect to Saturno: {}", ex.getMessage());
+			JOptionPane.showMessageDialog(this,
+					"No se pudo conectar a Saturno en " + Context.getServerAddress()
+							+ "\n" + ex.getMessage(),
+					"Error de conexión", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -506,34 +570,94 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	@Override
 	public void refreshTitle() {
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
-
 	}
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> readings) {
 		logger.debug("GOT TAG READS...");
-		List<com.tiempometa.webservice.model.RawChipRead> wsReadings = new ArrayList<com.tiempometa.webservice.model.RawChipRead>();
+
+		// Always save to local H2 first
+		List<com.tiempometa.timing.model.RawChipRead> localReads = new ArrayList<>();
 		for (RawChipRead tagRead : readings) {
 			logger.debug(tagRead);
-			wsReadings.add(tagRead);
+			localReads.add(toLocalRead(tagRead));
 		}
-		Context.getResultsWebservice().saveRawChipReads(wsReadings);
+		LocalDataContext.getRawChipReadDao().batchSave(localReads);
+
+		// Push to saturnPandora if webservice is connected; mark synced on success
+		if (Context.isWebserviceConnected()) {
+			try {
+				Context.getResultsWebservice().saveRawChipReads(new ArrayList<>(readings));
+				LocalDataContext.markReadsAsSynced(localReads);
+			} catch (Exception e) {
+				logger.warn("Failed to push reads to Saturno: {}", e.getMessage());
+			}
+		}
+
+		// Participant lookup and display
 		for (RawChipRead tagRead : readings) {
-			logger.debug("Query participants by tag " + tagRead);
-			List<ParticipantRegistration> registrationList = Context.getRegistrationWebservice()
-					.findByTag(tagRead.getRfidString());
-			if (registrationList == null) {
+			List<ParticipantRegistration> registrationList = null;
+			if (Context.isWebserviceConnected()) {
+				try {
+					registrationList = Context.getRegistrationWebservice()
+							.findByTag(tagRead.getRfidString());
+				} catch (Exception e) {
+					logger.warn("Participant lookup from Saturno failed: {}", e.getMessage());
+				}
+			}
+			if (registrationList == null || registrationList.isEmpty()) {
 				tagReadPanel.add(TagReadLog.fromRawRead(tagRead));
 			} else {
-				logger.debug("Registration list size " + registrationList);
+				logger.debug("Registration list size {}", registrationList.size());
 				for (ParticipantRegistration registration : registrationList) {
 					tagReadPanel.add(TagReadLog.fromRawRead(tagRead, registration));
 				}
 				showParticipantInfo(registrationList);
 			}
 		}
+	}
+
+	private com.tiempometa.webservice.model.RawChipRead fromLocalRead(
+			com.tiempometa.timing.model.RawChipRead local) {
+		com.tiempometa.webservice.model.RawChipRead ws = new com.tiempometa.webservice.model.RawChipRead();
+		ws.setRfidString(local.getRfidString());
+		ws.setTime(local.getTime());
+		ws.setTimeMillis(local.getTimeMillis());
+		ws.setCheckPoint(local.getCheckPoint());
+		ws.setLoadName(local.getLoadName());
+		ws.setReadType(local.getReadType());
+		ws.setDevice(local.getDevice());
+		ws.setMobileApp(local.getMobileApp());
+		ws.setChipNumber(local.getChipNumber());
+		ws.setFiltered(local.getFiltered());
+		ws.setDistance(local.getDistance());
+		ws.setCalories(local.getCalories());
+		ws.setSteps(local.getSteps());
+		ws.setRunTime(local.getRunTime());
+		ws.setCooked(local.getCooked());
+		return ws;
+	}
+
+	private com.tiempometa.timing.model.RawChipRead toLocalRead(RawChipRead ws) {
+		com.tiempometa.timing.model.RawChipRead local = new com.tiempometa.timing.model.RawChipRead();
+		local.setRfidString(ws.getRfidString());
+		local.setTime(ws.getTime());
+		local.setTimeMillis(ws.getTimeMillis());
+		local.setCheckPoint(ws.getCheckPoint());
+		local.setLoadName(ws.getLoadName());
+		local.setReadType(ws.getReadType());
+		local.setDevice(ws.getDevice());
+		local.setMobileApp(ws.getMobileApp());
+		local.setChipNumber(ws.getChipNumber());
+		local.setFiltered(ws.getFiltered());
+		local.setDistance(ws.getDistance());
+		local.setCalories(ws.getCalories());
+		local.setSteps(ws.getSteps());
+		local.setRunTime(ws.getRunTime());
+		local.setCooked(ws.getCooked());
+		return local;
 	}
 
 	private void showParticipantInfo(List<ParticipantRegistration> registrationList) {

@@ -75,7 +75,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);

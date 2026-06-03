@@ -23,6 +23,10 @@
 					<exclude>**/*.jpg</exclude>
 					<exclude>**/*.gif</exclude>
 					<exclude>**/*.jasper</exclude>
+					<exclude>**/*.mp3</exclude>
+					<exclude>**/*.dll</exclude>
+					<exclude>**/*.jar</exclude>
+					<exclude>**/*.inf</exclude>
 				</excludes>
 			</resource>
 			<resource>
@@ -33,6 +37,10 @@
 					<include>**/*.jpg</include>
 					<include>**/*.gif</include>
 					<include>**/*.jasper</include>
+					<include>**/*.mp3</include>
+					<include>**/*.dll</include>
+					<include>**/*.jar</include>
+					<include>**/*.inf</include>
 				</includes>
 			</resource>
 		</resources>

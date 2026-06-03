@@ -79,7 +79,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 	 */
 	private void loadCheckPoints() {
 		try {
-			List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+			List<String> checkPoints = Context.getCheckPointNames();
 			logger.debug("Available checkpoints ");
 			for (String string : checkPoints) {
 				logger.debug(string);

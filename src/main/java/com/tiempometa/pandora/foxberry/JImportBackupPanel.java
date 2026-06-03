@@ -72,7 +72,7 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		String[] checkPointArray = new String[checkPoints.size()];
 		if (checkPointArray.length > 0) {
 			checkPointComboBox.setEnabled(true);

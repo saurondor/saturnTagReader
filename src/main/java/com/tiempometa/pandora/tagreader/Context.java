@@ -26,12 +26,14 @@ package com.tiempometa.pandora.tagreader;
 import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tiempometa.timing.local.LocalDataContext;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
 import com.tiempometa.webservice.RegistrationWebservice;
@@ -196,12 +198,28 @@ public class Context extends com.tiempometa.timing.Context {
 		return serverAddress;
 	}
 
+	public static boolean isWebserviceConnected() {
+		return resultsWebservice != null;
+	}
+
 	public static ResultsWebservice getResultsWebservice() {
 		return resultsWebservice;
 	}
 
 	public static RegistrationWebservice getRegistrationWebservice() {
 		return registrationWebservice;
+	}
+
+	/**
+	 * Returns checkpoint names for reader panel combos. Uses the webservice when
+	 * connected; falls back to distinct checkPoint values from the local H2 laps
+	 * table when offline.
+	 */
+	public static List<String> getCheckPointNames() {
+		if (isWebserviceConnected()) {
+			return resultsWebservice.getCheckPointNames();
+		}
+		return LocalDataContext.getCheckPointNames();
 	}
 
 	public static void setServerAddress(String serverAddress) throws IOException {

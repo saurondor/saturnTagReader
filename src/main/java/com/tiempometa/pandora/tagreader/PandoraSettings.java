@@ -49,4 +49,11 @@ public class PandoraSettings {
 	public static final String PREFERRED_TIMEZONE = "preferred_timezone";
 	
 	public static final String EVENT_PATH = "event_path";
+
+	public static final String LOCAL_H2_PORT = "local_h2_port";
+	public static final int LOCAL_H2_PORT_DEFAULT = 9093;
+
+	public static final String LOCAL_H2_PATH = "local_h2_path";
+	public static final String LOCAL_H2_PATH_DEFAULT =
+			System.getProperty("user.home") + "/.tiempometa/databases/tagreader";
 }

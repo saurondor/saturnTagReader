@@ -74,7 +74,7 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 	 */
 	private void loadCheckPoints() {
 //		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);
