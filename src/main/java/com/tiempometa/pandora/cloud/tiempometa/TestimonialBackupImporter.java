@@ -29,8 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.tiempometa.data.ExcelImporter;
 import com.tiempometa.pandora.tagreader.BackupImporter;
@@ -61,11 +62,13 @@ public class TestimonialBackupImporter extends ExcelImporter implements BackupIm
 	public List<RawChipRead> getChipReads() {
 		selectSheet(0);
 		List<Object> list = importData(colMap);
-		List<RawChipRead> rawReadList = new ArrayList<>(list.size());
+		List<RawChipRead> rawReadList = new ArrayList<RawChipRead>(list.size());
 		for (int i = 0; i < list.size(); i++) {
 			RawChipRead chipRead = (RawChipRead) list.get(i);
 			chipRead.setLoadName(String.valueOf(i));
 			rawReadList.add(chipRead);
+		}
+		for (Object rawChipRead : list) {
 		}
 		return rawReadList;
 	}
@@ -85,18 +88,18 @@ public class TestimonialBackupImporter extends ExcelImporter implements BackupIm
 
 		String bib = getColumnContent(1, row);
 		if (bib != null) {
-			chipRead.setRfidString("vtag" + StringUtils.leftPad(bib.replaceAll("[^\\d]", ""), 5, "0"));
+			chipRead.setRfidString("vtag" + StringUtils.leftPad(bib, 5, "0"));
 		}
 		chipRead.setCheckPoint(null);
 
 		try {
 			String v = getColumnContent(3, row);
-			if (v != null) chipRead.setRunTime(Long.parseLong(v.replaceAll("[^\\d]", "")));
+			if (v != null) chipRead.setRunTime(Long.valueOf(v));
 		} catch (NumberFormatException e) { /* blank or non-numeric cell */ }
 
 		try {
 			String v = getColumnContent(4, row);
-			if (v != null) chipRead.setDistance(Double.parseDouble(v.replaceAll("[^\\d.]", "")));
+			if (v != null) chipRead.setDistance(Double.valueOf(v));
 		} catch (NumberFormatException e) { /* blank or non-numeric cell */ }
 
 		chipRead.setTestimonialUrl(getColumnContent(6, row));
