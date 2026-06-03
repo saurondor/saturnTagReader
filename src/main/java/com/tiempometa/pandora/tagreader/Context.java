@@ -38,6 +38,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tiempometa.timing.SettingsHandler;
 import com.tiempometa.timing.local.LocalDataContext;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
@@ -178,7 +179,7 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	public static void loadSettings() throws IOException {
-		settings = new SettingsHandler();
+		settings = new SettingsHandler("/tagreader.properties");
 		settings.init();
 		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
 //		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
