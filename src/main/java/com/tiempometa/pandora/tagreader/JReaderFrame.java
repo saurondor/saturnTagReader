@@ -188,10 +188,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			Context.initWebserviceClients();
 			logger.info("Connected to Saturno db '{}' at {}",
 					LocalDataContext.getBaseDbName(), Context.getServerAddress());
-			Context.downloadEventSnapshot();
-			JOptionPane.showMessageDialog(this,
-					"Conectado a Saturno en " + Context.getServerAddress(),
-					"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+			startSnapshotDownload("Conectado a Saturno en " + Context.getServerAddress());
 		} catch (DbAuthorizationRequiredException ex) {
 			// First time connecting this local DB — ask operator to authorise pairing
 			int auth = JOptionPane.showConfirmDialog(this,
@@ -202,20 +199,16 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 					JOptionPane.QUESTION_MESSAGE);
 			if (auth == JOptionPane.YES_OPTION) {
 				LocalDataContext.setBaseDbName(ex.getPandoraDbName());
-				// Also store as local_db_name if operator hasn't set one yet
 				if (Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null) == null) {
 					try {
 						Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, ex.getPandoraDbName());
 						Context.flushSettings();
 					} catch (IOException ignored) {}
 				}
-				// Retry now that pairing is set
 				try {
 					Context.initWebserviceClients();
-					Context.downloadEventSnapshot();
-					JOptionPane.showMessageDialog(this,
-							"Conectado y autorizado a base '" + ex.getPandoraDbName() + "'.",
-							"Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+					startSnapshotDownload(
+							"Conectado y autorizado a base '" + ex.getPandoraDbName() + "'.");
 				} catch (Exception retryEx) {
 					logger.error("Connect failed after authorisation", retryEx);
 					JOptionPane.showMessageDialog(this,
@@ -240,6 +233,40 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 							+ "\n" + ex.getMessage(),
 					"Error de conexión", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private void startSnapshotDownload(String successMessage) {
+		JDialog progress = buildProgressDialog("Descargando datos del evento...");
+		new javax.swing.SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				Context.downloadEventSnapshot();
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				progress.dispose();
+				JOptionPane.showMessageDialog(JReaderFrame.this,
+						successMessage, "Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}.execute();
+		progress.setVisible(true); // blocks EDT until SwingWorker calls progress.dispose()
+	}
+
+	private JDialog buildProgressDialog(String message) {
+		JDialog dlg = new JDialog(this, "Saturno", true);
+		dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		JPanel panel = new JPanel(new java.awt.BorderLayout(10, 10));
+		panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 20, 30));
+		panel.add(new javax.swing.JLabel(message), java.awt.BorderLayout.NORTH);
+		javax.swing.JProgressBar bar = new javax.swing.JProgressBar();
+		bar.setIndeterminate(true);
+		panel.add(bar, java.awt.BorderLayout.CENTER);
+		dlg.add(panel);
+		dlg.pack();
+		dlg.setLocationRelativeTo(this);
+		return dlg;
 	}
 
 	private void closeMenuItemActionPerformed(ActionEvent e) {
