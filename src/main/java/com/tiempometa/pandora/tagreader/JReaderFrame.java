@@ -29,8 +29,8 @@ import com.tiempometa.pandora.macsha.MacshaCloudBackupImporter;
 import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.timing.local.LocalDataContext;
-import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
@@ -140,18 +140,13 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		List<com.tiempometa.timing.model.RawChipRead> unsynced =
 				LocalDataContext.getRawChipReadDao().getUncookedReads();
 		if (unsynced.isEmpty()) return;
-		List<com.tiempometa.webservice.model.RawChipRead> wsReads = new ArrayList<>();
-		for (com.tiempometa.timing.model.RawChipRead r : unsynced) {
-			wsReads.add(fromLocalRead(r));
-		}
-		try {
-			Context.getResultsWebservice().saveRawChipReads(wsReads);
+		boolean ok = Context.pushRawReads(unsynced);
+		if (ok) {
 			LocalDataContext.markReadsAsSynced(unsynced);
 			logger.info("Pushed {} unsynced reads to Saturno on close", unsynced.size());
-		} catch (Exception e) {
-			logger.error("Failed to push unsynced reads on close", e);
+		} else {
 			java.io.File csv = LocalDataContext.exportUnsyncedReadsToCsv();
-			String msg = "No se pudieron sincronizar las lecturas: " + e.getMessage();
+			String msg = "No se pudieron sincronizar las lecturas con Saturno.";
 			if (csv != null) msg += "\nExportadas a: " + csv.getAbsolutePath();
 			JOptionPane.showMessageDialog(null, msg, "Error de sincronización",
 					JOptionPane.ERROR_MESSAGE);
@@ -656,48 +651,20 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 		}
 
-		// Participant lookup and display
+		// Participant lookup and display (webservice-first, H2 fallback)
 		for (RawChipRead tagRead : readings) {
-			List<ParticipantRegistration> registrationList = null;
-			if (Context.isWebserviceConnected()) {
-				try {
-					registrationList = Context.getRegistrationWebservice()
-							.findByTag(tagRead.getRfidString());
-				} catch (Exception e) {
-					logger.warn("Participant lookup from Saturno failed: {}", e.getMessage());
-				}
-			}
-			if (registrationList == null || registrationList.isEmpty()) {
+			List<ParticipantDetailDto> participants =
+					Context.findParticipantByRfid(tagRead.getRfidString());
+			if (participants == null || participants.isEmpty()) {
 				tagReadPanel.add(TagReadLog.fromRawRead(tagRead));
 			} else {
-				logger.debug("Registration list size {}", registrationList.size());
-				for (ParticipantRegistration registration : registrationList) {
-					tagReadPanel.add(TagReadLog.fromRawRead(tagRead, registration));
+				logger.debug("Participant lookup returned {} results", participants.size());
+				for (ParticipantDetailDto dto : participants) {
+					tagReadPanel.add(TagReadLog.fromRawRead(tagRead, dto));
 				}
-				showParticipantInfo(registrationList);
+				showParticipantInfo(participants);
 			}
 		}
-	}
-
-	private com.tiempometa.webservice.model.RawChipRead fromLocalRead(
-			com.tiempometa.timing.model.RawChipRead local) {
-		com.tiempometa.webservice.model.RawChipRead ws = new com.tiempometa.webservice.model.RawChipRead();
-		ws.setRfidString(local.getRfidString());
-		ws.setTime(local.getTime());
-		ws.setTimeMillis(local.getTimeMillis());
-		ws.setCheckPoint(local.getCheckPoint());
-		ws.setLoadName(local.getLoadName());
-		ws.setReadType(local.getReadType());
-		ws.setDevice(local.getDevice());
-		ws.setMobileApp(local.getMobileApp());
-		ws.setChipNumber(local.getChipNumber());
-		ws.setFiltered(local.getFiltered());
-		ws.setDistance(local.getDistance());
-		ws.setCalories(local.getCalories());
-		ws.setSteps(local.getSteps());
-		ws.setRunTime(local.getRunTime());
-		ws.setCooked(local.getCooked());
-		return ws;
 	}
 
 	private com.tiempometa.timing.model.RawChipRead toLocalRead(RawChipRead ws) {
@@ -720,11 +687,10 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		return local;
 	}
 
-	private void showParticipantInfo(List<ParticipantRegistration> registrationList) {
-		for (ParticipantRegistration participantRegistration : registrationList) {
-			previewFrame.setRegistration(participantRegistration);
+	private void showParticipantInfo(List<ParticipantDetailDto> participants) {
+		for (ParticipantDetailDto dto : participants) {
+			previewFrame.setRegistration(dto);
 		}
-
 	}
 
 }

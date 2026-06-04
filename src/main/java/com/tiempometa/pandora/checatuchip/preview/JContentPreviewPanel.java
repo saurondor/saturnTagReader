@@ -36,6 +36,7 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.Bib;
 import com.tiempometa.webservice.model.Participant;
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.Registration;
 
@@ -367,6 +368,32 @@ public class JContentPreviewPanel extends JPanel {
 		participant.setBib(bib);
 		registration.getParticipants().add(participant);
 		this.registration = registration;
+	}
+
+	public void setRegistration(ParticipantDetailDto dto) {
+		if (dto == null) {
+			setRegistration((ParticipantRegistration) null);
+			return;
+		}
+		bibLabel.setText(dto.getNumber() != null ? dto.getNumber() : "-- Sin Número --");
+		JFieldPanel panel = panelMap.get(FIELD_NAME);
+		setFieldValue(panel, dto.getFullName());
+		panel = panelMap.get(FIELD_AGE);
+		setFieldValue(panel, dto.getAge() != null ? dto.getAge().toString() : "No disponible");
+		panel = panelMap.get(FIELD_BIRTHDATE);
+		setFieldValue(panel, dto.getBirthDateString() != null ? dto.getBirthDateString() : "No disponible");
+		panel = panelMap.get(FIELD_CATEGORY);
+		setFieldValue(panel, dto.getCategory());
+		panel = panelMap.get(FIELD_GENDER);
+		setFieldValue(panel, dto.getGender());
+		panel = panelMap.get(FIELD_LABEL_COLOR);
+		setFieldValue(panel, dto.getIdField0());
+		panel = panelMap.get(FIELD_PROCEDENCE);
+		setFieldValue(panel, dto.getProvince());
+		panel = panelMap.get(FIELD_SUBEVENT);
+		setFieldValue(panel, dto.getSubeventTitle());
+		panel = panelMap.get(FIELD_TEAM);
+		setFieldValue(panel, dto.getTeam());
 	}
 
 	public void setRegistration(ParticipantRegistration participantRegistration) {

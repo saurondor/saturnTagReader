@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.pandora.tagreader.Context;
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.Registration;
 
@@ -127,6 +128,10 @@ public class JPreviewFrame extends JFrame {
 
 	public void setTagReading(TagReading tagReading) {
 		contentPanel.setTagReading(tagReading);
+	}
+
+	public void setRegistration(ParticipantDetailDto dto) {
+		contentPanel.setRegistration(dto);
 	}
 
 	public void setRegistration(ParticipantRegistration participantRegistration) {
