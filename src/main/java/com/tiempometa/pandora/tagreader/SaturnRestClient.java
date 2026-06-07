@@ -99,6 +99,24 @@ public final class SaturnRestClient {
         }
     }
 
+    public static List<String> getCheckpoints(String serverAddress) {
+        String url = baseUrl(serverAddress) + "/api/checkpoints";
+        try (CloseableHttpClient client = HttpClients.createDefault();
+             CloseableHttpResponse response = client.execute(new HttpGet(url))) {
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                return gson.fromJson(
+                        EntityUtils.toString(response.getEntity()),
+                        new TypeToken<List<String>>(){}.getType());
+            }
+            logger.warn("GET /api/checkpoints returned status {}", status);
+            return Collections.emptyList();
+        } catch (Exception e) {
+            logger.error("GET /api/checkpoints failed: {}", e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
     public static SnapshotDto downloadSnapshot(String serverAddress) {
         String url = baseUrl(serverAddress) + "/api/snapshot";
         try (CloseableHttpClient client = HttpClients.createDefault();
