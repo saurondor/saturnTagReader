@@ -17,9 +17,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tiempometa.pandora.webservice.api.InfoDto;
 import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
-import com.tiempometa.pandora.webservice.api.RawChipReadDto;
+import com.tiempometa.timing.local.InfoDto;
+import com.tiempometa.timing.local.RawChipReadDto;
 import com.tiempometa.timing.local.SnapshotDto;
 import com.tiempometa.timing.model.RawChipRead;
 

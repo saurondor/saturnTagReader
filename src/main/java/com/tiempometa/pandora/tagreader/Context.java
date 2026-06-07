@@ -33,7 +33,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tiempometa.pandora.webservice.api.InfoDto;
+import com.tiempometa.timing.local.InfoDto;
 import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.timing.SettingsHandler;
 import com.tiempometa.timing.local.LocalDataContext;
