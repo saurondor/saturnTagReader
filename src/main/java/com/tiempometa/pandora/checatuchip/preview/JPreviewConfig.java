@@ -180,11 +180,11 @@ public class JPreviewConfig extends JDialog {
 		}
 		try {
 			Context.previewHelper.getSettings().saveSettings();
-			JOptionPane.showMessageDialog(this, "La configuraci髇 fue guaradada con 閤ito.", "Guardar configuraci髇",
+			JOptionPane.showMessageDialog(this, "La configuraci贸n fue guaradada con 茅xito.", "Guardar configuraci贸n",
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(this, "No se pudo guardar la configuraci髇. " + e1.getMessage(),
-					"Error de configuraci髇", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "No se pudo guardar la configuraci贸n. " + e1.getMessage(),
+					"Error de configuraci贸n", JOptionPane.ERROR_MESSAGE);
 		}
 		this.dispose();
 	}
@@ -194,7 +194,7 @@ public class JPreviewConfig extends JDialog {
 	}
 
 	private void cancelButtonActionPerformed(ActionEvent e) {
-		int response = JOptionPane.showConfirmDialog(this, "Se perder醤 todos los cambios no guardados.\n緾errar?",
+		int response = JOptionPane.showConfirmDialog(this, "Se perder谩n todos los cambios no guardados.\n驴Cerrar?",
 				"Confirmar cerrar.", JOptionPane.YES_NO_OPTION);
 		if (response == JOptionPane.YES_OPTION) {
 			this.dispose();

@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.tiempometa.Utils;
+import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
 import com.tiempometa.pandora.ipicoreader.ReadListener;
 import com.tiempometa.pandora.tagreader.SerialReader;
 import com.tiempometa.pandora.tagreader.TagReadListener;
@@ -54,9 +55,8 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 		return serialReader.getPorts();
 	}
 
-	public void setCommandResponseHandler(JIpicoUsbReaderPanel jIpicoReaderPanel) {
-		// TODO Auto-generated method stub
-
+	public void setCommandResponseHandler(CommandResponseHandler handler) {
+		// TODO: store handler and call notifyCommException on serial errors
 	}
 
 	public void registerTagReadListener(TagReadListener listener) {
@@ -128,7 +128,9 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 			chipRead.setTimeMillis(Utils.localDateTimeToMillis(time));
 			List<RawChipRead> chipReadList = new ArrayList<RawChipRead>();
 			chipReadList.add(chipRead);
-			tagReadListener.notifyTagReads(chipReadList);
+			if (tagReadListener != null) {
+				tagReadListener.notifyTagReads(chipReadList);
+			}
 			Thread clearThread = new Thread(new Runnable() {
 
 				@Override
@@ -139,7 +141,7 @@ public class IpicoUsbReader implements Runnable, ReadListener {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					synchronized (this) {
+					synchronized (IpicoUsbReader.this) {
 						lastRfid = null;
 					}
 				}

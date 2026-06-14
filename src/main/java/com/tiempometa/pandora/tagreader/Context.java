@@ -26,16 +26,22 @@ package com.tiempometa.pandora.tagreader;
 import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tiempometa.timing.local.InfoDto;
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
+import com.tiempometa.timing.SettingsHandler;
+import com.tiempometa.timing.local.LocalDataContext;
+import com.tiempometa.timing.local.SnapshotDto;
+import com.tiempometa.timing.local.SnapshotSeeder;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
-import com.tiempometa.webservice.RegistrationWebservice;
-import com.tiempometa.webservice.ResultsWebservice;
+import com.tiempometa.timing.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -47,10 +53,8 @@ public class Context extends com.tiempometa.timing.Context {
 	public static PreviewHelper previewHelper = new PreviewHelper();
 	public static SettingsHandler settings = null;
 	private static JPandoraApplication application;
-	private static RegistrationWebservice registrationWebservice;
-	private static ResultsWebservice resultsWebservice;
+	private static boolean restConnected = false;
 	private static String serverAddress = null;
-//	private static ZoneId zoneId = null;
 
 	public static void saveWorkingDirectory(String workingDirectory) throws IOException {
 		Context.saveSetting(PandoraSettings.EVENT_PATH, workingDirectory);
@@ -65,29 +69,43 @@ public class Context extends com.tiempometa.timing.Context {
 		return new File(path);
 	}
 
-	public static void initWebserviceClients() {
-		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-		factory.setServiceClass(RegistrationWebservice.class);
-		String wsAddress = "http://" + serverAddress + ":9000/registrationClient";
-		logger.info("Connecting webservice to " + wsAddress);
-		factory.setAddress(wsAddress);
-		registrationWebservice = (RegistrationWebservice) factory.create();
-		logger.info("Registration client created");
-		registrationWebservice.findByTag("TAG");
-		String zoneIdString = registrationWebservice.getZoneId();
-		logger.info("Setting zone id to " + zoneIdString);
-		setZoneId(ZoneId.of(zoneIdString));
-		logger.info("Set timezone to " + zoneIdString);
-		factory = new JaxWsProxyFactoryBean();
-		factory.setServiceClass(ResultsWebservice.class);
-		wsAddress = "http://" + serverAddress + ":9000/resultsClient";
-		logger.info("Connecting webservice to " + wsAddress);
-		factory.setAddress(wsAddress);
-		resultsWebservice = (ResultsWebservice) factory.create();
-		logger.info("Results client created");
+	/**
+	 * Connects to saturnPandora's REST API, validates event pairing, and sets
+	 * the zone ID. Replaces the old SOAP proxy initialisation.
+	 *
+	 * @throws DbAuthorizationRequiredException if the local H2 has no base_db_name
+	 *         yet — caller must show the authorisation dialog and call
+	 *         {@link LocalDataContext#setBaseDbName(String)} on acceptance
+	 * @throws DbNameMismatchException if the local base_db_name does not match
+	 *         the database name reported by saturnPandora
+	 * @throws Exception on connectivity failures
+	 */
+	public static void initWebserviceClients()
+			throws DbAuthorizationRequiredException, DbNameMismatchException, Exception {
+		logger.info("Connecting to Saturn REST API at {}:9001", serverAddress);
+		InfoDto info = SaturnRestClient.getInfo(serverAddress);
+		if (info == null) {
+			throw new Exception("No se pudo conectar a Saturno en " + serverAddress + ":9001");
+		}
+		setZoneId(ZoneId.of(info.getZoneId()));
+		logger.info("Zone ID: {}", info.getZoneId());
+
+		String pandoraDbName = info.getDatabaseName();
+		String localBaseDb   = LocalDataContext.getBaseDbName();
+		logger.info("Pandora db='{}', local base_db_name='{}'", pandoraDbName, localBaseDb);
+
+		if (localBaseDb == null) {
+			throw new DbAuthorizationRequiredException(pandoraDbName);
+		}
+		if (!localBaseDb.equals(pandoraDbName)) {
+			throw new DbNameMismatchException(localBaseDb, pandoraDbName);
+		}
+
+		restConnected = true;
+		logger.info("Connected to Saturn db '{}' via REST", pandoraDbName);
 	}
 
-	public static void setApplication(JReaderFrame app) {
+	public static void setApplication(JPandoraApplication app) {
 		application = app;
 	}
 
@@ -132,7 +150,7 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	public static void loadSettings() throws IOException {
-		settings = new SettingsHandler();
+		settings = new SettingsHandler("/tagreader.properties");
 		settings.init();
 		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
 //		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
@@ -195,12 +213,92 @@ public class Context extends com.tiempometa.timing.Context {
 		return serverAddress;
 	}
 
-	public static ResultsWebservice getResultsWebservice() {
-		return resultsWebservice;
+	public static boolean isWebserviceConnected() {
+		return restConnected;
 	}
 
-	public static RegistrationWebservice getRegistrationWebservice() {
-		return registrationWebservice;
+	/**
+	 * Returns checkpoint names for reader panel combos. Always uses local H2
+	 * (seeded at connect time from the snapshot), which avoids a round-trip
+	 * per panel open and works offline.
+	 */
+	public static List<String> getCheckPointNames() {
+		return LocalDataContext.getCheckPointNames();
+	}
+
+	/**
+	 * Looks up participants by RFID tag. Uses the live REST API when connected
+	 * (checa tu chip / letterboard use case requires current data); falls back
+	 * to the local H2 snapshot when offline.
+	 */
+	public static List<ParticipantDetailDto> findParticipantByRfid(String rfidString) {
+		if (restConnected) {
+			List<ParticipantDetailDto> result =
+					SaturnRestClient.findParticipantByRfid(serverAddress, rfidString);
+			if (result != null) return result;
+		}
+		return lookupFromLocalH2(rfidString);
+	}
+
+	/**
+	 * Looks up participants by bib number. REST-first when connected; falls back
+	 * to the local H2 snapshot when offline or when REST returns null (error).
+	 */
+	public static List<ParticipantDetailDto> findParticipantByBib(String bib) {
+		if (restConnected) {
+			List<ParticipantDetailDto> result = SaturnRestClient.findParticipantByBib(serverAddress, bib);
+			if (result != null) return result;
+		}
+		return lookupFromLocalH2ByBib(bib);
+	}
+
+	/**
+	 * Pushes a batch of model reads to saturnPandora via REST POST /api/reads.
+	 *
+	 * @return {@code true} if the push succeeded
+	 */
+	public static boolean pushRawReads(List<RawChipRead> reads) {
+		return SaturnRestClient.pushRawReads(serverAddress, reads);
+	}
+
+	private static List<ParticipantDetailDto> lookupFromLocalH2(String rfidString) {
+		List<Object[]> rows = LocalDataContext.findParticipantRowsByRfid(rfidString);
+		logger.info("H2 rfid lookup '{}' → {} row(s)", rfidString, rows.size());
+		return rowsToDto(rows);
+	}
+
+	private static List<ParticipantDetailDto> lookupFromLocalH2ByBib(String bib) {
+		List<Object[]> rows = LocalDataContext.findParticipantRowsByBib(bib);
+		logger.info("H2 bib lookup '{}' → {} row(s)", bib, rows.size());
+		return rowsToDto(rows);
+	}
+
+	private static List<ParticipantDetailDto> rowsToDto(List<Object[]> rows) {
+		if (rows.isEmpty()) return Collections.emptyList();
+		List<ParticipantDetailDto> result = new ArrayList<>(rows.size());
+		for (Object[] row : rows) {
+			ParticipantDetailDto dto = new ParticipantDetailDto();
+			dto.setQrCode(row[0] != null ? row[0].toString() : null);
+			dto.setRfidString(row[1] != null ? row[1].toString() : null);
+			dto.setNumber(row[2] != null ? row[2].toString() : null);
+			dto.setFullName(buildFullName(row[3], row[4]));
+			dto.setCategory(row[5] != null ? row[5].toString() : null);
+			dto.setSubeventTitle(row[6] != null ? row[6].toString() : null);
+			dto.setGender(row[8] != null ? row[8].toString() : null);
+			dto.setAge(row[9] != null ? Integer.valueOf(row[9].toString()) : null);
+			dto.setProvince(row[10] != null ? row[10].toString() : null);
+			dto.setTeam(row[11] != null ? row[11].toString() : null);
+			dto.setIdField0(row[12] != null ? row[12].toString() : null);
+			dto.setBirthDateString(row[13] != null ? row[13].toString() : null);
+			result.add(dto);
+		}
+		return result;
+	}
+
+	private static String buildFullName(Object first, Object last) {
+		String f = first != null ? first.toString().trim() : "";
+		String l = last  != null ? last.toString().trim()  : "";
+		return (f + " " + l).trim();
 	}
 
 	public static void setServerAddress(String serverAddress) throws IOException {
@@ -209,12 +307,27 @@ public class Context extends com.tiempometa.timing.Context {
 		Context.flushSettings();
 	}
 
-//	public static ZoneId getZoneId() {
-//		return zoneId;
-//	}
-//
-//	public static void setZoneId(ZoneId zoneId) {
-//		Context.zoneId = zoneId;
-//	}
+	/**
+	 * Downloads the full event snapshot from saturnPandora's REST API and seeds
+	 * local H2 via {@link SnapshotSeeder}.
+	 * Must be called after a successful {@link #initWebserviceClients()}.
+	 * Runs in the calling thread — wrap in SwingWorker for UI responsiveness.
+	 */
+	public static void downloadEventSnapshot() {
+		if (!restConnected) {
+			logger.warn("downloadEventSnapshot called before REST connection — skipping");
+			return;
+		}
+		logger.info("Downloading event snapshot from Saturno...");
+		SnapshotDto snap = SaturnRestClient.downloadSnapshot(serverAddress);
+		if (snap == null) {
+			logger.error("Snapshot download failed");
+			return;
+		}
+		SnapshotSeeder.seed(snap);
+	}
+
+//	public static ZoneId getZoneId() { ... }
+//	public static void setZoneId(ZoneId zoneId) { ... }
 
 }

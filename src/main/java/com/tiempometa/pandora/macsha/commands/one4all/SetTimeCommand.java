@@ -41,18 +41,18 @@ public class SetTimeCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(SetTimeCommand.class);
 	
-	// Con el fin de configurar la fecha y hora interna del sistema, el host envía
-	// SETTIME;yyyy-MM-dd;HH:mm:ss<CrLf>. Esta operación puede ser realizada
+	// Con el fin de configurar la fecha y hora interna del sistema, el host envÃ­a
+	// SETTIME;yyyy-MM-dd;HH:mm:ss<CrLf>. Esta operaciÃ³n puede ser realizada
 	// solamente en Stop mode.
 	//
 	// El One4All responde:
 	// SETTIME;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// En el éxito, la fecha y hora configurada con el siguiente formato:
+	// En el Ã©xito, la fecha y hora configurada con el siguiente formato:
 	// yyyy-MM-dd;HH:mm:ss
 	// STARTMODE, si el sistema esta en Start mode.
-	// ERR, si ocurrió algún error.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < SETTIME;2017-12-23;15:30:55<CrLf>

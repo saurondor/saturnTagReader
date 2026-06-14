@@ -72,7 +72,7 @@ public class JImportBackupPanel extends JPanel {
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		String[] checkPointArray = new String[checkPoints.size()];
 		if (checkPointArray.length > 0) {
 			checkPointComboBox.setEnabled(true);
@@ -97,11 +97,11 @@ public class JImportBackupPanel extends JPanel {
 					Context.saveWorkingDirectory(dataFile.getPath());
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(this, "Error cargando los datos " + e1.getMessage(),
-							"Error de importación", JOptionPane.ERROR_MESSAGE);
+							"Error de importaciÃ³n", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		} catch (IOException e2) {
-			JOptionPane.showMessageDialog(this, "Error cargando los datos " + e2.getMessage(), "Error de importación",
+			JOptionPane.showMessageDialog(this, "Error cargando los datos " + e2.getMessage(), "Error de importaciÃ³n",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -118,7 +118,7 @@ public class JImportBackupPanel extends JPanel {
 		List<RawChipRead> chipReads;
 		if (importer instanceof MacshaCloudBackupImporter) {
 			// convert bib to rfid
-			chipReads = Context.getResultsWebservice().populateRfidByChipNumber(importer.getChipReads());
+			chipReads = importer.getChipReads(); // TODO: populateRfidByChipNumber has no REST equivalent yet
 		} else {
 			chipReads = importer.getChipReads();
 		}
@@ -157,10 +157,26 @@ public class JImportBackupPanel extends JPanel {
 		int listSize = tableModel.getChipReads().size();
 		for (int i = 0; i < listSize; i += 2000) {
 			List<RawChipRead> readings = tableModel.getChipReads().subList(i, Math.min(listSize, i + 2000));
-			Context.getResultsWebservice().batchSaveRawReads(readings);
+			List<com.tiempometa.timing.model.RawChipRead> localReadings = new java.util.ArrayList<>();
+			for (RawChipRead r : readings) {
+				com.tiempometa.timing.model.RawChipRead local = new com.tiempometa.timing.model.RawChipRead();
+				local.setRfidString(r.getRfidString());
+				local.setTimeMillis(r.getTimeMillis());
+				local.setCheckPoint(r.getCheckPoint());
+				local.setLoadName(r.getLoadName());
+				local.setReadType(r.getReadType());
+				local.setDevice(r.getDevice());
+				local.setChipNumber(r.getChipNumber());
+				local.setDistance(r.getDistance());
+				local.setCalories(r.getCalories());
+				local.setSteps(r.getSteps());
+				local.setRunTime(r.getRunTime());
+				localReadings.add(local);
+			}
+			Context.pushRawReads(localReadings);
 		}
 		JOptionPane.showMessageDialog(this, "Se guardaron " + tableModel.getChipReads().size() + " lecturas",
-				"Importación exitosa", JOptionPane.INFORMATION_MESSAGE);
+				"ImportaciÃ³n exitosa", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void initComponents() {

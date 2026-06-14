@@ -39,18 +39,18 @@ public class SetProtocolCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(SetProtocolCommand.class);
 
-	// Para configurar la versión de protocolo en el sistema, el host envía
-	// SETPROTOCOL<Version><CrLf>. Esta operación puede ser realizada solamente en
+	// Para configurar la versiÃ³n de protocolo en el sistema, el host envÃ­a
+	// SETPROTOCOL<Version><CrLf>. Esta operaciÃ³n puede ser realizada solamente en
 	// Stop mode.
 	//
 	// El One4All responde:
 	// SETPROTOCOL;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// <Version>, en el éxito, la versión actual del protocolo.
+	// <Version>, en el Ã©xito, la versiÃ³n actual del protocolo.
 	// STARTMODE, si el sistema esta en Start mode.
-	// UNKNOWN, si la versión solicitada no existe o no esta disponible.
-	// ERR, si ocurrió algún error.
+	// UNKNOWN, si la versiÃ³n solicitada no existe o no esta disponible.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < SETPROTOCOL;3.0<CrLf>

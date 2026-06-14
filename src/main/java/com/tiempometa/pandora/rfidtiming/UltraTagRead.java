@@ -63,17 +63,17 @@ public class UltraTagRead {
 	// was detected on.
 	// RSSI Negative integer value. This is the signal strength for the chip read.
 	// IsRewind 0 or 1. A value of 1 means the data is being transmitted from a
-	// rewind command, in other words it is not a ‘live’ read. Live and rewound data
-	// will be mixed up in between each other if you do a ‘rewind while reading’.
+	// rewind command, in other words it is not a â€˜liveâ€™ read. Live and rewound data
+	// will be mixed up in between each other if you do a â€˜rewind while readingâ€™.
 	// ReaderNo Integer value of from 1 to 3 representing the reader number. There
 	// are 2 readers in an Ultra. A reader number of 3 is used for MTB downhill
 	// start times.
 	// UltraID Integer value. See section 3.1 ReaderTime 8 characters representing
 	// the 64-bit time recorded by the UHF readers. Not available for some Ultra
-	// models – please speak to your supplier for more information.
+	// models â€“ please speak to your supplier for more information.
 	// StartTime For MTB downhill racing. Integer value representing the number of
 	// seconds after 01/01/1980
-	// LogID Integer value representing the record’s position in the log (starting
+	// LogID Integer value representing the recordâ€™s position in the log (starting
 	// at one)
 
 	private String chipCode;

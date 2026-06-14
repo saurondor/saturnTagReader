@@ -40,7 +40,7 @@ public class TagReadTableModel extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 4901920600211371008L;
-	private static final String[] HEADERS = { "tag", "hora", "punto", "número", "nombre", "categoría" };
+	private static final String[] HEADERS = { "tag", "hora", "punto", "nÃºmero", "nombre", "categorÃ­a" };
 	private List<TagReadLog> tagReads = new ArrayList<TagReadLog>();
 
 	/*

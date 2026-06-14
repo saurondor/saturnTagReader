@@ -40,8 +40,6 @@ import org.apache.logging.log4j.Logger;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.api.DataRequestException;
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
@@ -50,7 +48,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListener {
 	/**
 	 * 
 	 */
@@ -61,6 +59,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	private TagReadListener tagReadListener;
 	private Integer tagCount = 0;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private boolean connected = false;
 
 	public JTiempoMetaCloudPanel(JReaderListPanel listPanel) {
 		initComponents();
@@ -74,23 +73,24 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 				eventTitleLabel.setText(reader.getEvent().getTitle());
 				Thread thread = new Thread(reader);
 				thread.start();
+				connected = true;
 			} else {
 				eventTitleLabel.setText("Error conectando");
 			}
 		} catch (ClientProtocolException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciÃ³n",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciÃ³n",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (DataRequestException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicación",
+			JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de comunicaciÃ³n",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -101,7 +101,7 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 
 	private void rewindTagReadsButtonActionPerformed(ActionEvent e) {
 		int response = JOptionPane.showConfirmDialog(this,
-				"Esta acción descargará todas las lecturas nuevamente. ¿Deseas continuar?", "Rebobinar lecturas",
+				"Esta acciÃ³n descargarÃ¡ todas las lecturas nuevamente. Â¿Deseas continuar?", "Rebobinar lecturas",
 				JOptionPane.YES_NO_OPTION);
 		if (response == JOptionPane.YES_OPTION) {
 			reader.rewindAll();
@@ -111,14 +111,14 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 	private void clearTagReadsButtonActionPerformed(ActionEvent e) {
 		String confirmation = UUID.randomUUID().toString().substring(9, 13);
 		String response = JOptionPane.showInputDialog(this,
-				"Esto borrará todas las lecturas en la nube. Esta operación no se puede deshacer.\n"
+				"Esto borrarÃ¡ todas las lecturas en la nube. Esta operaciÃ³n no se puede deshacer.\n"
 						+ "Para continuar por favor digita los siguientes caracteres para confirmar:" + confirmation,
 				null);
 		if ((response != null) && (response.equals(confirmation))) {
 			reader.clearTags();
 			JOptionPane.showMessageDialog(this, "Se borraron todos los tags.");
 		} else {
-			JOptionPane.showMessageDialog(this, "Operación cancelada.");
+			JOptionPane.showMessageDialog(this, "OperaciÃ³n cancelada.");
 		}
 	}
 
@@ -260,22 +260,12 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 			for (RawChipRead rawChipRead : chipReadList) {
 				logger.debug("TAG READ " + rawChipRead.getRfidString());
 			}
-			tagReadListener.notifyTagReads(chipReadList);
+			if (tagReadListener != null) {
+				tagReadListener.notifyTagReads(chipReadList);
+			}
 			tagCount = tagCount + chipReadList.size();
 			tagsReadLabel.setText(tagCount.toString());
 		}
-	}
-
-	@Override
-	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public JReaderListPanel getListPanel() {
@@ -288,5 +278,21 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements CommandRespon
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return connected;
+	}
+
+	@Override
+	public void disconnect() {
+		reader.disconnect();
+		connected = false;
+	}
+
+	@Override
+	public String getLabel() {
+		return "TiempoMeta Cloud";
 	}
 }

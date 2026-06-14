@@ -37,8 +37,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
@@ -48,7 +46,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 	/**
 	 * 
 	 */
@@ -58,7 +56,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 	private UltraClient reader = new UltraClient();
 	private String checkPoint1 = null;
 	private TagReadListener tagReadListener;
-	private Integer tagCount;
+	private Integer tagCount = 0;
 
 	public void setTerminal(String terminal) {
 		terminalTextField.setText(terminal);
@@ -67,7 +65,6 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 	public JUltraReaderPanel(JReaderListPanel listPanel) {
 		initComponents();
 		this.listPanel = listPanel;
-		reader.setCommandResponseHandler(this);
 		reader.registerTagReadListener(this);
 		loadCheckPoints();
 	}
@@ -77,7 +74,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 	 */
 	private void loadCheckPoints() {
 //		RouteDao rDao = (RouteDao) Context.getCtx().getBean("routeDao");
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);
@@ -98,7 +95,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+						"Error de configuraciÃ³n", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -107,7 +104,7 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiÃ³n",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -347,26 +344,15 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
 		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {
 			logger.debug("TAG READ " + rawChipRead.getRfidString());
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 		tagCount = tagCount + chipReadList.size();
 		tagsReadLabel.setText(tagCount.toString());
-	}
-
-	@Override
-	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public JReaderListPanel getListPanel() {
@@ -379,5 +365,22 @@ public class JUltraReaderPanel extends JReaderPanel implements CommandResponseHa
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Ultra";
 	}
 }

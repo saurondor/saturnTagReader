@@ -39,8 +39,8 @@ public class GetFileInfoCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(GetFileInfoCommand.class);
 
-	// Para traer la información específica de un cierto archivo de backup, el host
-	// envía GETFILEINFO;<FileName><CrLf>.
+	// Para traer la informaciÃ³n especÃ­fica de un cierto archivo de backup, el host
+	// envÃ­a GETFILEINFO;<FileName><CrLf>.
 	//
 	// Donde <FileName>, es el nombre del archivo de backup, con el formato
 	// yyyyMMdd-HHmmss.csv.
@@ -52,11 +52,11 @@ public class GetFileInfoCommand extends MacshaCommand {
 	// <FirstPassing>;<LastPassing>;<TotalPassings>, son:
 	// <FirstPassing>, es la fecha y hora de la primer pasada en el archivo con el
 	// formato yyyy-MM-dd;HH:mm:ss.kkk.
-	// <LastPassing>, es la fecha y hora de la última pasada en el archivo con el
+	// <LastPassing>, es la fecha y hora de la Ãºltima pasada en el archivo con el
 	// formato yyyy-MM-dd;HH:mm:ss.kkk.
 	// <TotalPassings>, es la cantidad total de pasadas en el archivo.
 	// FILENOTFOUND, si el archivo no existe.
-	// ERR, si ocurre algún error durante el proceso.
+	// ERR, si ocurre algÃºn error durante el proceso.
 	//
 	// Ejemplo:
 	// < GETFILEINFO;20171222-093055.csv<CrLf>

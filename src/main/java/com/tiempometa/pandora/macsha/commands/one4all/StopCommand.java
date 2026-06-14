@@ -39,15 +39,15 @@ public class StopCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(StopCommand.class);
 
-	// Para finalizar la lectura de los chips, el host envía STOP<CrLf>
+	// Para finalizar la lectura de los chips, el host envÃ­a STOP<CrLf>
 	//
 	// El One4All responde:
 	// STOP;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// OK, en el éxito.
+	// OK, en el Ã©xito.
 	// STOPMODE, si el sistema ya esta en Stop mode.
-	// ERRCLOSE, ERRSTOP, ERR, si ocurre algún otro error durante el proceso de
+	// ERRCLOSE, ERRSTOP, ERR, si ocurre algÃºn otro error durante el proceso de
 	// parada.
 	//
 	// Ejemplo:

@@ -40,11 +40,11 @@ public class GetPassingsCommand extends MacshaCommand {
 	private static final Logger logger = LogManager.getLogger(GetPassingsCommand.class);
 
 	// Con el fin de recibir los datos completos de las pasadas del archivo de
-	// sesión actual, el host envía GETPASSINGS;<StartPassing>;<EndPassing><CrLf>.
+	// sesiÃ³n actual, el host envÃ­a GETPASSINGS;<StartPassing>;<EndPassing><CrLf>.
 	//
 	// Donde:
-	// <StartPassing>, es el número inicial de las pasadas a enviar.
-	// <EndPassing>, es el número final de las pasadas a enviar.
+	// <StartPassing>, es el nÃºmero inicial de las pasadas a enviar.
+	// <EndPassing>, es el nÃºmero final de las pasadas a enviar.
 	//
 	// Ejemplo:
 	// < GETPASSINGS;15;15<CrLf>

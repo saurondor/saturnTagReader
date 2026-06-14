@@ -25,6 +25,7 @@ package com.tiempometa.pandora.tagreader;
 
 import java.time.LocalDateTime;
 
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.webservice.model.RawChipRead;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 
@@ -57,6 +58,17 @@ public class TagReadLog {
 		log.setCategory(registration.getCategoryTitle());
 		log.setName(registration.getFullName());
 		log.setBib(registration.getBib());
+		return log;
+	}
+
+	public static TagReadLog fromRawRead(RawChipRead rawChipRead, ParticipantDetailDto dto) {
+		TagReadLog log = new TagReadLog();
+		log.setTag(rawChipRead.getRfidString());
+		log.setTime(rawChipRead.getTime());
+		log.setCheckPoint(rawChipRead.getCheckPoint());
+		log.setCategory(dto.getCategory());
+		log.setName(dto.getFullName());
+		log.setBib(dto.getNumber());
 		return log;
 	}
 

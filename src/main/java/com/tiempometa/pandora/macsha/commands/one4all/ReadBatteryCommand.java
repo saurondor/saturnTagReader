@@ -39,19 +39,19 @@ public class ReadBatteryCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(ReadBatteryCommand.class);
 
-	// Con el fin de recibir el estado de la baterÌa interna, el host envÌa
+	// Con el fin de recibir el estado de la bater√≠a interna, el host env√≠a
 	// READBATTERY;<CrLf>.
 	//
 	// El One4All responde:
 	// READBATTERY;VOLTS<Volts>;PERCENT<Percent>;HASPOWER<HasPower><CrLf>
 	//
 	// Donde:
-	// <Volts>, es el voltaje actual de la baterÌa. 26,5 Volts es el valor m·ximo.
-	// <Percent>, es la carga actual en porcentaje de la baterÌa. Desde 0% hasta
+	// <Volts>, es el voltaje actual de la bater√≠a. 26,5 Volts es el valor m√°ximo.
+	// <Percent>, es la carga actual en porcentaje de la bater√≠a. Desde 0% hasta
 	// 100%.
 	// <HasPower>, es:
-	// true, si el sistema esta conectado a la red elÈctrica y cargando.
-	// false, si el sistema no esta conectado a la red elÈctrica.
+	// true, si el sistema esta conectado a la red el√©ctrica y cargando.
+	// false, si el sistema no esta conectado a la red el√©ctrica.
 	//
 	// Ejemplo:
 	// < READBATTERY<CrLf>

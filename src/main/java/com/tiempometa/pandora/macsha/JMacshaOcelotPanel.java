@@ -95,7 +95,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);
@@ -117,22 +117,17 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	private void doConnectButton() {
 		if (reader.isConnected()) {
-			try {
-				disconnectReader();
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexi髇",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			disconnectReader();
 		} else {
 			try {
 				if (checkPoint == null) {
 					JOptionPane.showMessageDialog(this, "Se debe seleccionar un punto antes de conectar",
-							"Error de configuraci髇", JOptionPane.WARNING_MESSAGE);
+							"Error de configuraci贸n", JOptionPane.WARNING_MESSAGE);
 				} else {
 					connectReader();
 				}
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi髇",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexi贸n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -159,7 +154,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 	/**
 	 * @throws IOException
 	 */
-	private void disconnectReader() throws IOException {
+	private void disconnectReader() {
 		reader.disconnect();
 		connectButton.setText("Conectar");
 		connectButton.setBackground(Color.RED);
@@ -409,27 +404,19 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyCommException(IOException e) {
-		JOptionPane.showMessageDialog(this, "Se ha perdido la conexi髇 al reader. " + e.getMessage(),
-				"Error de conexi髇", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se ha perdido la conexi贸n al reader. " + e.getMessage(),
+				"Error de conexi贸n", JOptionPane.ERROR_MESSAGE);
 		shutdownReader();
 	}
 
 	private void shutdownReader() {
-		try {
-			reader.stop();
-			connectButton.setText("Conectar");
-			connectButton.setBackground(Color.RED);
-			started = false;
-			startReadingButton.setText("Iniciar Lectura");
-			startReadingButton.setEnabled(false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexi髇", JOptionPane.ERROR_MESSAGE);
-		}
+		reader.stop();
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		started = false;
+		startReadingButton.setText("Iniciar Lectura");
+		startReadingButton.setEnabled(false);
 	}
-
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
 		tagsRead = tagsRead + chipReadList.size();
@@ -451,7 +438,9 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 				break;
 			}
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 	}
 
 	@Override
@@ -463,11 +452,7 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 			synchronized (this) {
 				retrying = true;
 			}
-			try {
-				disconnectReader();
-			} catch (IOException e1) {
-				logger.error("Unable to disconnect from reader on timeout. " + e1.getMessage());
-			}
+			disconnectReader();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -522,5 +507,22 @@ public class JMacshaOcelotPanel extends JReaderPanel implements CommandResponseH
 		InputStream mp3Stream = this.getClass().getResourceAsStream("/keepalive.mp3");
 		Player player = new Player(mp3Stream);
 		player.play();
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Macsha Ocelot";
 	}
 }

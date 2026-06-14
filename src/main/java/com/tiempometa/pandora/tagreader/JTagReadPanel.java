@@ -53,33 +53,33 @@ public class JTagReadPanel extends JPanel {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
-		label1 = new JLabel();
-		scrollPane1 = new JScrollPane();
-		tagReadTable = new JTable();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
+        label1 = new JLabel();
+        scrollPane1 = new JScrollPane();
+        tagReadTable = new JTable();
 
-		//======== this ========
-		setFont(new Font("Tahoma", Font.BOLD, 12));
-		setLayout(new FormLayout(
-			"7dlu, 407dlu, 7dlu",
-			"2*(default, $lgap), default"));
+        //======== this ========
+        setFont(new Font("Tahoma", Font.BOLD, 12));
+        setLayout(new FormLayout(
+            "7dlu, 407dlu, 7dlu",
+            "2*(default, $lgap), default"));
 
-		//---- label1 ----
-		label1.setText(bundle.getString("JTagReadPanel.label1.text"));
-		label1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		add(label1, CC.xy(2, 1));
+        //---- label1 ----
+        label1.setText(bundle.getString("JTagReadPanel.label1.text"));
+        label1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        add(label1, CC.xy(2, 1));
 
-		//======== scrollPane1 ========
-		{
-			scrollPane1.setViewportView(tagReadTable);
-		}
-		add(scrollPane1, CC.xy(2, 3));
+        //======== scrollPane1 ========
+        {
+            scrollPane1.setViewportView(tagReadTable);
+        }
+        add(scrollPane1, CC.xy(2, 3));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JLabel label1;
-	private JScrollPane scrollPane1;
-	private JTable tagReadTable;
+    private JLabel label1;
+    private JScrollPane scrollPane1;
+    private JTable tagReadTable;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 }

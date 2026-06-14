@@ -39,17 +39,17 @@ public class PasingsCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(PasingsCommand.class);
 
-	// Con el fin de recibir el número de pasadas y los últimos ocho chips leídos de
-	// la sesión de cronometraje actual, el host envía PASSINGS<CrLf>.
+	// Con el fin de recibir el nÃºmero de pasadas y los Ãºltimos ocho chips leÃ­dos de
+	// la sesiÃ³n de cronometraje actual, el host envÃ­a PASSINGS<CrLf>.
 	//
 	// El One4All responde:
 	// PASSINGS;<Number>;<Last eight><CrLf>
 	//
 	// Donde:
-	// <Number>, es el número de pasadas actuales de la sesión de cronometraje.
+	// <Number>, es el nÃºmero de pasadas actuales de la sesiÃ³n de cronometraje.
 	// <Last eight>, es:
-	// los últimos ocho chips leídos con el formato: MC00001;MC00002;MC00003;…
-	// ERR, si ocurre algún error durante el proceso.
+	// los Ãºltimos ocho chips leÃ­dos con el formato: MC00001;MC00002;MC00003;â€¦
+	// ERR, si ocurre algÃºn error durante el proceso.
 	//
 	// Ejemplo:
 	// < PASSINGS<CrLf>

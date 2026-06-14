@@ -39,8 +39,8 @@ public class SetBuzzerCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(SetBuzzerCommand.class);
 
-	// Con el fin de habilitar/deshabilitar el buzzer y la señal lumínica, el host
-	// envía SETBUZZER;<Status><CrLf>.
+	// Con el fin de habilitar/deshabilitar el buzzer y la seÃ±al lumÃ­nica, el host
+	// envÃ­a SETBUZZER;<Status><CrLf>.
 	//
 	// Donde <Status> es:
 	// true, para habilitar el buzzer.
@@ -50,8 +50,8 @@ public class SetBuzzerCommand extends MacshaCommand {
 	// SETBUZZER;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// true, false, en el éxito.
-	// ERR, si ocurrió algún error.
+	// true, false, en el Ã©xito.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < SETBUZZER;true<CrLf>

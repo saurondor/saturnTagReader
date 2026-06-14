@@ -24,8 +24,11 @@
 package com.tiempometa.pandora.checatuchip.preview;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +39,7 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.webservice.model.Bib;
 import com.tiempometa.webservice.model.Participant;
+import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.webservice.model.ParticipantRegistration;
 import com.tiempometa.webservice.model.Registration;
 
@@ -74,7 +78,7 @@ public class JContentPreviewPanel extends JPanel {
 	}
 
 	public void enableCategoryField() {
-		JFieldPanel panel = new JFieldPanel("Categoría");
+		JFieldPanel panel = new JFieldPanel("CategorÃ­a");
 		fieldsPanel.add(panel);
 		panelMap.put(FIELD_CATEGORY, panel);
 	}
@@ -86,7 +90,7 @@ public class JContentPreviewPanel extends JPanel {
 	}
 
 	public void enableGenderField() {
-		JFieldPanel panel = new JFieldPanel("Género");
+		JFieldPanel panel = new JFieldPanel("GÃ©nero");
 		fieldsPanel.add(panel);
 		panelMap.put(FIELD_GENDER, panel);
 	}
@@ -231,48 +235,88 @@ public class JContentPreviewPanel extends JPanel {
 		revalidate();
 	}
 
+	private void manualSearchTextFieldKeyReleased(KeyEvent e) {
+		if (e.getKeyCode() != KeyEvent.VK_ENTER) return;
+		String bib = manualSearchTextField.getText().trim();
+		if (bib.isEmpty()) return;
+		manualSearchTextField.setText("");
+		new SwingWorker<List<ParticipantDetailDto>, Void>() {
+			@Override
+			protected List<ParticipantDetailDto> doInBackground() {
+				return Context.findParticipantByBib(bib);
+			}
+			@Override
+			protected void done() {
+				try {
+					List<ParticipantDetailDto> results = get();
+					setRegistration(results != null && !results.isEmpty() ? results.get(0) : null);
+				} catch (Exception ex) {
+					logger.error("Bib lookup failed: {}", ex.getMessage());
+				}
+			}
+		}.execute();
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.checatuchip.preview.jpreview");
-		bibLabel = new JLabel();
-		fieldsPanel = new JPanel();
-		panel2 = new JFieldPanel();
-		panel3 = new JFieldPanel();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.checatuchip.preview.jpreview");
+        bibLabel = new JLabel();
+        fieldsPanel = new JPanel();
+        panel2 = new JFieldPanel();
+        panel3 = new JFieldPanel();
+        label1 = new JLabel();
+        manualSearchTextField = new JTextField();
 
-		// ======== this ========
-		setBackground(Color.white);
-		setLayout(new FormLayout("5dlu, $lcgap, default, $lcgap, 159dlu, $lcgap, default:grow",
-				"5dlu, 2*($lgap, default), $lgap, 89dlu:grow"));
+        //======== this ========
+        setBackground(Color.white);
+        setLayout(new FormLayout(
+            "5dlu, $lcgap, default, $lcgap, 159dlu, $lcgap, default:grow",
+            "5dlu, 2*($lgap, default), $lgap, 89dlu:grow, $lgap, default"));
 
-		// ---- bibLabel ----
-		bibLabel.setText(bundle.getString("JContentPreviewPanel.bibLabel.text"));
-		bibLabel.setFont(new Font("Tahoma", Font.BOLD, 72));
-		bibLabel.setForeground(Color.red);
-		bibLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		add(bibLabel, CC.xywh(3, 3, 5, 1));
+        //---- bibLabel ----
+        bibLabel.setText(bundle.getString("JContentPreviewPanel.bibLabel.text"));
+        bibLabel.setFont(new Font("Tahoma", Font.BOLD, 72));
+        bibLabel.setForeground(Color.red);
+        bibLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(bibLabel, CC.xywh(3, 3, 5, 1));
 
-		// ======== fieldsPanel ========
-		{
-			fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
+        //======== fieldsPanel ========
+        {
+            fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.Y_AXIS));
 
-			// ---- panel2 ----
-			panel2.setBackground(Color.white);
-			fieldsPanel.add(panel2);
+            //---- panel2 ----
+            panel2.setBackground(Color.white);
+            fieldsPanel.add(panel2);
 
-			// ---- panel3 ----
-			panel3.setBackground(Color.white);
-			fieldsPanel.add(panel3);
-		}
-		add(fieldsPanel, CC.xywh(3, 5, 5, 1));
+            //---- panel3 ----
+            panel3.setBackground(Color.white);
+            fieldsPanel.add(panel3);
+        }
+        add(fieldsPanel, CC.xywh(3, 5, 5, 1));
+
+        //---- label1 ----
+        label1.setText(bundle.getString("JContentPreviewPanel.label1.text"));
+        add(label1, CC.xy(3, 9));
+
+        //---- manualSearchTextField ----
+        manualSearchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                manualSearchTextFieldKeyReleased(e);
+            }
+        });
+        add(manualSearchTextField, CC.xy(5, 9));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JLabel bibLabel;
-	private JPanel fieldsPanel;
-	private JFieldPanel panel2;
-	private JFieldPanel panel3;
+    private JLabel bibLabel;
+    private JPanel fieldsPanel;
+    private JFieldPanel panel2;
+    private JFieldPanel panel3;
+    private JLabel label1;
+    private JTextField manualSearchTextField;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public Registration getRegistration() {
@@ -306,7 +350,7 @@ public class JContentPreviewPanel extends JPanel {
 
 		} else {
 			if (registration.getParticipants().get(0).getBib() == null) {
-				bibLabel.setText("-- Sin Número --");
+				bibLabel.setText("-- Sin NÃºmero --");
 			} else {
 				bibLabel.setText(registration.getParticipants().get(0).getBib().getBib());
 			}
@@ -369,6 +413,32 @@ public class JContentPreviewPanel extends JPanel {
 		this.registration = registration;
 	}
 
+	public void setRegistration(ParticipantDetailDto dto) {
+		if (dto == null) {
+			setRegistration((ParticipantRegistration) null);
+			return;
+		}
+		bibLabel.setText(dto.getNumber() != null ? dto.getNumber() : "-- Sin NÃºmero --");
+		JFieldPanel panel = panelMap.get(FIELD_NAME);
+		setFieldValue(panel, dto.getFullName());
+		panel = panelMap.get(FIELD_AGE);
+		setFieldValue(panel, dto.getAge() != null ? dto.getAge().toString() : "No disponible");
+		panel = panelMap.get(FIELD_BIRTHDATE);
+		setFieldValue(panel, dto.getBirthDateString() != null ? dto.getBirthDateString() : "No disponible");
+		panel = panelMap.get(FIELD_CATEGORY);
+		setFieldValue(panel, dto.getCategory());
+		panel = panelMap.get(FIELD_GENDER);
+		setFieldValue(panel, dto.getGender());
+		panel = panelMap.get(FIELD_LABEL_COLOR);
+		setFieldValue(panel, dto.getIdField0());
+		panel = panelMap.get(FIELD_PROCEDENCE);
+		setFieldValue(panel, dto.getProvince());
+		panel = panelMap.get(FIELD_SUBEVENT);
+		setFieldValue(panel, dto.getSubeventTitle());
+		panel = panelMap.get(FIELD_TEAM);
+		setFieldValue(panel, dto.getTeam());
+	}
+
 	public void setRegistration(ParticipantRegistration participantRegistration) {
 		populateFields(participantRegistration);
 	}
@@ -398,7 +468,7 @@ public class JContentPreviewPanel extends JPanel {
 		} else {
 			logger.info("Participan is " + participantRegistration);
 			if (participantRegistration.getBib() == null) {
-				bibLabel.setText("-- Sin Número --");
+				bibLabel.setText("-- Sin NÃºmero --");
 			} else {
 				bibLabel.setText(participantRegistration.getBib());
 			}

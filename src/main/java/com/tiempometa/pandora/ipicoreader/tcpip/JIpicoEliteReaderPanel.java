@@ -79,7 +79,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 	 */
 	private void loadCheckPoints() {
 		try {
-			List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+			List<String> checkPoints = Context.getCheckPointNames();
 			logger.debug("Available checkpoints ");
 			for (String string : checkPoints) {
 				logger.debug(string);
@@ -104,7 +104,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+						"Error de configuraciÃ³n", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -113,7 +113,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiÃ³n",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -153,7 +153,7 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 //			client.sendCommand(new GetTimeCommand());
 			client.sendCommand(new SetTimeCommand());
 //			client.sendCommand(new GetTimeCommand());
-			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Se fijÃ³ la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
 		} catch (InvalidTelnetOptionException | IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -376,7 +376,9 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 			for (RawChipRead rawChipRead : chipReadList) {
 				logger.debug("TAG READ " + rawChipRead.getRfidString());
 			}
-			tagReadListener.notifyTagReads(chipReadList);
+			if (tagReadListener != null) {
+				tagReadListener.notifyTagReads(chipReadList);
+			}
 			tagCount = tagCount + chipReadList.size();
 			tagsReadLabel.setText(tagCount.toString());
 		}
@@ -384,14 +386,13 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 
 	@Override
 	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
+		logger.debug("Command response received: " + command.getClass().getSimpleName());
 	}
 
 	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {
@@ -404,5 +405,22 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "IPICO Elite";
 	}
 }

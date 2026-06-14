@@ -37,8 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
-import com.tiempometa.pandora.ipicoreader.CommandResponseHandler;
-import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
+import com.tiempometa.pandora.foxberry.FoxberryCommandResponseHandler;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
@@ -48,7 +47,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener {
 	/**
 	 * 
 	 */
@@ -76,7 +75,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);
@@ -97,7 +96,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 		} else {
 			if (checkPoint1 == null) {
 				JOptionPane.showMessageDialog(this, "Se debe fijar un punto antes de conectar",
-						"Error de configuración", JOptionPane.ERROR_MESSAGE);
+						"Error de configuraciÃ³n", JOptionPane.ERROR_MESSAGE);
 			} else {
 				reader.setHostname(readerAddressTextField.getText());
 				try {
@@ -106,7 +105,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 					thread.start();
 					setConnected();
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+					JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiÃ³n",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -146,7 +145,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 ////			client.sendCommand(new GetTimeCommand());
 //			client.sendCommand(new SetTimeCommand());
 ////			client.sendCommand(new GetTimeCommand());
-//			JOptionPane.showMessageDialog(this, "Se fijó la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
+//			JOptionPane.showMessageDialog(this, "Se fijÃ³ la hora", "Fijar hora", JOptionPane.INFORMATION_MESSAGE);
 //		} catch (InvalidTelnetOptionException | IOException e1) {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();
@@ -364,26 +363,21 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		// TODO Auto-generated method stub
 		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {
 			logger.debug("TAG READ " + rawChipRead.getRfidString());
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 		tagCount = tagCount + chipReadList.size();
 		tagsReadLabel.setText(tagCount.toString());
 	}
 
 	@Override
-	public void handleCommandResponse(IpicoCommand command) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void notifyCommException(IOException e) {
-		// TODO Auto-generated method stub
-
+		logger.error("Connection lost to reader", e);
+		setDisconnected();
 	}
 
 	public JReaderListPanel getListPanel() {
@@ -396,5 +390,22 @@ public class JFoxberryReaderPanel extends JReaderPanel implements CommandRespons
 
 	public TagReadListener getTagReadListener() {
 		return tagReadListener;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Foxberry";
 	}
 }

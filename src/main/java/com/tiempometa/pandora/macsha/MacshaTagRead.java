@@ -48,7 +48,7 @@ public class MacshaTagRead {
 	private static DateTimeFormatter version3DateTimeFormatter = DateTimeFormatter.ofPattern("uuuuMMdd HHmmssSSS");
 	// 20200313141812293
 
-	// “MC00001D20150414T120755416T120758010A1R034TV”
+	// â€œMC00001D20150414T120755416T120758010A1R034TVâ€
 	// 012345678901234567890123456789012345678901
 
 	public static MacshaTagRead parseVersion3(String data, ZoneId zoneId) {

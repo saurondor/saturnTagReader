@@ -39,16 +39,16 @@ public class GetTimeCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(GetTimeCommand.class);
 
-	// Con el fin de obtener la fecha y hora interna del sistema, el host envía
+	// Con el fin de obtener la fecha y hora interna del sistema, el host envÃ­a
 	// GETTIME<CrLf>.
 	//
 	// El One4All responde:
 	// GETTIME;<Response><CrLf>
 	//
 	// Donde <Response> es:
-	// En el éxito, la fecha y hora del sistema con el siguiente formato:
+	// En el Ã©xito, la fecha y hora del sistema con el siguiente formato:
 	// yyyy-MM-dd;HH:mm:ss
-	// ERR, si ocurrió algún error.
+	// ERR, si ocurriÃ³ algÃºn error.
 	//
 	// Ejemplo:
 	// < GETTIME<CrLf>

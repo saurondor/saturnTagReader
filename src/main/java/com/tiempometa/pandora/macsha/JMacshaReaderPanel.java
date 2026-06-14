@@ -83,7 +83,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	 * 
 	 */
 	private void loadCheckPoints() {
-		List<String> checkPoints = Context.getResultsWebservice().getCheckPointNames();
+		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
 			logger.debug(string);
@@ -100,16 +100,11 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 
 	private void connectButtonActionPerformed(ActionEvent e) {
 		if (reader.isConnected()) {
-			try {
-				reader.disconnect();
-				connectButton.setText("Conectar");
-				connectButton.setBackground(Color.RED);
-				startReadingButton.setEnabled(false);
-				setTimeButton.setEnabled(false);
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo desconectar. " + e1.getMessage(), "Error de conexión",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			reader.disconnect();
+			connectButton.setText("Conectar");
+			connectButton.setBackground(Color.RED);
+			startReadingButton.setEnabled(false);
+			setTimeButton.setEnabled(false);
 		} else {
 			try {
 				Thread workerThread = new Thread(reader);
@@ -124,7 +119,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 				startReadingButton.setEnabled(true);
 				setTimeButton.setEnabled(true);
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexión",
+				JOptionPane.showMessageDialog(this, "No se pudo conectar. " + e1.getMessage(), "Error de conexiÃ³n",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -396,7 +391,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	public void handleCommandResponse(MacshaCommand command) {
 		logger.info("Handling command " + command.getClass().getCanonicalName());
 		if (command instanceof SetTimeCommand) {
-			JOptionPane.showMessageDialog(this, "Se fijó la hora del reader");
+			JOptionPane.showMessageDialog(this, "Se fijÃ³ la hora del reader");
 		}
 		if (command instanceof ReadBatteryCommand) {
 			ReadBatteryCommand batteryCommand = (ReadBatteryCommand) command;
@@ -425,29 +420,21 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 
 	@Override
 	public void notifyCommException(IOException e) {
-		JOptionPane.showMessageDialog(this, "Se ha perdido la conexión al reader. " + e.getMessage(),
-				"Error de conexión", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se ha perdido la conexiÃ³n al reader. " + e.getMessage(),
+				"Error de conexiÃ³n", JOptionPane.ERROR_MESSAGE);
 		shutdownReader();
 	}
 
 	private void shutdownReader() {
-		try {
-			reader.stop();
-			connectButton.setText("Conectar");
-			connectButton.setBackground(Color.RED);
-			batteryLabel.setEnabled(false);
-			acPowerRadioButton.setEnabled(false);
-			started = false;
-			startReadingButton.setText("Iniciar Lectura");
-			startReadingButton.setEnabled(false);
-			setTimeButton.setEnabled(false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "No se pudo detener el servicio. " + e.getMessage(),
-					"Error de conexión", JOptionPane.ERROR_MESSAGE);
-		}
-
+		reader.stop();
+		connectButton.setText("Conectar");
+		connectButton.setBackground(Color.RED);
+		batteryLabel.setEnabled(false);
+		acPowerRadioButton.setEnabled(false);
+		started = false;
+		startReadingButton.setText("Iniciar Lectura");
+		startReadingButton.setEnabled(false);
+		setTimeButton.setEnabled(false);
 	}
 
 	@Override
@@ -471,12 +458,31 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 				break;
 			}
 		}
-		tagReadListener.notifyTagReads(chipReadList);
+		if (tagReadListener != null) {
+			tagReadListener.notifyTagReads(chipReadList);
+		}
 	}
 
 	@Override
 	public void notifyTimeout() {
-		// TODO Auto-generated method stub
-		
+		logger.warn("Reader keepalive timeout");
+		shutdownReader();
+	}
+
+	@Override
+	public boolean isConnected() {
+		return reader.isConnected();
+	}
+
+	@Override
+	public void disconnect() {
+		if (reader.isConnected()) {
+			reader.disconnect();
+		}
+	}
+
+	@Override
+	public String getLabel() {
+		return "Macsha One4All";
 	}
 }

@@ -39,15 +39,15 @@ public class GetProtocolCommand extends MacshaCommand {
 
 	private static final Logger logger = LogManager.getLogger(GetProtocolCommand.class);
 
-	// Para obtener la versión de protocolo en el sistema, el host envía
+	// Para obtener la versiÃ³n de protocolo en el sistema, el host envÃ­a
 	// GETPROTOCOL<CrLf>
 	//
 	// El One4All responde:
 	// GETPROTOCOL;<Current><Min><Max><CrLf>
 	//
 	// Donde:
-	// <Current>, es la versión actual del protocolo.
-	// <Min>, es la versión mínima del protocolo soportada por el sistema.
+	// <Current>, es la versiÃ³n actual del protocolo.
+	// <Min>, es la versiÃ³n mÃ­nima del protocolo soportada por el sistema.
 	// <Max>, is the maximal protocol version supported by the system.
 	//
 	// Ejemplo:

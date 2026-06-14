@@ -124,7 +124,9 @@ public class TiempoMetaCloudClient implements Runnable {
 //					lastCreateTime = new Date(rawReads.get(rawReads.size()-1).getTimeMillis());
 					logger.debug("Current last create time: " + lastCreateTime.toGMTString());
 				}
-				tagReadListener.notifyTagReads(rawReads);
+				if (!rawReads.isEmpty() && tagReadListener != null) {
+					tagReadListener.notifyTagReads(rawReads);
+				}
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
