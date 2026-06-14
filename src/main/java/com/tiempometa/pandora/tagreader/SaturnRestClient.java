@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
 import com.tiempometa.timing.local.InfoDto;
+import com.tiempometa.webservice.ApiPaths;
 import com.tiempometa.timing.local.RawChipReadDto;
 import com.tiempometa.timing.local.SnapshotDto;
 import com.tiempometa.timing.model.RawChipRead;
@@ -39,7 +40,7 @@ public final class SaturnRestClient {
     }
 
     public static InfoDto getInfo(String serverAddress) {
-        String url = baseUrl(serverAddress) + "/api/info";
+        String url = baseUrl(serverAddress) + ApiPaths.INFO;
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(new HttpGet(url))) {
             int status = response.getStatusLine().getStatusCode();
@@ -56,7 +57,7 @@ public final class SaturnRestClient {
 
     public static List<ParticipantDetailDto> findParticipantByRfid(
             String serverAddress, String rfidString) {
-        String url = baseUrl(serverAddress) + "/api/participants/by-rfid/" + encode(rfidString);
+        String url = baseUrl(serverAddress) + ApiPaths.PARTICIPANTS_BY_RFID + encode(rfidString);
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(new HttpGet(url))) {
             int status = response.getStatusLine().getStatusCode();
@@ -75,9 +76,30 @@ public final class SaturnRestClient {
         }
     }
 
+    public static List<ParticipantDetailDto> findParticipantByBib(
+            String serverAddress, String bib) {
+        String url = baseUrl(serverAddress) + ApiPaths.PARTICIPANTS_BY_BIB + encode(bib);
+        try (CloseableHttpClient client = HttpClients.createDefault();
+             CloseableHttpResponse response = client.execute(new HttpGet(url))) {
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                return gson.fromJson(
+                        EntityUtils.toString(response.getEntity()),
+                        new TypeToken<List<ParticipantDetailDto>>(){}.getType());
+            }
+            if (status != 404) {
+                logger.warn("GET /api/participants/by-bib returned status {}", status);
+            }
+            return Collections.emptyList();
+        } catch (Exception e) {
+            logger.error("GET /api/participants/by-bib failed: {}", e.getMessage());
+            return null;
+        }
+    }
+
     public static boolean pushRawReads(String serverAddress, List<RawChipRead> reads) {
         if (reads == null || reads.isEmpty()) return true;
-        String url = baseUrl(serverAddress) + "/api/reads";
+        String url = baseUrl(serverAddress) + ApiPaths.READS;
         List<RawChipReadDto> dtos = new ArrayList<>(reads.size());
         for (RawChipRead r : reads) {
             dtos.add(toDto(r));
@@ -100,7 +122,7 @@ public final class SaturnRestClient {
     }
 
     public static List<String> getCheckpoints(String serverAddress) {
-        String url = baseUrl(serverAddress) + "/api/checkpoints";
+        String url = baseUrl(serverAddress) + ApiPaths.CHECKPOINTS;
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(new HttpGet(url))) {
             int status = response.getStatusLine().getStatusCode();
@@ -118,7 +140,7 @@ public final class SaturnRestClient {
     }
 
     public static SnapshotDto downloadSnapshot(String serverAddress) {
-        String url = baseUrl(serverAddress) + "/api/snapshot";
+        String url = baseUrl(serverAddress) + ApiPaths.SNAPSHOT;
         try (CloseableHttpClient client = HttpClients.createDefault();
              CloseableHttpResponse response = client.execute(new HttpGet(url))) {
             int status = response.getStatusLine().getStatusCode();

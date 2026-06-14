@@ -111,12 +111,22 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 						pushUnsyncedReads();
 					}
 				} else {
+					logger.info("closeApplication: {} unsynced read(s), restConnected=false — exporting CSV", unsynced);
 					java.io.File csv = LocalDataContext.exportUnsyncedReadsToCsv();
 					if (csv != null) {
-						JOptionPane.showMessageDialog(null,
+						String[] opts = {"OK", "Abrir ubicación"};
+						int choice = JOptionPane.showOptionDialog(null,
 								"No hay conexión con Saturno.\n"
 										+ unsynced + " lectura(s) exportadas a:\n" + csv.getAbsolutePath(),
-								"Lecturas exportadas", JOptionPane.INFORMATION_MESSAGE);
+								"Lecturas exportadas", JOptionPane.DEFAULT_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, opts, opts[0]);
+						if (choice == 1 && Desktop.isDesktopSupported()) {
+							try {
+								Desktop.getDesktop().open(csv.getParentFile());
+							} catch (IOException ex) {
+								logger.warn("Could not open folder: {}", ex.getMessage());
+							}
+						}
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"No hay conexión con Saturno y no se pudo exportar el CSV.\n"
@@ -241,6 +251,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			@Override
 			protected Void doInBackground() {
 				Context.downloadEventSnapshot();
+				flushUnsyncedReadsOnConnect();
 				return null;
 			}
 
@@ -252,6 +263,21 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 		}.execute();
 		progress.setVisible(true); // blocks EDT until SwingWorker calls progress.dispose()
+	}
+
+	private void flushUnsyncedReadsOnConnect() {
+		int count = LocalDataContext.getUnsyncedReadCount();
+		if (count == 0) return;
+		logger.info("Flushing {} unsynced read(s) after connect", count);
+		List<com.tiempometa.timing.model.RawChipRead> reads =
+				LocalDataContext.getRawChipReadDao().getUncookedReads();
+		boolean ok = Context.pushRawReads(reads);
+		if (ok) {
+			LocalDataContext.markReadsAsSynced(reads);
+			logger.info("Flushed {} read(s) to Saturno", reads.size());
+		} else {
+			logger.warn("Could not flush {} read(s) to Saturno — will retry on close", reads.size());
+		}
 	}
 
 	private JDialog buildProgressDialog(String message) {
@@ -657,7 +683,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> readings) {
-		logger.debug("GOT TAG READS...");
+		logger.info("notifyTagReads: {} read(s), restConnected={}", readings.size(), Context.isWebserviceConnected());
 
 		// Always save to local H2 first
 		List<com.tiempometa.timing.model.RawChipRead> localReads = new ArrayList<>();
@@ -667,24 +693,33 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		}
 		LocalDataContext.getRawChipReadDao().batchSave(localReads);
 
-		// Push to saturnPandora if webservice is connected; mark synced on success
+		// Push to saturnPandora if webservice is connected; mark synced only on success
 		if (Context.isWebserviceConnected()) {
 			try {
-				Context.pushRawReads(localReads);
-				LocalDataContext.markReadsAsSynced(localReads);
+				boolean pushed = Context.pushRawReads(localReads);
+				if (pushed) {
+					LocalDataContext.markReadsAsSynced(localReads);
+					logger.info("Pushed {} read(s) to Saturno", localReads.size());
+				} else {
+					logger.warn("pushRawReads returned false for {} read(s) — will retry on close", localReads.size());
+				}
 			} catch (Exception e) {
 				logger.warn("Failed to push reads to Saturno: {}", e.getMessage());
 			}
 		}
 
-		// Participant lookup and display (webservice-first, H2 fallback)
+		// Participant lookup and display (rfid first, bib fallback for manual reads)
 		for (RawChipRead tagRead : readings) {
 			List<ParticipantDetailDto> participants =
 					Context.findParticipantByRfid(tagRead.getRfidString());
 			if (participants == null || participants.isEmpty()) {
+				participants = Context.findParticipantByBib(tagRead.getRfidString());
+			}
+			if (participants == null || participants.isEmpty()) {
+				logger.info("No participant found for rfid '{}'", tagRead.getRfidString());
 				tagReadPanel.add(TagReadLog.fromRawRead(tagRead));
 			} else {
-				logger.debug("Participant lookup returned {} results", participants.size());
+				logger.info("Participant lookup found {} result(s) for rfid '{}'", participants.size(), tagRead.getRfidString());
 				for (ParticipantDetailDto dto : participants) {
 					tagReadPanel.add(TagReadLog.fromRawRead(tagRead, dto));
 				}

@@ -179,7 +179,7 @@
 		<dependency>
 			<groupId>com.tiempometa.timing</groupId>
 			<artifactId>webservice</artifactId>
-			<version>5.0.0</version>
+			<version>5.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.tiempometa.api</groupId>

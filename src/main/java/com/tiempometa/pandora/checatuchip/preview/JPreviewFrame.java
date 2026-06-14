@@ -137,4 +137,5 @@ public class JPreviewFrame extends JFrame {
 	public void setRegistration(ParticipantRegistration participantRegistration) {
 		contentPanel.setRegistration(participantRegistration);
 	}
+
 }

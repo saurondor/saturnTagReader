@@ -241,6 +241,18 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	/**
+	 * Looks up participants by bib number. REST-first when connected; falls back
+	 * to the local H2 snapshot when offline or when REST returns null (error).
+	 */
+	public static List<ParticipantDetailDto> findParticipantByBib(String bib) {
+		if (restConnected) {
+			List<ParticipantDetailDto> result = SaturnRestClient.findParticipantByBib(serverAddress, bib);
+			if (result != null) return result;
+		}
+		return lookupFromLocalH2ByBib(bib);
+	}
+
+	/**
 	 * Pushes a batch of model reads to saturnPandora via REST POST /api/reads.
 	 *
 	 * @return {@code true} if the push succeeded
@@ -251,6 +263,17 @@ public class Context extends com.tiempometa.timing.Context {
 
 	private static List<ParticipantDetailDto> lookupFromLocalH2(String rfidString) {
 		List<Object[]> rows = LocalDataContext.findParticipantRowsByRfid(rfidString);
+		logger.info("H2 rfid lookup '{}' → {} row(s)", rfidString, rows.size());
+		return rowsToDto(rows);
+	}
+
+	private static List<ParticipantDetailDto> lookupFromLocalH2ByBib(String bib) {
+		List<Object[]> rows = LocalDataContext.findParticipantRowsByBib(bib);
+		logger.info("H2 bib lookup '{}' → {} row(s)", bib, rows.size());
+		return rowsToDto(rows);
+	}
+
+	private static List<ParticipantDetailDto> rowsToDto(List<Object[]> rows) {
 		if (rows.isEmpty()) return Collections.emptyList();
 		List<ParticipantDetailDto> result = new ArrayList<>(rows.size());
 		for (Object[] row : rows) {
@@ -261,6 +284,12 @@ public class Context extends com.tiempometa.timing.Context {
 			dto.setFullName(buildFullName(row[3], row[4]));
 			dto.setCategory(row[5] != null ? row[5].toString() : null);
 			dto.setSubeventTitle(row[6] != null ? row[6].toString() : null);
+			dto.setGender(row[8] != null ? row[8].toString() : null);
+			dto.setAge(row[9] != null ? Integer.valueOf(row[9].toString()) : null);
+			dto.setProvince(row[10] != null ? row[10].toString() : null);
+			dto.setTeam(row[11] != null ? row[11].toString() : null);
+			dto.setIdField0(row[12] != null ? row[12].toString() : null);
+			dto.setBirthDateString(row[13] != null ? row[13].toString() : null);
 			result.add(dto);
 		}
 		return result;
