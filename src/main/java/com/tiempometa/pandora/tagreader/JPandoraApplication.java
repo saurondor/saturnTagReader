@@ -32,5 +32,6 @@ public interface JPandoraApplication {
 	void setEventTitle(String eventTitle);
 	String getEventTitle();
 	void refreshTitle();
+	void notifyDbMismatch(String serverDb);
 	
 }

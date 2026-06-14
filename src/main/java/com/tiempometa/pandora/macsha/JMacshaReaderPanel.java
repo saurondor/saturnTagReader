@@ -50,6 +50,9 @@ import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeEvent;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeListener;
+import com.tiempometa.pandora.tagreader.event.SnapshotRefreshedEvent;
 import com.tiempometa.pandora.tagreader.config.MacshaReaderPanelConfig;
 import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
@@ -58,7 +61,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel {
+public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel, DatabaseChangeListener {
 	/**
 	 * 
 	 */
@@ -80,6 +83,14 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		initComponents();
 		reader.setCommandResponseHandler(this);
 		loadCheckPoints();
+		Context.addDatabaseChangeListener(this);
+	}
+
+	@Override
+	public void onDatabaseChange(DatabaseChangeEvent event) {
+		if (event instanceof SnapshotRefreshedEvent) {
+			loadCheckPoints();
+		}
 	}
 
 	/**

@@ -111,8 +111,11 @@ public final class SaturnRestClient {
         }
     }
 
-    public static boolean pushRawReads(String serverAddress, List<RawChipRead> reads) {
-        if (reads == null || reads.isEmpty()) return true;
+    /**
+     * Returns {@code null} on success; the server's db name on 409 mismatch; {@code ""} on other failure.
+     */
+    public static String pushRawReads(String serverAddress, List<RawChipRead> reads) {
+        if (reads == null || reads.isEmpty()) return null;
         String url = baseUrl(serverAddress) + ApiPaths.READS;
         List<RawChipReadDto> dtos = new ArrayList<>(reads.size());
         for (RawChipRead r : reads) {
@@ -126,17 +129,23 @@ public final class SaturnRestClient {
             post.setEntity(new StringEntity(body, StandardCharsets.UTF_8));
             try (CloseableHttpResponse response = client.execute(post)) {
                 int status = response.getStatusLine().getStatusCode();
-                if (status == 200 || status == 204) return true;
+                if (status == 200 || status == 204) return null;
                 if (status == 409) {
                     logger.error("POST /api/reads rejected — X-Base-DB mismatch; reads held in local H2");
-                } else {
-                    logger.warn("POST /api/reads returned status {}", status);
+                    try {
+                        String responseBody = EntityUtils.toString(response.getEntity());
+                        com.google.gson.JsonObject json = gson.fromJson(responseBody, com.google.gson.JsonObject.class);
+                        return json.has("server") ? json.get("server").getAsString() : "(desconocida)";
+                    } catch (Exception ignored) {
+                        return "(desconocida)";
+                    }
                 }
-                return false;
+                logger.warn("POST /api/reads returned status {}", status);
+                return "";
             }
         } catch (Exception e) {
             logger.error("POST /api/reads failed: {}", e.getMessage());
-            return false;
+            return "";
         }
     }
 

@@ -48,6 +48,9 @@ import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeEvent;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeListener;
+import com.tiempometa.pandora.tagreader.event.SnapshotRefreshedEvent;
 import com.tiempometa.pandora.tagreader.config.IpicoUsbReaderPanelConfig;
 import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
@@ -56,7 +59,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel {
+public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel, DatabaseChangeListener {
 	/**
 	 * 
 	 */
@@ -81,6 +84,7 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 		reader.setCommandResponseHandler(this);
 		reader.registerTagReadListener(this);
 		loadCheckPoints();
+		Context.addDatabaseChangeListener(this);
 		try {
 			loadSerialPorts();
 		} catch (UnsatisfiedLinkError e) {
@@ -158,6 +162,13 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public void onDatabaseChange(DatabaseChangeEvent event) {
+		if (event instanceof SnapshotRefreshedEvent) {
+			loadCheckPoints();
 		}
 	}
 

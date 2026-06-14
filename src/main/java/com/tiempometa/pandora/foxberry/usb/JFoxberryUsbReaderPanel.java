@@ -47,6 +47,9 @@ import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeEvent;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeListener;
+import com.tiempometa.pandora.tagreader.event.SnapshotRefreshedEvent;
 import com.tiempometa.pandora.tagreader.config.FoxberryUsbReaderPanelConfig;
 import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
@@ -55,7 +58,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener, PersistableReaderPanel {
+public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener, PersistableReaderPanel, DatabaseChangeListener {
 	/**
 	 * 
 	 */
@@ -80,6 +83,7 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 		reader.setCommandResponseHandler(this);
 		reader.registerTagReadListener(this);
 		loadCheckPoints();
+		Context.addDatabaseChangeListener(this);
 		try {
 			loadSerialPorts();
 		} catch (UnsatisfiedLinkError e) {
@@ -155,6 +159,13 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public void onDatabaseChange(DatabaseChangeEvent event) {
+		if (event instanceof SnapshotRefreshedEvent) {
+			loadCheckPoints();
 		}
 	}
 
