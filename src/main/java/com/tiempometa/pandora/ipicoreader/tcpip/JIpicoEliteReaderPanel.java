@@ -44,13 +44,16 @@ import com.tiempometa.pandora.ipicoreader.commands.SetTimeCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.IpicoEliteReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -416,6 +419,31 @@ public class JIpicoEliteReaderPanel extends JReaderPanel implements CommandRespo
 	public void disconnect() {
 		if (reader.isConnected()) {
 			reader.disconnect();
+		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		IpicoEliteReaderPanelConfig cfg = new IpicoEliteReaderPanelConfig();
+		cfg.address = readerAddressTextField.getText();
+		cfg.terminal = terminalTextField.getText();
+		cfg.checkpoint1 = (String) checkPointComboBox1.getSelectedItem();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		IpicoEliteReaderPanelConfig cfg = (IpicoEliteReaderPanelConfig) config;
+		if (cfg.address != null) readerAddressTextField.setText(cfg.address);
+		if (cfg.terminal != null) {
+			terminalTextField.setText(cfg.terminal);
+			reader.setTerminal(cfg.terminal);
+		}
+		if (cfg.checkpoint1 != null) {
+			checkPointComboBox1.setSelectedItem(cfg.checkpoint1);
+			checkPoint1 = cfg.checkpoint1;
+			reader.setCheckPointOne(checkPoint1);
+			applyCheckpointButton.setBackground(Color.GREEN);
 		}
 	}
 

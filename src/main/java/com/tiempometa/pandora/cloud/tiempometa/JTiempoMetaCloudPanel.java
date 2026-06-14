@@ -125,125 +125,104 @@ public class JTiempoMetaCloudPanel extends JReaderPanel implements TagReadListen
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.foxberry.foxberry");
-		label1 = new JLabel();
-		apiKeyTextField = new JTextField();
-		removeReaderButton = new JButton();
-		eventTitleLabel = new JLabel();
-		connectButton = new JButton();
-		label2 = new JLabel();
-		lastRequestLabel = new JLabel();
-		label3 = new JLabel();
-		lastDownloadLabel = new JLabel();
-		rewindTagReadsButton = new JButton();
-		label5 = new JLabel();
-		tagsReadLabel = new JLabel();
-		clearTagReadsButton = new JButton();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.foxberry.tiempometa_cloud");
+        label1 = new JLabel();
+        apiKeyTextField = new JTextField();
+        removeReaderButton = new JButton();
+        eventTitleLabel = new JLabel();
+        connectButton = new JButton();
+        label2 = new JLabel();
+        lastRequestLabel = new JLabel();
+        label3 = new JLabel();
+        lastDownloadLabel = new JLabel();
+        rewindTagReadsButton = new JButton();
+        label5 = new JLabel();
+        tagsReadLabel = new JLabel();
+        clearTagReadsButton = new JButton();
 
-		// ======== this ========
-		setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
-		setInheritsPopupMenu(true);
-		setMaximumSize(new Dimension(550, 130));
-		setMinimumSize(new Dimension(550, 130));
-		setPreferredSize(new Dimension(550, 130));
-		setLayout(new FormLayout(
-				"5dlu, $lcgap, default, $lcgap, 57dlu, $lcgap, 15dlu, $lcgap, 78dlu, $lcgap, 51dlu, $lcgap, 57dlu, $lcgap, 22dlu",
-				"3*(default, $lgap), default"));
+        //======== this ========
+        setBorder(new TitledBorder(bundle.getString("JIpicoReaderPanel.this.border")));
+        setInheritsPopupMenu(true);
+        setMaximumSize(new Dimension(550, 130));
+        setMinimumSize(new Dimension(550, 130));
+        setPreferredSize(new Dimension(550, 130));
+        setLayout(new FormLayout(
+            "5dlu, $lcgap, default, $lcgap, 57dlu, $lcgap, 15dlu, $lcgap, 78dlu, $lcgap, 51dlu, $lcgap, 57dlu, $lcgap, 22dlu",
+            "3*(default, $lgap), default"));
 
-		// ---- label1 ----
-		label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
-		add(label1, CC.xy(3, 1));
-		add(apiKeyTextField, CC.xywh(5, 1, 9, 1));
+        //---- label1 ----
+        label1.setText(bundle.getString("JIpicoReaderPanel.label1.text"));
+        add(label1, CC.xy(3, 1));
+        add(apiKeyTextField, CC.xywh(5, 1, 9, 1));
 
-		// ---- removeReaderButton ----
-		removeReaderButton
-				.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
-		removeReaderButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				removeReaderButtonActionPerformed(e);
-			}
-		});
-		add(removeReaderButton, CC.xy(15, 1));
+        //---- removeReaderButton ----
+        removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+        removeReaderButton.addActionListener(e -> removeReaderButtonActionPerformed(e));
+        add(removeReaderButton, CC.xy(15, 1));
 
-		// ---- eventTitleLabel ----
-		eventTitleLabel.setText(bundle.getString("JIpicoReaderPanel.eventTitleLabel.text"));
-		eventTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		add(eventTitleLabel, CC.xywh(3, 3, 9, 1));
+        //---- eventTitleLabel ----
+        eventTitleLabel.setText(bundle.getString("JIpicoReaderPanel.eventTitleLabel.text"));
+        eventTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(eventTitleLabel, CC.xywh(3, 3, 9, 1));
 
-		// ---- connectButton ----
-		connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
-		connectButton.setBackground(Color.red);
-		connectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connectButtonActionPerformed(e);
-			}
-		});
-		add(connectButton, CC.xywh(13, 3, 3, 1));
+        //---- connectButton ----
+        connectButton.setText(bundle.getString("JIpicoReaderPanel.connectButton.text"));
+        connectButton.setBackground(Color.red);
+        connectButton.addActionListener(e -> connectButtonActionPerformed(e));
+        add(connectButton, CC.xywh(13, 3, 3, 1));
 
-		// ---- label2 ----
-		label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
-		add(label2, CC.xy(3, 5));
+        //---- label2 ----
+        label2.setText(bundle.getString("JIpicoReaderPanel.label2.text"));
+        add(label2, CC.xy(3, 5));
 
-		// ---- lastRequestLabel ----
-		lastRequestLabel.setText(bundle.getString("JIpicoReaderPanel.lastRequestLabel.text"));
-		lastRequestLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lastRequestLabel, CC.xy(5, 5));
+        //---- lastRequestLabel ----
+        lastRequestLabel.setText(bundle.getString("JIpicoReaderPanel.lastRequestLabel.text"));
+        lastRequestLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(lastRequestLabel, CC.xy(5, 5));
 
-		// ---- label3 ----
-		label3.setText(bundle.getString("JIpicoReaderPanel.label3.text"));
-		add(label3, CC.xy(9, 5));
+        //---- label3 ----
+        label3.setText(bundle.getString("JIpicoReaderPanel.label3.text"));
+        add(label3, CC.xy(9, 5));
 
-		// ---- lastDownloadLabel ----
-		lastDownloadLabel.setText(bundle.getString("JIpicoReaderPanel.lastDownloadLabel.text"));
-		lastDownloadLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		add(lastDownloadLabel, CC.xy(11, 5));
+        //---- lastDownloadLabel ----
+        lastDownloadLabel.setText(bundle.getString("JIpicoReaderPanel.lastDownloadLabel.text"));
+        lastDownloadLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(lastDownloadLabel, CC.xy(11, 5));
 
-		// ---- rewindTagReadsButton ----
-		rewindTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.rewindTagReadsButton.text"));
-		rewindTagReadsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rewindTagReadsButtonActionPerformed(e);
-			}
-		});
-		add(rewindTagReadsButton, CC.xywh(13, 5, 3, 1));
+        //---- rewindTagReadsButton ----
+        rewindTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.rewindTagReadsButton.text"));
+        rewindTagReadsButton.addActionListener(e -> rewindTagReadsButtonActionPerformed(e));
+        add(rewindTagReadsButton, CC.xywh(13, 5, 3, 1));
 
-		// ---- label5 ----
-		label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
-		add(label5, CC.xy(9, 7));
+        //---- label5 ----
+        label5.setText(bundle.getString("JIpicoReaderPanel.label5.text"));
+        add(label5, CC.xy(9, 7));
 
-		// ---- tagsReadLabel ----
-		tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
-		add(tagsReadLabel, CC.xy(11, 7));
+        //---- tagsReadLabel ----
+        tagsReadLabel.setText(bundle.getString("JIpicoReaderPanel.tagsReadLabel.text"));
+        add(tagsReadLabel, CC.xy(11, 7));
 
-		// ---- clearTagReadsButton ----
-		clearTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.clearTagReadsButton.text"));
-		clearTagReadsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clearTagReadsButtonActionPerformed(e);
-			}
-		});
-		add(clearTagReadsButton, CC.xywh(13, 7, 3, 1));
+        //---- clearTagReadsButton ----
+        clearTagReadsButton.setText(bundle.getString("JIpicoReaderPanel.clearTagReadsButton.text"));
+        clearTagReadsButton.addActionListener(e -> clearTagReadsButtonActionPerformed(e));
+        add(clearTagReadsButton, CC.xywh(13, 7, 3, 1));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JLabel label1;
-	private JTextField apiKeyTextField;
-	private JButton removeReaderButton;
-	private JLabel eventTitleLabel;
-	private JButton connectButton;
-	private JLabel label2;
-	private JLabel lastRequestLabel;
-	private JLabel label3;
-	private JLabel lastDownloadLabel;
-	private JButton rewindTagReadsButton;
-	private JLabel label5;
-	private JLabel tagsReadLabel;
-	private JButton clearTagReadsButton;
+    private JLabel label1;
+    private JTextField apiKeyTextField;
+    private JButton removeReaderButton;
+    private JLabel eventTitleLabel;
+    private JButton connectButton;
+    private JLabel label2;
+    private JLabel lastRequestLabel;
+    private JLabel label3;
+    private JLabel lastDownloadLabel;
+    private JButton rewindTagReadsButton;
+    private JLabel label5;
+    private JLabel tagsReadLabel;
+    private JButton clearTagReadsButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public void setTagReadListener(TagReadListener tagReadListener) {

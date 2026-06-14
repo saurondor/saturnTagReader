@@ -41,13 +41,16 @@ import com.tiempometa.pandora.foxberry.FoxberryCommandResponseHandler;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.FoxberryReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener {
+public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -56,6 +59,7 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 	private JReaderListPanel listPanel;
 	private FoxberryClient reader = new FoxberryClient();
 	private String checkPoint1 = null;
+	private String checkPoint2 = null;
 	private TagReadListener tagReadListener;
 	private Integer tagCount;
 
@@ -128,9 +132,10 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
+		checkPoint2 = (String) checkPointComboBox2.getSelectedItem();
 		reader.setCheckPointOne(checkPoint1);
+		reader.setCheckPointTwo(checkPoint2);
 		reader.setTerminal(terminalTextField.getText());
-//		reader.setCheckPoint(checkPoint1);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
@@ -401,6 +406,37 @@ public class JFoxberryReaderPanel extends JReaderPanel implements FoxberryComman
 	public void disconnect() {
 		if (reader.isConnected()) {
 			reader.disconnect();
+		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		FoxberryReaderPanelConfig cfg = new FoxberryReaderPanelConfig();
+		cfg.address = readerAddressTextField.getText();
+		cfg.terminal = terminalTextField.getText();
+		cfg.checkpoint1 = (String) checkPointComboBox1.getSelectedItem();
+		cfg.checkpoint2 = (String) checkPointComboBox2.getSelectedItem();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		FoxberryReaderPanelConfig cfg = (FoxberryReaderPanelConfig) config;
+		if (cfg.address != null) readerAddressTextField.setText(cfg.address);
+		if (cfg.terminal != null) {
+			terminalTextField.setText(cfg.terminal);
+			reader.setTerminal(cfg.terminal);
+		}
+		if (cfg.checkpoint1 != null) {
+			checkPointComboBox1.setSelectedItem(cfg.checkpoint1);
+			checkPoint1 = cfg.checkpoint1;
+			reader.setCheckPointOne(checkPoint1);
+			applyCheckpointButton.setBackground(Color.GREEN);
+		}
+		if (cfg.checkpoint2 != null) {
+			checkPointComboBox2.setSelectedItem(cfg.checkpoint2);
+			checkPoint2 = cfg.checkpoint2;
+			reader.setCheckPointTwo(checkPoint2);
 		}
 	}
 

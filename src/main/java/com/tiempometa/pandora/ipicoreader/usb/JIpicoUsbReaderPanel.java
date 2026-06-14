@@ -46,14 +46,17 @@ import com.tiempometa.pandora.ipicoreader.commands.IpicoCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.IpicoUsbReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -466,6 +469,32 @@ public class JIpicoUsbReaderPanel extends JReaderPanel implements CommandRespons
 	public void disconnect() {
 		if (reader.isConnected()) {
 			reader.disconnect();
+		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		IpicoUsbReaderPanelConfig cfg = new IpicoUsbReaderPanelConfig();
+		cfg.serialPort = (String) serialPortComboBox.getSelectedItem();
+		cfg.terminal = terminalTextField.getText();
+		cfg.checkpoint1 = (String) checkPointComboBox1.getSelectedItem();
+		cfg.mode = modeComboBox.getSelectedIndex();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		IpicoUsbReaderPanelConfig cfg = (IpicoUsbReaderPanelConfig) config;
+		modeComboBox.setSelectedIndex(cfg.mode);
+		if (cfg.serialPort != null) serialPortComboBox.setSelectedItem(cfg.serialPort);
+		if (cfg.terminal != null) {
+			terminalTextField.setText(cfg.terminal);
+			this.terminal = cfg.terminal;
+		}
+		if (cfg.checkpoint1 != null) {
+			checkPointComboBox1.setSelectedItem(cfg.checkpoint1);
+			this.checkPoint1 = cfg.checkpoint1;
+			applyCheckpointButton.setBackground(Color.GREEN);
 		}
 	}
 

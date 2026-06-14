@@ -48,14 +48,17 @@ import com.tiempometa.pandora.macsha.commands.one4all.StopCommand;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.MacshaReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener {
+public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseHandler, TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -479,6 +482,29 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		if (reader.isConnected()) {
 			reader.disconnect();
 		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		MacshaReaderPanelConfig cfg = new MacshaReaderPanelConfig();
+		cfg.address = readerAddressTextField.getText();
+		cfg.checkpoint = (String) checkPointComboBox.getSelectedItem();
+		cfg.mode = modeComboBox.getSelectedIndex();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		MacshaReaderPanelConfig cfg = (MacshaReaderPanelConfig) config;
+		if (cfg.address != null) {
+			readerAddressTextField.setText(cfg.address);
+		}
+		if (cfg.checkpoint != null) {
+			checkPointComboBox.setSelectedItem(cfg.checkpoint);
+			checkPoint = cfg.checkpoint;
+			applyCheckpointButton.setBackground(Color.GREEN);
+		}
+		modeComboBox.setSelectedIndex(cfg.mode);
 	}
 
 	@Override

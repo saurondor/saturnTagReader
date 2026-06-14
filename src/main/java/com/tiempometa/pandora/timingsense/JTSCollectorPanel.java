@@ -39,13 +39,16 @@ import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.TSCollectorReaderPanelConfig;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JTSCollectorPanel extends JReaderPanel implements TagReadListener {
+public class JTSCollectorPanel extends JReaderPanel implements TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -309,6 +312,21 @@ public class JTSCollectorPanel extends JReaderPanel implements TagReadListener {
 				logger.warn("Error disconnecting TS Collector: " + e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		TSCollectorReaderPanelConfig cfg = new TSCollectorReaderPanelConfig();
+		cfg.address = readerAddressTextField.getText();
+		cfg.port = readerPortTextField.getText();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		TSCollectorReaderPanelConfig cfg = (TSCollectorReaderPanelConfig) config;
+		if (cfg.address != null) readerAddressTextField.setText(cfg.address);
+		if (cfg.port != null) readerPortTextField.setText(cfg.port);
 	}
 
 	@Override
