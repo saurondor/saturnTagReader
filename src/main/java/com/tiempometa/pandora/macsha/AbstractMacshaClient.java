@@ -25,7 +25,9 @@ package com.tiempometa.pandora.macsha;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,8 +101,14 @@ public abstract class AbstractMacshaClient extends AbstractReadWriteTcpReaderCli
 
     protected void notifyTagReads(List<MacshaTagRead> readings) {
         List<RawChipRead> chipReadList = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
         for (MacshaTagRead macshaTagRead : readings) {
-            chipReadList.add(macshaTagRead.toRawChipRead());
+            String key = macshaTagRead.getRfidString() + ":" + macshaTagRead.getTimeMillis();
+            if (seen.add(key)) {
+                chipReadList.add(macshaTagRead.toRawChipRead());
+            } else {
+                logger.debug("Duplicate read filtered: {}", macshaTagRead);
+            }
         }
         if (!chipReadList.isEmpty() && tagReadListener != null) {
             tagReadListener.notifyTagReads(chipReadList);
