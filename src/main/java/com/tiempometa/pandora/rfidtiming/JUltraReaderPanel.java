@@ -42,6 +42,9 @@ import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
 import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeEvent;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeListener;
+import com.tiempometa.pandora.tagreader.event.SnapshotRefreshedEvent;
 import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.pandora.tagreader.config.UltraReaderPanelConfig;
 import com.tiempometa.webservice.model.RawChipRead;
@@ -49,7 +52,7 @@ import com.tiempometa.webservice.model.RawChipRead;
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JUltraReaderPanel extends JReaderPanel implements TagReadListener, PersistableReaderPanel {
+public class JUltraReaderPanel extends JReaderPanel implements TagReadListener, PersistableReaderPanel, DatabaseChangeListener {
 	/**
 	 * 
 	 */
@@ -71,6 +74,14 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener, 
 		this.listPanel = listPanel;
 		reader.registerTagReadListener(this);
 		loadCheckPoints();
+		Context.addDatabaseChangeListener(this);
+	}
+
+	@Override
+	public void onDatabaseChange(DatabaseChangeEvent event) {
+		if (event instanceof SnapshotRefreshedEvent) {
+			loadCheckPoints();
+		}
 	}
 
 	/**

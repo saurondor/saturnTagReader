@@ -31,6 +31,7 @@ import com.tiempometa.pandora.macsha.MacshaOcelotBackupImporter;
 import com.tiempometa.pandora.rfidtiming.UltraBackupImporter;
 import com.tiempometa.pandora.timingsense.TimingsenseBackupImporter;
 import com.tiempometa.pandora.webservice.api.ParticipantDetailDto;
+import com.tiempometa.pandora.tagreader.event.SnapshotRefreshedEvent;
 import com.tiempometa.timing.local.LocalDataContext;
 import com.tiempometa.webservice.model.RawChipRead;
 
@@ -288,6 +289,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			protected void done() {
 				progress.dispose();
 				refreshTitle();
+				Context.fireDatabaseChange(new SnapshotRefreshedEvent(0));
 				JOptionPane.showMessageDialog(JReaderFrame.this,
 						successMessage, "Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -703,6 +705,16 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	@Override
 	public String getEventTitle() {
 		return eventTitle;
+	}
+
+	@Override
+	public void notifyDbMismatch(String serverDb) {
+		JOptionPane.showMessageDialog(this,
+				"Pandora rechazó las lecturas: la base activa en Saturno es '" + serverDb + "',\n"
+						+ "pero este lector está configurado para '" + LocalDataContext.getBaseDbName() + "'.\n\n"
+						+ "Las lecturas se están guardando localmente.\n"
+						+ "Reconecte desde Evento → Conectar para sincronizar.",
+				"Base de datos incorrecta", JOptionPane.ERROR_MESSAGE);
 	}
 
 	@Override

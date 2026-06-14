@@ -44,6 +44,10 @@ import com.tiempometa.timing.local.SnapshotSeeder;
 import com.tiempometa.timing.model.Country;
 import com.tiempometa.timing.model.Event;
 import com.tiempometa.timing.model.RawChipRead;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeEvent;
+import com.tiempometa.pandora.tagreader.event.DatabaseChangeListener;
+import com.tiempometa.pandora.tagreader.event.DatabaseSwitchedEvent;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
@@ -57,6 +61,7 @@ public class Context extends com.tiempometa.timing.Context {
 	private static JPandoraApplication application;
 	private static boolean restConnected = false;
 	private static String serverAddress = null;
+	private static final List<DatabaseChangeListener> dbChangeListeners = new CopyOnWriteArrayList<>();
 
 	public static void saveWorkingDirectory(String workingDirectory) throws IOException {
 		Context.saveSetting(PandoraSettings.EVENT_PATH, workingDirectory);
@@ -266,9 +271,14 @@ public class Context extends com.tiempometa.timing.Context {
 	 * @return {@code true} if the push succeeded
 	 */
 	public static boolean pushRawReads(List<RawChipRead> reads) {
-		boolean ok = SaturnRestClient.pushRawReads(serverAddress, reads);
-		if (!ok) markRestDisconnected();
-		return ok;
+		String result = SaturnRestClient.pushRawReads(serverAddress, reads);
+		if (result == null) return true;
+		if (!result.isEmpty()) {
+			markDbMismatch(result);
+		} else {
+			markRestDisconnected();
+		}
+		return false;
 	}
 
 	/**
@@ -284,6 +294,7 @@ public class Context extends com.tiempometa.timing.Context {
 		LocalDataContext.init(port, newPath);
 		LocalDataContext.setBaseDbName(dbName);
 		logger.info("Local H2 switched to {}.mv.db", newPath);
+		fireDatabaseChange(new DatabaseSwitchedEvent(dbName));
 	}
 
 	private static void markRestDisconnected() {
@@ -292,6 +303,33 @@ public class Context extends com.tiempometa.timing.Context {
 			logger.warn("REST connection lost during operation — switching to offline mode");
 			if (application != null) {
 				SwingUtilities.invokeLater(application::refreshTitle);
+			}
+		}
+	}
+
+	public static void addDatabaseChangeListener(DatabaseChangeListener listener) {
+		dbChangeListeners.add(listener);
+	}
+
+	public static void removeDatabaseChangeListener(DatabaseChangeListener listener) {
+		dbChangeListeners.remove(listener);
+	}
+
+	public static void fireDatabaseChange(DatabaseChangeEvent event) {
+		for (DatabaseChangeListener l : dbChangeListeners) {
+			l.onDatabaseChange(event);
+		}
+	}
+
+	private static void markDbMismatch(String serverDb) {
+		if (restConnected) {
+			restConnected = false;
+			logger.error("REST rejected reads — X-Base-DB mismatch with server db '{}'", serverDb);
+			if (application != null) {
+				SwingUtilities.invokeLater(() -> {
+					application.notifyDbMismatch(serverDb);
+					application.refreshTitle();
+				});
 			}
 		}
 	}
