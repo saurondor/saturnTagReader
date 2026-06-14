@@ -646,8 +646,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 
 	@Override
 	public String getEventTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return eventTitle;
 	}
 
 	@Override
@@ -671,7 +670,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		// Push to saturnPandora if webservice is connected; mark synced on success
 		if (Context.isWebserviceConnected()) {
 			try {
-				Context.getResultsWebservice().saveRawChipReads(new ArrayList<>(readings));
+				Context.pushRawReads(localReads);
 				LocalDataContext.markReadsAsSynced(localReads);
 			} catch (Exception e) {
 				logger.warn("Failed to push reads to Saturno: {}", e.getMessage());

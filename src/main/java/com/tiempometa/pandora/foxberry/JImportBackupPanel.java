@@ -118,7 +118,7 @@ public class JImportBackupPanel extends JPanel {
 		List<RawChipRead> chipReads;
 		if (importer instanceof MacshaCloudBackupImporter) {
 			// convert bib to rfid
-			chipReads = Context.getResultsWebservice().populateRfidByChipNumber(importer.getChipReads());
+			chipReads = importer.getChipReads(); // TODO: populateRfidByChipNumber has no REST equivalent yet
 		} else {
 			chipReads = importer.getChipReads();
 		}
@@ -157,7 +157,23 @@ public class JImportBackupPanel extends JPanel {
 		int listSize = tableModel.getChipReads().size();
 		for (int i = 0; i < listSize; i += 2000) {
 			List<RawChipRead> readings = tableModel.getChipReads().subList(i, Math.min(listSize, i + 2000));
-			Context.getResultsWebservice().batchSaveRawReads(readings);
+			List<com.tiempometa.timing.model.RawChipRead> localReadings = new java.util.ArrayList<>();
+			for (RawChipRead r : readings) {
+				com.tiempometa.timing.model.RawChipRead local = new com.tiempometa.timing.model.RawChipRead();
+				local.setRfidString(r.getRfidString());
+				local.setTimeMillis(r.getTimeMillis());
+				local.setCheckPoint(r.getCheckPoint());
+				local.setLoadName(r.getLoadName());
+				local.setReadType(r.getReadType());
+				local.setDevice(r.getDevice());
+				local.setChipNumber(r.getChipNumber());
+				local.setDistance(r.getDistance());
+				local.setCalories(r.getCalories());
+				local.setSteps(r.getSteps());
+				local.setRunTime(r.getRunTime());
+				localReadings.add(local);
+			}
+			Context.pushRawReads(localReadings);
 		}
 		JOptionPane.showMessageDialog(this, "Se guardaron " + tableModel.getChipReads().size() + " lecturas",
 				"Importación exitosa", JOptionPane.INFORMATION_MESSAGE);

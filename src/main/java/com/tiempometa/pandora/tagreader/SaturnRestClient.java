@@ -142,11 +142,11 @@ public final class SaturnRestClient {
         dto.setReadType(r.getReadType());
         dto.setDevice(r.getDevice());
         dto.setMobileApp(r.getMobileApp());
-        dto.setChipNumber(r.getChipNumber());
+        dto.setChipNumber(r.getChipNumber() == null ? null : r.getChipNumber().toString());
         dto.setDistance(r.getDistance());
-        dto.setCalories(r.getCalories());
-        dto.setSteps(r.getSteps());
-        dto.setRunTime(r.getRunTime());
+        dto.setCalories(r.getCalories() == null ? null : r.getCalories().doubleValue());
+        dto.setSteps(r.getSteps() == null ? null : r.getSteps().doubleValue());
+        dto.setRunTime(r.getRunTime() == null ? null : r.getRunTime().toString());
         return dto;
     }
 
