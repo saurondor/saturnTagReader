@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -82,6 +84,7 @@ public class Context extends com.tiempometa.timing.Context {
 	 */
 	public static void initWebserviceClients()
 			throws DbAuthorizationRequiredException, DbNameMismatchException, Exception {
+		restConnected = false;
 		logger.info("Connecting to Saturn REST API at {}:9001", serverAddress);
 		InfoDto info = SaturnRestClient.getInfo(serverAddress);
 		if (info == null) {
@@ -230,12 +233,14 @@ public class Context extends com.tiempometa.timing.Context {
 	 * Looks up participants by RFID tag. Uses the live REST API when connected
 	 * (checa tu chip / letterboard use case requires current data); falls back
 	 * to the local H2 snapshot when offline.
+	 * Sets restConnected=false and refreshes the title if REST is unreachable.
 	 */
 	public static List<ParticipantDetailDto> findParticipantByRfid(String rfidString) {
 		if (restConnected) {
 			List<ParticipantDetailDto> result =
 					SaturnRestClient.findParticipantByRfid(serverAddress, rfidString);
 			if (result != null) return result;
+			markRestDisconnected();
 		}
 		return lookupFromLocalH2(rfidString);
 	}
@@ -243,22 +248,52 @@ public class Context extends com.tiempometa.timing.Context {
 	/**
 	 * Looks up participants by bib number. REST-first when connected; falls back
 	 * to the local H2 snapshot when offline or when REST returns null (error).
+	 * Sets restConnected=false and refreshes the title if REST is unreachable.
 	 */
 	public static List<ParticipantDetailDto> findParticipantByBib(String bib) {
 		if (restConnected) {
 			List<ParticipantDetailDto> result = SaturnRestClient.findParticipantByBib(serverAddress, bib);
 			if (result != null) return result;
+			markRestDisconnected();
 		}
 		return lookupFromLocalH2ByBib(bib);
 	}
 
 	/**
 	 * Pushes a batch of model reads to saturnPandora via REST POST /api/reads.
+	 * Sets restConnected=false and refreshes the title on failure.
 	 *
 	 * @return {@code true} if the push succeeded
 	 */
 	public static boolean pushRawReads(List<RawChipRead> reads) {
-		return SaturnRestClient.pushRawReads(serverAddress, reads);
+		boolean ok = SaturnRestClient.pushRawReads(serverAddress, reads);
+		if (!ok) markRestDisconnected();
+		return ok;
+	}
+
+	/**
+	 * Closes the current local H2 and opens a new one named after {@code dbName}.
+	 * The old file is left intact on disk — its reads are preserved for audit.
+	 * Also records {@code dbName} as the pairing in the new H2.
+	 */
+	public static void reinitLocalH2(String dbName) throws IOException {
+		LocalDataContext.close();
+		String newPath = System.getProperty("user.home") + "/.tiempometa/databases/" + dbName;
+		int port = Integer.parseInt(loadSetting(PandoraSettings.LOCAL_H2_PORT,
+				String.valueOf(PandoraSettings.LOCAL_H2_PORT_DEFAULT)));
+		LocalDataContext.init(port, newPath);
+		LocalDataContext.setBaseDbName(dbName);
+		logger.info("Local H2 switched to {}.mv.db", newPath);
+	}
+
+	private static void markRestDisconnected() {
+		if (restConnected) {
+			restConnected = false;
+			logger.warn("REST connection lost during operation — switching to offline mode");
+			if (application != null) {
+				SwingUtilities.invokeLater(application::refreshTitle);
+			}
+		}
 	}
 
 	private static List<ParticipantDetailDto> lookupFromLocalH2(String rfidString) {

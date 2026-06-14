@@ -72,8 +72,10 @@ public class ReaderStartupCoordinator {
             int h2Port = Integer.parseInt(
                     Context.loadSetting(PandoraSettings.LOCAL_H2_PORT,
                             String.valueOf(PandoraSettings.LOCAL_H2_PORT_DEFAULT)));
-            String h2Path = Context.loadSetting(PandoraSettings.LOCAL_H2_PATH,
-                    PandoraSettings.LOCAL_H2_PATH_DEFAULT);
+            String savedDbName = Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null);
+            String h2Path = (savedDbName != null && !savedDbName.isEmpty())
+                    ? System.getProperty("user.home") + "/.tiempometa/databases/" + savedDbName
+                    : PandoraSettings.LOCAL_H2_PATH_DEFAULT;
             LocalDataContext.init(h2Port, h2Path);
             logger.info("Local H2 context started at {}.mv.db on port {}", h2Path, h2Port);
         } catch (IOException e) {

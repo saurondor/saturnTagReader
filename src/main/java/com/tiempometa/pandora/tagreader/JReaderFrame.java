@@ -6,6 +6,7 @@ package com.tiempometa.pandora.tagreader;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -52,6 +53,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		new ReaderStartupCoordinator(this, this, this::showProgress).connect();
 		showProgress("Iniciando componentes", 65);
 		initComponents();
+		refreshTitle();
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
@@ -210,12 +212,15 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 					"Autorizar conexión", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
 			if (auth == JOptionPane.YES_OPTION) {
-				LocalDataContext.setBaseDbName(ex.getPandoraDbName());
-				if (Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null) == null) {
-					try {
-						Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, ex.getPandoraDbName());
-						Context.flushSettings();
-					} catch (IOException ignored) {}
+				try {
+					Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, ex.getPandoraDbName());
+					Context.flushSettings();
+					Context.reinitLocalH2(ex.getPandoraDbName());
+				} catch (IOException ioe) {
+					JOptionPane.showMessageDialog(this,
+							"Error al inicializar la base de datos local: " + ioe.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				try {
 					Context.initWebserviceClients();
@@ -231,15 +236,37 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		} catch (DbNameMismatchException ex) {
 			logger.warn("DB name mismatch: local='{}' pandora='{}'",
 					ex.getLocalBaseDbName(), ex.getPandoraDbName());
-			JOptionPane.showMessageDialog(this,
+			int repair = JOptionPane.showConfirmDialog(this,
 					"Esta base de datos local está conectada a '" + ex.getLocalBaseDbName()
 							+ "',\npero Saturno tiene abierta la base '"
 							+ ex.getPandoraDbName() + "'.\n\n"
-							+ "Verifica que Saturno tiene el evento correcto abierto,\n"
-							+ "o crea una nueva base local para este evento.",
-					"Evento incorrecto", JOptionPane.ERROR_MESSAGE);
+							+ "¿Deseas cambiar la vinculación a '" + ex.getPandoraDbName() + "'?",
+					"Evento incorrecto", JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (repair == JOptionPane.YES_OPTION) {
+				try {
+					Context.saveSetting(PandoraSettings.LOCAL_DB_NAME, ex.getPandoraDbName());
+					Context.flushSettings();
+					Context.reinitLocalH2(ex.getPandoraDbName());
+				} catch (IOException ioe) {
+					JOptionPane.showMessageDialog(this,
+							"Error al cambiar la base de datos local: " + ioe.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				try {
+					Context.initWebserviceClients();
+					startSnapshotDownload("Conectado a base '" + ex.getPandoraDbName() + "'.");
+				} catch (Exception retryEx) {
+					logger.error("Connect failed after re-pairing", retryEx);
+					JOptionPane.showMessageDialog(this,
+							"Error al conectar tras cambio de evento: " + retryEx.getMessage(),
+							"Error de conexión", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		} catch (Exception ex) {
 			logger.warn("Could not connect to Saturno: {}", ex.getMessage());
+			refreshTitle();
 			JOptionPane.showMessageDialog(this,
 					"No se pudo conectar a Saturno en " + Context.getServerAddress()
 							+ "\n" + ex.getMessage(),
@@ -260,6 +287,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			@Override
 			protected void done() {
 				progress.dispose();
+				refreshTitle();
 				JOptionPane.showMessageDialog(JReaderFrame.this,
 						successMessage, "Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -680,7 +708,14 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 	@Override
 	public void refreshTitle() {
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
-		setTitle(bundle.getString("JIpicoReaderFrame.this.title"));
+		String base = bundle.getString("JIpicoReaderFrame.this.title");
+		String dbName = LocalDataContext.getBaseDbName();
+		if (dbName != null) {
+			String status = Context.isWebserviceConnected() ? "[conectado]" : "[** sin conexión **]";
+			setTitle(base + " — " + dbName + " " + status);
+		} else {
+			setTitle(base);
+		}
 	}
 
 	@Override
