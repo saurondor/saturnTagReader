@@ -45,14 +45,17 @@ import com.tiempometa.pandora.foxberry.FoxberryCommandResponseHandler;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.FoxberryUsbReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
 import com.tiempometa.webservice.model.CookedChipRead;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener {
+public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCommandResponseHandler, TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -215,9 +218,8 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
 		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
 		terminal = terminalTextField.getText();
-//		reader.setCheckPointOne(checkPoint1);
-//		reader.setTerminal(terminalTextField.getText());
-//		reader.setCheckPoint(checkPoint1);
+		reader.setCheckPointOne(checkPoint1);
+		reader.setTerminal(terminal);
 		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
@@ -458,6 +460,35 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	public void disconnect() {
 		if (reader.isConnected()) {
 			reader.disconnect();
+		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		FoxberryUsbReaderPanelConfig cfg = new FoxberryUsbReaderPanelConfig();
+		cfg.serialPort = (String) serialPortComboBox.getSelectedItem();
+		cfg.mode = modeComboBox.getSelectedIndex();
+		cfg.terminal = terminalTextField.getText();
+		cfg.checkpoint = (String) checkPointComboBox1.getSelectedItem();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		FoxberryUsbReaderPanelConfig cfg = (FoxberryUsbReaderPanelConfig) config;
+		if (cfg.serialPort != null) {
+			serialPortComboBox.setSelectedItem(cfg.serialPort);
+		}
+		// set mode first — fires item listener which enables/disables checkpoint UI
+		modeComboBox.setSelectedIndex(cfg.mode);
+		if (cfg.terminal != null) {
+			setTerminal(cfg.terminal);
+		}
+		if (cfg.checkpoint != null) {
+			checkPointComboBox1.setSelectedItem(cfg.checkpoint);
+			checkPoint1 = cfg.checkpoint;
+			reader.setCheckPointOne(checkPoint1);
+			applyCheckpointButton.setBackground(Color.GREEN);
 		}
 	}
 

@@ -40,13 +40,16 @@ import com.jgoodies.forms.layout.*;
 import com.tiempometa.pandora.tagreader.Context;
 import com.tiempometa.pandora.tagreader.JReaderListPanel;
 import com.tiempometa.pandora.tagreader.JReaderPanel;
+import com.tiempometa.pandora.tagreader.PersistableReaderPanel;
 import com.tiempometa.pandora.tagreader.TagReadListener;
+import com.tiempometa.pandora.tagreader.config.ReaderPanelConfig;
+import com.tiempometa.pandora.tagreader.config.UltraReaderPanelConfig;
 import com.tiempometa.webservice.model.RawChipRead;
 
 /**
  * @author Gerardo Esteban Tasistro Giubetic
  */
-public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
+public class JUltraReaderPanel extends JReaderPanel implements TagReadListener, PersistableReaderPanel {
 	/**
 	 * 
 	 */
@@ -55,6 +58,7 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 	private JReaderListPanel listPanel;
 	private UltraClient reader = new UltraClient();
 	private String checkPoint1 = null;
+	private String checkPoint2 = null;
 	private TagReadListener tagReadListener;
 	private Integer tagCount = 0;
 
@@ -126,6 +130,9 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 	}
 
 	private void applyCheckpointButtonActionPerformed(ActionEvent e) {
+		checkPoint1 = (String) checkPointComboBox1.getSelectedItem();
+		checkPoint2 = (String) checkPointComboBox2.getSelectedItem();
+		applyCheckpointButton.setBackground(Color.GREEN);
 	}
 
 	private void setTimeButtonActionPerformed(ActionEvent e) {
@@ -344,9 +351,8 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
-		logger.debug("Notified tag reads " + chipReadList.size());
 		for (RawChipRead rawChipRead : chipReadList) {
-			logger.debug("TAG READ " + rawChipRead.getRfidString());
+			rawChipRead.setCheckPoint(checkPoint1);
 		}
 		if (tagReadListener != null) {
 			tagReadListener.notifyTagReads(chipReadList);
@@ -376,6 +382,32 @@ public class JUltraReaderPanel extends JReaderPanel implements TagReadListener {
 	public void disconnect() {
 		if (reader.isConnected()) {
 			reader.disconnect();
+		}
+	}
+
+	@Override
+	public ReaderPanelConfig getConfig() {
+		UltraReaderPanelConfig cfg = new UltraReaderPanelConfig();
+		cfg.address = readerAddressTextField.getText();
+		cfg.terminal = terminalTextField.getText();
+		cfg.checkpoint1 = (String) checkPointComboBox1.getSelectedItem();
+		cfg.checkpoint2 = (String) checkPointComboBox2.getSelectedItem();
+		return cfg;
+	}
+
+	@Override
+	public void applyConfig(ReaderPanelConfig config) {
+		UltraReaderPanelConfig cfg = (UltraReaderPanelConfig) config;
+		if (cfg.address != null) readerAddressTextField.setText(cfg.address);
+		if (cfg.terminal != null) terminalTextField.setText(cfg.terminal);
+		if (cfg.checkpoint1 != null) {
+			checkPointComboBox1.setSelectedItem(cfg.checkpoint1);
+			checkPoint1 = cfg.checkpoint1;
+			applyCheckpointButton.setBackground(Color.GREEN);
+		}
+		if (cfg.checkpoint2 != null) {
+			checkPointComboBox2.setSelectedItem(cfg.checkpoint2);
+			checkPoint2 = cfg.checkpoint2;
 		}
 	}
 

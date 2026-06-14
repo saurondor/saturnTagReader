@@ -55,7 +55,9 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		showProgress("Iniciando servicios", 85);
 		initListeners();
 		splash.setVisible(false);
-		readerListPanel.addIpicoEliteReader();
+		if (readerListPanel.restoreReaderConfigs() == 0) {
+			readerListPanel.addIpicoEliteReader();
+		}
 	}
 
 	/**
@@ -89,7 +91,6 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 			}
 		});
 		readerListPanel.setTagReadListener(this);
-
 	}
 
 	private void closeApplication(Window window) {
@@ -136,6 +137,7 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 				}
 			}
 
+			readerListPanel.saveReaderConfigs();
 			readerListPanel.disconnectAll();
 			LocalDataContext.close();
 			window.dispose();
