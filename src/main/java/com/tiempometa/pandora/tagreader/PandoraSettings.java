@@ -57,5 +57,5 @@ public class PandoraSettings {
 
 	public static final String LOCAL_H2_PATH = "local_h2_path";
 	public static final String LOCAL_H2_PATH_DEFAULT =
-			System.getProperty("user.home") + "/.tiempometa/databases/tagreader";
+			System.getProperty("user.home") + "/.tiempometa/tagreader/tagreader";
 }
