@@ -74,7 +74,7 @@ public class ReaderStartupCoordinator {
                             String.valueOf(PandoraSettings.LOCAL_H2_PORT_DEFAULT)));
             String savedDbName = Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null);
             String h2Path = (savedDbName != null && !savedDbName.isEmpty())
-                    ? System.getProperty("user.home") + "/.tiempometa/tagreader/" + savedDbName
+                    ? PandoraSettings.LOCAL_H2_DIR + "/" + savedDbName
                     : PandoraSettings.LOCAL_H2_PATH_DEFAULT;
             new java.io.File(h2Path).getParentFile().mkdirs();
             LocalDataContext.init(h2Port, h2Path);

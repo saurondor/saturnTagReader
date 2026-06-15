@@ -34,6 +34,11 @@ public class PandoraSettings {
 	public static final String DB_USERNAME = "db_username";
 
 	public static final String SERVER_IP = "server_ip";
+	public static final String SERVER_IP_DEFAULT = "127.0.0.1";
+
+	public static final String READER_ADDRESS = "readerAddress";
+	public static final String READER_ADDRESS_DEFAULT = "192.168.1.10";
+
 	public static final String LABEL_PRINTER = "label_printer";
 	public static final String CERTIFICATE_PRINTER = "certificate_printer";
 	public static final String LABEL_TEMPLATE = "label_template";
@@ -56,6 +61,7 @@ public class PandoraSettings {
 	public static final int LOCAL_H2_PORT_DEFAULT = 9093;
 
 	public static final String LOCAL_H2_PATH = "local_h2_path";
-	public static final String LOCAL_H2_PATH_DEFAULT =
-			System.getProperty("user.home") + "/.tiempometa/tagreader/tagreader";
+	public static final String LOCAL_H2_DIR =
+			System.getProperty("user.home") + "/.tiempometa/tagreader";
+	public static final String LOCAL_H2_PATH_DEFAULT = LOCAL_H2_DIR + "/tagreader";
 }
