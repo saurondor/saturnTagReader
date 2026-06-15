@@ -160,19 +160,19 @@ public class Context extends com.tiempometa.timing.Context {
 	public static void loadSettings() throws IOException {
 		settings = new SettingsHandler("/tagreader.properties");
 		settings.init();
-		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
+		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, PandoraSettings.SERVER_IP_DEFAULT);
 //		databaseName = Context.loadSetting(PandoraSettings.DB_NAME, "pandora_test");
 //		databasePassword = Context.loadSetting(PandoraSettings.DB_PASSWORD, "");
 //		databaseUsername = Context.loadSetting(PandoraSettings.DB_USERNAME, "root");
 	}
 
 	public static void saveReaderAddress(String address) throws IOException {
-		Context.saveSetting("readerAddress", address);
+		Context.saveSetting(PandoraSettings.READER_ADDRESS, address);
 		Context.flushSettings();
 	}
 
 	public static String loadReaderAddress() {
-		String address = Context.loadSetting("readerAddress", "192.168.1.10");
+		String address = Context.loadSetting(PandoraSettings.READER_ADDRESS, PandoraSettings.READER_ADDRESS_DEFAULT);
 		return address;
 	}
 
@@ -182,7 +182,7 @@ public class Context extends com.tiempometa.timing.Context {
 	}
 
 	public static String loadServerAddress() {
-		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, "127.0.0.1");
+		serverAddress = Context.loadSetting(PandoraSettings.SERVER_IP, PandoraSettings.SERVER_IP_DEFAULT);
 		return serverAddress;
 	}
 
@@ -288,7 +288,7 @@ public class Context extends com.tiempometa.timing.Context {
 	 */
 	public static void reinitLocalH2(String dbName) throws IOException {
 		LocalDataContext.close();
-		String newPath = System.getProperty("user.home") + "/.tiempometa/tagreader/" + dbName;
+		String newPath = PandoraSettings.LOCAL_H2_DIR + "/" + dbName;
 		new java.io.File(newPath).getParentFile().mkdirs();
 		int port = Integer.parseInt(loadSetting(PandoraSettings.LOCAL_H2_PORT,
 				String.valueOf(PandoraSettings.LOCAL_H2_PORT_DEFAULT)));
