@@ -722,6 +722,8 @@ public class JReaderFrame extends JFrame implements JPandoraApplication, TagRead
 		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.tagreader.tagreader");
 		String base = bundle.getString("JIpicoReaderFrame.this.title");
 		String dbName = LocalDataContext.getBaseDbName();
+		if (dbName == null)
+			dbName = Context.loadSetting(PandoraSettings.LOCAL_DB_NAME, null);
 		if (dbName != null) {
 			String status = Context.isWebserviceConnected() ? "[conectado]" : "[** sin conexión **]";
 			setTitle(base + " — " + dbName + " " + status);
