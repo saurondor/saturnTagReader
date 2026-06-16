@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.tiempometa.pandora</groupId>
 	<artifactId>tagreader</artifactId>
-	<version>5.0.1-SNAPSHOT</version>
+	<version>5.0.2-SNAPSHOT</version>
 	<name>Tag Reader</name>
 	<description>Elite, Lite and USB reader interface</description>
 
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>com.tiempometa.timing</groupId>
 			<artifactId>model</artifactId>
-			<version>5.0.2-SNAPSHOT</version>
+			<version>5.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

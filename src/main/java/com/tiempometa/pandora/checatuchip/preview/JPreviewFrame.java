@@ -56,50 +56,50 @@ public class JPreviewFrame extends JFrame {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.checatuchip.preview.jpreview");
-		contentPanel = new JContentPreviewPanel();
-		topPanel = new JTopPreviewPanel();
-		bottomPanel = new JBottomPreviewPanel();
-		leftPanel = new JLeftPreviewPanel();
-		rightPanel = new JRightPreviewPanel();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.checatuchip.preview.jpreview");
+        contentPanel = new JContentPreviewPanel();
+        topPanel = new JTopPreviewPanel();
+        bottomPanel = new JBottomPreviewPanel();
+        leftPanel = new JLeftPreviewPanel();
+        rightPanel = new JRightPreviewPanel();
 
-		//======== this ========
-		setTitle(bundle.getString("JPreviewFrame.this.title"));
-		setIconImage(new ImageIcon(getClass().getResource("/tiempometa_icon_large_alpha.png")).getImage());
-		setBackground(Color.white);
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
+        //======== this ========
+        setTitle(bundle.getString("JPreviewFrame.this.title"));
+        setIconImage(new ImageIcon(getClass().getResource("/tiempometa_icon_large_alpha.png")).getImage());
+        setBackground(Color.white);
+        var contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
 
-		//---- contentPanel ----
-		contentPanel.setBackground(Color.white);
-		contentPane.add(contentPanel, BorderLayout.CENTER);
+        //---- contentPanel ----
+        contentPanel.setBackground(Color.white);
+        contentPane.add(contentPanel, BorderLayout.CENTER);
 
-		//---- topPanel ----
-		topPanel.setBackground(Color.white);
-		contentPane.add(topPanel, BorderLayout.NORTH);
+        //---- topPanel ----
+        topPanel.setBackground(Color.white);
+        contentPane.add(topPanel, BorderLayout.NORTH);
 
-		//---- bottomPanel ----
-		bottomPanel.setBackground(Color.white);
-		contentPane.add(bottomPanel, BorderLayout.SOUTH);
+        //---- bottomPanel ----
+        bottomPanel.setBackground(Color.white);
+        contentPane.add(bottomPanel, BorderLayout.SOUTH);
 
-		//---- leftPanel ----
-		leftPanel.setBackground(Color.white);
-		contentPane.add(leftPanel, BorderLayout.WEST);
+        //---- leftPanel ----
+        leftPanel.setBackground(Color.white);
+        contentPane.add(leftPanel, BorderLayout.WEST);
 
-		//---- rightPanel ----
-		rightPanel.setBackground(Color.white);
-		contentPane.add(rightPanel, BorderLayout.EAST);
-		pack();
-		setLocationRelativeTo(getOwner());
+        //---- rightPanel ----
+        rightPanel.setBackground(Color.white);
+        contentPane.add(rightPanel, BorderLayout.EAST);
+        pack();
+        setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JContentPreviewPanel contentPanel;
-	private JTopPreviewPanel topPanel;
-	private JBottomPreviewPanel bottomPanel;
-	private JLeftPreviewPanel leftPanel;
-	private JRightPreviewPanel rightPanel;
+    private JContentPreviewPanel contentPanel;
+    private JTopPreviewPanel topPanel;
+    private JBottomPreviewPanel bottomPanel;
+    private JLeftPreviewPanel leftPanel;
+    private JRightPreviewPanel rightPanel;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public Registration getRegistration() {
