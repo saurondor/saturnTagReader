@@ -76,6 +76,8 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	private boolean started = false;
 	private boolean buzzerStatus = true;
 	private Integer tagsRead = 0;
+	private boolean restoringCheckpoint = false;
+	private String lastConfirmedCheckpoint = null;
 
 	public JMacshaReaderPanel(JReaderListPanel listPanel) {
 		super();
@@ -97,6 +99,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	 * 
 	 */
 	private void loadCheckPoints() {
+		restoringCheckpoint = true;
 		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
@@ -104,6 +107,7 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 		}
 		String[] checkPointArray = new String[checkPoints.size()];
 		checkPointComboBox.setModel(new DefaultComboBoxModel<String>(checkPoints.toArray(checkPointArray)));
+		restoringCheckpoint = false;
 	}
 
 	public JMacshaReaderPanel() {
@@ -208,188 +212,163 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 	}
 
 	private void checkPointComboBoxItemStateChanged(ItemEvent e) {
+		if (restoringCheckpoint || e.getStateChange() != ItemEvent.SELECTED) return;
+		String value = (String) checkPointComboBox.getSelectedItem();
+		if (value != null && !isInCheckpointModel(checkPointComboBox, value)) {
+			int result = JOptionPane.showConfirmDialog(this,
+					"Confirmar que deseas usar el checkpoint: " + value,
+					"Punto de lectura manual", JOptionPane.YES_NO_OPTION);
+			if (result != JOptionPane.YES_OPTION) {
+				restoringCheckpoint = true;
+				checkPointComboBox.setSelectedItem(lastConfirmedCheckpoint);
+				restoringCheckpoint = false;
+				return;
+			}
+		}
+		lastConfirmedCheckpoint = value;
 		applyCheckpointButton.setBackground(Color.RED);
 	}
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.macsha.macsha");
-		label1 = new JLabel();
-		readerAddressTextField = new JTextField();
-		connectButton = new JButton();
-		startReadingButton = new JButton();
-		removeReaderButton = new JButton();
-		label2 = new JLabel();
-		checkPointComboBox = new JComboBox();
-		applyCheckpointButton = new JButton();
-		modeComboBox = new JComboBox<>();
-		acPowerRadioButton = new JLabel();
-		batteryLabel = new JLabel();
-		label5 = new JLabel();
-		tagsReadLabel = new JLabel();
-		openBackupsButton = new JButton();
-		setTimeButton = new JButton();
-		newFileButton = new JButton();
-		setBuzzerButton = new JButton();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.macsha.macsha");
+        label1 = new JLabel();
+        readerAddressTextField = new JTextField();
+        connectButton = new JButton();
+        startReadingButton = new JButton();
+        removeReaderButton = new JButton();
+        label2 = new JLabel();
+        checkPointComboBox = new JComboBox();
+        applyCheckpointButton = new JButton();
+        modeComboBox = new JComboBox<>();
+        acPowerRadioButton = new JLabel();
+        batteryLabel = new JLabel();
+        label5 = new JLabel();
+        tagsReadLabel = new JLabel();
+        openBackupsButton = new JButton();
+        setTimeButton = new JButton();
+        newFileButton = new JButton();
+        setBuzzerButton = new JButton();
 
-		//======== this ========
-		setBorder(new TitledBorder("Macsha One4All"));
-		setMaximumSize(new Dimension(550, 120));
-		setMinimumSize(new Dimension(550, 120));
-		setPreferredSize(new Dimension(550, 120));
-		setLayout(new FormLayout(
-			"11dlu, $lcgap, default, $lcgap, 55dlu, 2*($lcgap, 69dlu), $lcgap, 54dlu, $lcgap, 18dlu",
-			"3*(default, $lgap), default"));
+        //======== this ========
+        setBorder(new TitledBorder("Macsha One4All"));
+        setMaximumSize(new Dimension(550, 120));
+        setMinimumSize(new Dimension(550, 120));
+        setPreferredSize(new Dimension(550, 120));
+        setLayout(new FormLayout(
+            "11dlu, $lcgap, default, $lcgap, 55dlu, 2*($lcgap, 69dlu), $lcgap, 54dlu, $lcgap, 18dlu",
+            "3*(default, $lgap), default"));
 
-		//---- label1 ----
-		label1.setText(bundle.getString("JMacshaReaderPanel.label1.text"));
-		add(label1, CC.xy(3, 1));
-		add(readerAddressTextField, CC.xy(5, 1));
+        //---- label1 ----
+        label1.setText(bundle.getString("JMacshaReaderPanel.label1.text"));
+        add(label1, CC.xy(3, 1));
+        add(readerAddressTextField, CC.xy(5, 1));
 
-		//---- connectButton ----
-		connectButton.setText(bundle.getString("JMacshaReaderPanel.connectButton.text"));
-		connectButton.setBackground(Color.red);
-		connectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connectButtonActionPerformed(e);
-			}
-		});
-		add(connectButton, CC.xy(7, 1));
+        //---- connectButton ----
+        connectButton.setText(bundle.getString("JMacshaReaderPanel.connectButton.text"));
+        connectButton.setBackground(Color.red);
+        connectButton.addActionListener(e -> connectButtonActionPerformed(e));
+        add(connectButton, CC.xy(7, 1));
 
-		//---- startReadingButton ----
-		startReadingButton.setText(bundle.getString("JMacshaReaderPanel.startReadingButton.text"));
-		startReadingButton.setEnabled(false);
-		startReadingButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startReadingButtonActionPerformed(e);
-			}
-		});
-		add(startReadingButton, CC.xywh(9, 1, 3, 1));
+        //---- startReadingButton ----
+        startReadingButton.setText(bundle.getString("JMacshaReaderPanel.startReadingButton.text"));
+        startReadingButton.setEnabled(false);
+        startReadingButton.addActionListener(e -> startReadingButtonActionPerformed(e));
+        add(startReadingButton, CC.xywh(9, 1, 3, 1));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
-		removeReaderButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				removeReaderButtonActionPerformed(e);
-			}
-		});
-		add(removeReaderButton, CC.xy(13, 1));
+        //---- removeReaderButton ----
+        removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+        removeReaderButton.addActionListener(e -> removeReaderButtonActionPerformed(e));
+        add(removeReaderButton, CC.xy(13, 1));
 
-		//---- label2 ----
-		label2.setText(bundle.getString("JMacshaReaderPanel.label2.text"));
-		add(label2, CC.xy(3, 3));
+        //---- label2 ----
+        label2.setText(bundle.getString("JMacshaReaderPanel.label2.text"));
+        add(label2, CC.xy(3, 3));
 
-		//---- checkPointComboBox ----
-		checkPointComboBox.setBackground(Color.red);
-		checkPointComboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				checkPointComboBoxItemStateChanged(e);
-			}
-		});
-		add(checkPointComboBox, CC.xy(5, 3));
+        //---- checkPointComboBox ----
+        checkPointComboBox.setBackground(Color.red);
+        checkPointComboBox.setEditable(true);
+        checkPointComboBox.addItemListener(e -> checkPointComboBoxItemStateChanged(e));
+        add(checkPointComboBox, CC.xy(5, 3));
 
-		//---- applyCheckpointButton ----
-		applyCheckpointButton.setText(bundle.getString("JMacshaReaderPanel.applyCheckpointButton.text"));
-		applyCheckpointButton.setBackground(Color.red);
-		applyCheckpointButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applyCheckpointButtonActionPerformed(e);
-			}
-		});
-		add(applyCheckpointButton, CC.xy(7, 3));
+        //---- applyCheckpointButton ----
+        applyCheckpointButton.setText(bundle.getString("JMacshaReaderPanel.applyCheckpointButton.text"));
+        applyCheckpointButton.setBackground(Color.red);
+        applyCheckpointButton.addActionListener(e -> applyCheckpointButtonActionPerformed(e));
+        add(applyCheckpointButton, CC.xy(7, 3));
 
-		//---- modeComboBox ----
-		modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Modo ruta",
-			"Modo checa tu chip",
-			"Modo checa tu resultado"
-		}));
-		add(modeComboBox, CC.xywh(9, 3, 3, 1));
+        //---- modeComboBox ----
+        modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Modo ruta",
+            "Modo checa tu chip",
+            "Modo checa tu resultado"
+        }));
+        add(modeComboBox, CC.xywh(9, 3, 3, 1));
 
-		//---- acPowerRadioButton ----
-		acPowerRadioButton.setText(bundle.getString("JMacshaReaderPanel.acPowerRadioButton.text"));
-		acPowerRadioButton.setFocusable(false);
-		acPowerRadioButton.setForeground(Color.red);
-		acPowerRadioButton.setEnabled(false);
-		add(acPowerRadioButton, CC.xy(3, 5));
+        //---- acPowerRadioButton ----
+        acPowerRadioButton.setText(bundle.getString("JMacshaReaderPanel.acPowerRadioButton.text"));
+        acPowerRadioButton.setFocusable(false);
+        acPowerRadioButton.setForeground(Color.red);
+        acPowerRadioButton.setEnabled(false);
+        add(acPowerRadioButton, CC.xy(3, 5));
 
-		//---- batteryLabel ----
-		batteryLabel.setText(bundle.getString("JMacshaReaderPanel.batteryLabel.text"));
-		batteryLabel.setEnabled(false);
-		add(batteryLabel, CC.xywh(5, 5, 3, 1));
+        //---- batteryLabel ----
+        batteryLabel.setText(bundle.getString("JMacshaReaderPanel.batteryLabel.text"));
+        batteryLabel.setEnabled(false);
+        add(batteryLabel, CC.xywh(5, 5, 3, 1));
 
-		//---- label5 ----
-		label5.setText(bundle.getString("JMacshaReaderPanel.label5.text"));
-		add(label5, CC.xy(9, 5));
+        //---- label5 ----
+        label5.setText(bundle.getString("JMacshaReaderPanel.label5.text"));
+        add(label5, CC.xy(9, 5));
 
-		//---- tagsReadLabel ----
-		tagsReadLabel.setText(bundle.getString("JMacshaReaderPanel.tagsReadLabel.text"));
-		add(tagsReadLabel, CC.xy(11, 5));
+        //---- tagsReadLabel ----
+        tagsReadLabel.setText(bundle.getString("JMacshaReaderPanel.tagsReadLabel.text"));
+        add(tagsReadLabel, CC.xy(11, 5));
 
-		//---- openBackupsButton ----
-		openBackupsButton.setText(bundle.getString("JMacshaReaderPanel.openBackupsButton.text"));
-		openBackupsButton.setEnabled(false);
-		openBackupsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openBackupsButtonActionPerformed(e);
-			}
-		});
-		add(openBackupsButton, CC.xywh(3, 7, 3, 1));
+        //---- openBackupsButton ----
+        openBackupsButton.setText(bundle.getString("JMacshaReaderPanel.openBackupsButton.text"));
+        openBackupsButton.setEnabled(false);
+        openBackupsButton.addActionListener(e -> openBackupsButtonActionPerformed(e));
+        add(openBackupsButton, CC.xywh(3, 7, 3, 1));
 
-		//---- setTimeButton ----
-		setTimeButton.setText(bundle.getString("JMacshaReaderPanel.setTimeButton.text"));
-		setTimeButton.setEnabled(false);
-		setTimeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setTimeButtonActionPerformed(e);
-			}
-		});
-		add(setTimeButton, CC.xy(7, 7));
+        //---- setTimeButton ----
+        setTimeButton.setText(bundle.getString("JMacshaReaderPanel.setTimeButton.text"));
+        setTimeButton.setEnabled(false);
+        setTimeButton.addActionListener(e -> setTimeButtonActionPerformed(e));
+        add(setTimeButton, CC.xy(7, 7));
 
-		//---- newFileButton ----
-		newFileButton.setText(bundle.getString("JMacshaReaderPanel.newFileButton.text"));
-		newFileButton.setEnabled(false);
-		add(newFileButton, CC.xy(9, 7));
+        //---- newFileButton ----
+        newFileButton.setText(bundle.getString("JMacshaReaderPanel.newFileButton.text"));
+        newFileButton.setEnabled(false);
+        add(newFileButton, CC.xy(9, 7));
 
-		//---- setBuzzerButton ----
-		setBuzzerButton.setText(bundle.getString("JMacshaReaderPanel.setBuzzerButton.text"));
-		setBuzzerButton.setEnabled(false);
-		setBuzzerButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setBuzzerButtonActionPerformed(e);
-			}
-		});
-		add(setBuzzerButton, CC.xywh(11, 7, 3, 1));
+        //---- setBuzzerButton ----
+        setBuzzerButton.setText(bundle.getString("JMacshaReaderPanel.setBuzzerButton.text"));
+        setBuzzerButton.setEnabled(false);
+        setBuzzerButton.addActionListener(e -> setBuzzerButtonActionPerformed(e));
+        add(setBuzzerButton, CC.xywh(11, 7, 3, 1));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JLabel label1;
-	private JTextField readerAddressTextField;
-	private JButton connectButton;
-	private JButton startReadingButton;
-	private JButton removeReaderButton;
-	private JLabel label2;
-	private JComboBox checkPointComboBox;
-	private JButton applyCheckpointButton;
-	private JComboBox<String> modeComboBox;
-	private JLabel acPowerRadioButton;
-	private JLabel batteryLabel;
-	private JLabel label5;
-	private JLabel tagsReadLabel;
-	private JButton openBackupsButton;
-	private JButton setTimeButton;
-	private JButton newFileButton;
-	private JButton setBuzzerButton;
+    private JLabel label1;
+    private JTextField readerAddressTextField;
+    private JButton connectButton;
+    private JButton startReadingButton;
+    private JButton removeReaderButton;
+    private JLabel label2;
+    private JComboBox checkPointComboBox;
+    private JButton applyCheckpointButton;
+    private JComboBox<String> modeComboBox;
+    private JLabel acPowerRadioButton;
+    private JLabel batteryLabel;
+    private JLabel label5;
+    private JLabel tagsReadLabel;
+    private JButton openBackupsButton;
+    private JButton setTimeButton;
+    private JButton newFileButton;
+    private JButton setBuzzerButton;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 
 	public TagReadListener getTagReadListener() {
@@ -511,11 +490,22 @@ public class JMacshaReaderPanel extends JReaderPanel implements CommandResponseH
 			readerAddressTextField.setText(cfg.address);
 		}
 		if (cfg.checkpoint != null) {
+			restoringCheckpoint = true;
 			checkPointComboBox.setSelectedItem(cfg.checkpoint);
+			restoringCheckpoint = false;
+			lastConfirmedCheckpoint = cfg.checkpoint;
 			checkPoint = cfg.checkpoint;
 			applyCheckpointButton.setBackground(Color.GREEN);
 		}
 		modeComboBox.setSelectedIndex(cfg.mode);
+	}
+
+	private boolean isInCheckpointModel(JComboBox combo, String value) {
+		ComboBoxModel model = combo.getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			if (value.equals(model.getElementAt(i))) return true;
+		}
+		return false;
 	}
 
 	@Override

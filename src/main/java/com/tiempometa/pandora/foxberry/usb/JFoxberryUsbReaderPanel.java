@@ -76,6 +76,8 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	private TagReadListener tagReadListener;
 	private int mode = MODE_CHECA_TU_CHIP;
 	private Integer tagCount = 0;
+	private boolean restoringCheckpoint = false;
+	private String lastConfirmedCheckpoint1 = null;
 
 	public JFoxberryUsbReaderPanel(JReaderListPanel listPanel) {
 		initComponents();
@@ -176,6 +178,7 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	}
 
 	private void loadCheckPoints() {
+		restoringCheckpoint = true;
 		List<String> checkPoints = Context.getCheckPointNames();
 		logger.debug("Available checkpoints ");
 		for (String string : checkPoints) {
@@ -183,6 +186,7 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 		}
 		String[] checkPointArray = new String[checkPoints.size()];
 		checkPointComboBox1.setModel(new DefaultComboBoxModel<String>(checkPoints.toArray(checkPointArray)));
+		restoringCheckpoint = false;
 	}
 
 	private void connectButtonActionPerformed(ActionEvent e) {
@@ -223,6 +227,20 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	}
 
 	private void checkPointComboBox1ItemStateChanged(ItemEvent e) {
+		if (restoringCheckpoint || e.getStateChange() != ItemEvent.SELECTED) return;
+		String value = (String) checkPointComboBox1.getSelectedItem();
+		if (value != null && !isInCheckpointModel(checkPointComboBox1, value)) {
+			int result = JOptionPane.showConfirmDialog(this,
+					"Confirmar que deseas usar el checkpoint: " + value,
+					"Punto de lectura manual", JOptionPane.YES_NO_OPTION);
+			if (result != JOptionPane.YES_OPTION) {
+				restoringCheckpoint = true;
+				checkPointComboBox1.setSelectedItem(lastConfirmedCheckpoint1);
+				restoringCheckpoint = false;
+				return;
+			}
+		}
+		lastConfirmedCheckpoint1 = value;
 		applyCheckpointButton.setBackground(Color.RED);
 	}
 
@@ -272,131 +290,106 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY
 		// //GEN-BEGIN:initComponents
-		ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
-		label1 = new JLabel();
-		serialPortComboBox = new JComboBox();
-		connectButton = new JButton();
-		removeReaderButton = new JButton();
-		label3 = new JLabel();
-		modeComboBox = new JComboBox<>();
-		label4 = new JLabel();
-		terminalTextField = new JTextField();
-		pointLabel = new JLabel();
-		checkPointComboBox1 = new JComboBox();
-		applyCheckpointButton = new JButton();
-		label5 = new JLabel();
-		tagsReadLabel = new JLabel();
+        ResourceBundle bundle = ResourceBundle.getBundle("com.tiempometa.pandora.ipicoreader.ipicoreader");
+        label1 = new JLabel();
+        serialPortComboBox = new JComboBox();
+        connectButton = new JButton();
+        removeReaderButton = new JButton();
+        label3 = new JLabel();
+        modeComboBox = new JComboBox<>();
+        label4 = new JLabel();
+        terminalTextField = new JTextField();
+        pointLabel = new JLabel();
+        checkPointComboBox1 = new JComboBox();
+        applyCheckpointButton = new JButton();
+        label5 = new JLabel();
+        tagsReadLabel = new JLabel();
 
-		//======== this ========
-		setMaximumSize(new Dimension(550, 120));
-		setMinimumSize(new Dimension(550, 120));
-		setPreferredSize(new Dimension(550, 120));
-		setBorder(new TitledBorder(bundle.getString("JIpicoUsbReaderPanel.this.border")));
-		setLayout(new FormLayout(
-			"5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 79dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 41dlu, $lcgap, 22dlu",
-			"5dlu, 3*($lgap, default)"));
+        //======== this ========
+        setMaximumSize(new Dimension(550, 120));
+        setMinimumSize(new Dimension(550, 120));
+        setPreferredSize(new Dimension(550, 120));
+        setBorder(new TitledBorder(bundle.getString("JIpicoUsbReaderPanel.this.border")));
+        setLayout(new FormLayout(
+            "5dlu, $lcgap, default, $lcgap, 94dlu, $lcgap, 79dlu, $lcgap, 41dlu, $lcgap, 10dlu, $lcgap, 41dlu, $lcgap, 22dlu",
+            "5dlu, 3*($lgap, default)"));
 
-		//---- label1 ----
-		label1.setText(bundle.getString("JIpicoUsbReaderPanel.label1.text"));
-		add(label1, CC.xy(3, 3));
-		add(serialPortComboBox, CC.xy(5, 3));
+        //---- label1 ----
+        label1.setText(bundle.getString("JIpicoUsbReaderPanel.label1.text"));
+        add(label1, CC.xy(3, 3));
+        add(serialPortComboBox, CC.xy(5, 3));
 
-		//---- connectButton ----
-		connectButton.setText(bundle.getString("JIpicoUsbReaderPanel.connectButton.text"));
-		connectButton.setBackground(Color.red);
-		connectButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connectButtonActionPerformed(e);
-			}
-		});
-		add(connectButton, CC.xy(7, 3));
+        //---- connectButton ----
+        connectButton.setText(bundle.getString("JIpicoUsbReaderPanel.connectButton.text"));
+        connectButton.setBackground(Color.red);
+        connectButton.addActionListener(e -> connectButtonActionPerformed(e));
+        add(connectButton, CC.xy(7, 3));
 
-		//---- removeReaderButton ----
-		removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
-		removeReaderButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				removeReaderButtonActionPerformed(e);
-			}
-		});
-		add(removeReaderButton, CC.xy(15, 3));
+        //---- removeReaderButton ----
+        removeReaderButton.setIcon(new ImageIcon(getClass().getResource("/com/tiempometa/pandora/tagreader/x-remove.png")));
+        removeReaderButton.addActionListener(e -> removeReaderButtonActionPerformed(e));
+        add(removeReaderButton, CC.xy(15, 3));
 
-		//---- label3 ----
-		label3.setText(bundle.getString("JIpicoUsbReaderPanel.label3.text"));
-		add(label3, CC.xy(3, 5));
+        //---- label3 ----
+        label3.setText(bundle.getString("JIpicoUsbReaderPanel.label3.text"));
+        add(label3, CC.xy(3, 5));
 
-		//---- modeComboBox ----
-		modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Checa Tu Chip",
-			"Checa tu Resultado",
-			"Punto en ruta"
-		}));
-		modeComboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				modeComboBoxItemStateChanged(e);
-			}
-		});
-		add(modeComboBox, CC.xy(5, 5));
+        //---- modeComboBox ----
+        modeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
+            "Checa Tu Chip",
+            "Checa tu Resultado",
+            "Punto en ruta"
+        }));
+        modeComboBox.addItemListener(e -> modeComboBoxItemStateChanged(e));
+        add(modeComboBox, CC.xy(5, 5));
 
-		//---- label4 ----
-		label4.setText(bundle.getString("JIpicoUsbReaderPanel.label4.text"));
-		add(label4, CC.xywh(9, 5, 3, 1));
-		add(terminalTextField, CC.xywh(13, 5, 3, 1));
+        //---- label4 ----
+        label4.setText(bundle.getString("JIpicoUsbReaderPanel.label4.text"));
+        add(label4, CC.xywh(9, 5, 3, 1));
+        add(terminalTextField, CC.xywh(13, 5, 3, 1));
 
-		//---- pointLabel ----
-		pointLabel.setText(bundle.getString("JIpicoUsbReaderPanel.pointLabel.text"));
-		pointLabel.setEnabled(false);
-		add(pointLabel, CC.xy(3, 7));
+        //---- pointLabel ----
+        pointLabel.setText(bundle.getString("JIpicoUsbReaderPanel.pointLabel.text"));
+        pointLabel.setEnabled(false);
+        add(pointLabel, CC.xy(3, 7));
 
-		//---- checkPointComboBox1 ----
-		checkPointComboBox1.setBackground(Color.red);
-		checkPointComboBox1.setEnabled(false);
-		checkPointComboBox1.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				checkPointComboBox1ItemStateChanged(e);
-			}
-		});
-		add(checkPointComboBox1, CC.xy(5, 7));
+        //---- checkPointComboBox1 ----
+        checkPointComboBox1.setBackground(Color.red);
+        checkPointComboBox1.setEditable(true);
+        checkPointComboBox1.addItemListener(e -> checkPointComboBox1ItemStateChanged(e));
+        add(checkPointComboBox1, CC.xy(5, 7));
 
-		//---- applyCheckpointButton ----
-		applyCheckpointButton.setText(bundle.getString("JIpicoUsbReaderPanel.applyCheckpointButton.text"));
-		applyCheckpointButton.setBackground(Color.red);
-		applyCheckpointButton.setEnabled(false);
-		applyCheckpointButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applyCheckpointButtonActionPerformed(e);
-			}
-		});
-		add(applyCheckpointButton, CC.xy(7, 7));
+        //---- applyCheckpointButton ----
+        applyCheckpointButton.setText(bundle.getString("JIpicoUsbReaderPanel.applyCheckpointButton.text"));
+        applyCheckpointButton.setBackground(Color.red);
+        applyCheckpointButton.setEnabled(false);
+        applyCheckpointButton.addActionListener(e -> applyCheckpointButtonActionPerformed(e));
+        add(applyCheckpointButton, CC.xy(7, 7));
 
-		//---- label5 ----
-		label5.setText(bundle.getString("JIpicoUsbReaderPanel.label5.text"));
-		add(label5, CC.xy(13, 7));
+        //---- label5 ----
+        label5.setText(bundle.getString("JIpicoUsbReaderPanel.label5.text"));
+        add(label5, CC.xy(13, 7));
 
-		//---- tagsReadLabel ----
-		tagsReadLabel.setText(bundle.getString("JIpicoUsbReaderPanel.tagsReadLabel.text"));
-		add(tagsReadLabel, CC.xy(15, 7));
+        //---- tagsReadLabel ----
+        tagsReadLabel.setText(bundle.getString("JIpicoUsbReaderPanel.tagsReadLabel.text"));
+        add(tagsReadLabel, CC.xy(15, 7));
 		// JFormDesigner - End of component initialization //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
-	private JLabel label1;
-	private JComboBox serialPortComboBox;
-	private JButton connectButton;
-	private JButton removeReaderButton;
-	private JLabel label3;
-	private JComboBox<String> modeComboBox;
-	private JLabel label4;
-	private JTextField terminalTextField;
-	private JLabel pointLabel;
-	private JComboBox checkPointComboBox1;
-	private JButton applyCheckpointButton;
-	private JLabel label5;
-	private JLabel tagsReadLabel;
+    private JLabel label1;
+    private JComboBox serialPortComboBox;
+    private JButton connectButton;
+    private JButton removeReaderButton;
+    private JLabel label3;
+    private JComboBox<String> modeComboBox;
+    private JLabel label4;
+    private JTextField terminalTextField;
+    private JLabel pointLabel;
+    private JComboBox checkPointComboBox1;
+    private JButton applyCheckpointButton;
+    private JLabel label5;
+    private JLabel tagsReadLabel;
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 	@Override
 	public void notifyTagReads(List<RawChipRead> chipReadList) {
@@ -496,11 +489,22 @@ public class JFoxberryUsbReaderPanel extends JReaderPanel implements FoxberryCom
 			setTerminal(cfg.terminal);
 		}
 		if (cfg.checkpoint != null) {
+			restoringCheckpoint = true;
 			checkPointComboBox1.setSelectedItem(cfg.checkpoint);
+			restoringCheckpoint = false;
+			lastConfirmedCheckpoint1 = cfg.checkpoint;
 			checkPoint1 = cfg.checkpoint;
 			reader.setCheckPointOne(checkPoint1);
 			applyCheckpointButton.setBackground(Color.GREEN);
 		}
+	}
+
+	private boolean isInCheckpointModel(JComboBox combo, String value) {
+		ComboBoxModel model = combo.getModel();
+		for (int i = 0; i < model.getSize(); i++) {
+			if (value.equals(model.getElementAt(i))) return true;
+		}
+		return false;
 	}
 
 	@Override
